@@ -232,95 +232,96 @@ export function PdfReader({ book }: PdfReaderProps) {
 
       {/* PDF Container */}
       <div
-        className={clsx(
-          'fixed inset-0 pt-[60px] overflow-auto',
-          isLoading && 'flex items-center justify-center'
-        )}
+        className="fixed inset-0 pt-[60px] overflow-auto"
         style={{ background: getThemeBackground() }}
       >
-        {isLoading ? (
-          <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin">
-              <PixelIcon name="loading" size={32} />
-            </div>
-            <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
-              Loading PDF...
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center py-4 px-4">
-            {/* Zoom Controls */}
-            <div className="fixed bottom-4 right-4 z-30 flex flex-col gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setScale((s) => Math.min(s + 0.25, 3))}
-                aria-label="Zoom in"
-              >
-                <PixelIcon name="plus" size={16} />
-              </Button>
-              <span className="font-mono text-xs text-center bg-[var(--bg-primary)] border border-[var(--border-primary)] px-2 py-1">
-                {Math.round(scale * 100)}%
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setScale((s) => Math.max(s - 0.25, 0.5))}
-                aria-label="Zoom out"
-              >
-                <PixelIcon name="minus" size={16} />
-              </Button>
-            </div>
-
-            {/* Canvas */}
-            <canvas
-              ref={canvasRef}
-              className="shadow-lg max-w-full"
-              onClick={(e) => {
-                const rect = canvasRef.current?.getBoundingClientRect();
-                if (rect) {
-                  const x = e.clientX - rect.left;
-                  if (x < rect.width / 2) {
-                    goToPrev();
-                  } else {
-                    goToNext();
-                  }
-                }
-              }}
-            />
-
-            {/* Page Navigation */}
-            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 bg-[var(--bg-primary)] border-2 border-[var(--border-primary)] px-4 py-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={goToPrev}
-                disabled={currentPage <= 1}
-              >
-                <PixelIcon name="chevron-left" size={16} />
-              </Button>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  min={1}
-                  max={totalPages}
-                  value={currentPage}
-                  onChange={(e) => goToPage(parseInt(e.target.value) || 1)}
-                  className="w-12 text-center font-mono text-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]"
-                />
-                <span className="font-mono text-sm">/ {totalPages}</span>
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center" style={{ background: getThemeBackground() }}>
+            <div className="flex flex-col items-center gap-4">
+              <div className="animate-spin">
+                <PixelIcon name="loading" size={32} />
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={goToNext}
-                disabled={currentPage >= totalPages}
-              >
-                <PixelIcon name="chevron-right" size={16} />
-              </Button>
+              <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
+                Loading PDF...
+              </p>
             </div>
           </div>
         )}
+
+        {/* PDF Content - always rendered, hidden during loading */}
+        <div className={clsx('flex flex-col items-center py-4 px-4', isLoading && 'invisible')}>
+          {/* Zoom Controls */}
+          <div className="fixed bottom-4 right-4 z-30 flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setScale((s) => Math.min(s + 0.25, 3))}
+              aria-label="Zoom in"
+            >
+              <PixelIcon name="plus" size={16} />
+            </Button>
+            <span className="font-mono text-xs text-center bg-[var(--bg-primary)] border border-[var(--border-primary)] px-2 py-1">
+              {Math.round(scale * 100)}%
+            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setScale((s) => Math.max(s - 0.25, 0.5))}
+              aria-label="Zoom out"
+            >
+              <PixelIcon name="minus" size={16} />
+            </Button>
+          </div>
+
+          {/* Canvas */}
+          <canvas
+            ref={canvasRef}
+            className="shadow-lg max-w-full"
+            onClick={(e) => {
+              const rect = canvasRef.current?.getBoundingClientRect();
+              if (rect) {
+                const x = e.clientX - rect.left;
+                if (x < rect.width / 2) {
+                  goToPrev();
+                } else {
+                  goToNext();
+                }
+              }
+            }}
+          />
+
+          {/* Page Navigation */}
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4 bg-[var(--bg-primary)] border-2 border-[var(--border-primary)] px-4 py-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={goToPrev}
+              disabled={currentPage <= 1}
+            >
+              <PixelIcon name="chevron-left" size={16} />
+            </Button>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min={1}
+                max={totalPages}
+                value={currentPage}
+                onChange={(e) => goToPage(parseInt(e.target.value) || 1)}
+                className="w-12 text-center font-mono text-sm border border-[var(--border-primary)] bg-[var(--bg-primary)]"
+              />
+              <span className="font-mono text-sm">/ {totalPages}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={goToNext}
+              disabled={currentPage >= totalPages}
+            >
+              <PixelIcon name="chevron-right" size={16} />
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Modals */}

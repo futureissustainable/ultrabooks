@@ -307,7 +307,7 @@ export function EpubReader({ book }: EpubReaderProps) {
         )}
         <div
           ref={containerRef}
-          className={clsx('w-full h-full', isLoading && 'hidden')}
+          className={clsx('w-full h-full', isLoading && 'invisible')}
         />
       </div>
 
