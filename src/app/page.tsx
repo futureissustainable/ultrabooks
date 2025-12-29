@@ -10,9 +10,13 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="border-b-2 border-[var(--border-primary)] bg-grid-lg relative overflow-hidden">
-          <div className="container-page py-24 md:py-40 lg:py-48">
+        {/* Hero Section with dot grid */}
+        <section className="relative overflow-hidden">
+          {/* Dot grid background with fade */}
+          <div className="absolute inset-0 bg-dots-lg" />
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[var(--bg-primary)] to-transparent" />
+
+          <div className="container-page py-24 md:py-40 lg:py-48 relative">
             <div className="max-w-4xl">
               <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-6">
                 Ebook Reader
@@ -37,17 +41,15 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* Decorative element */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-full border-l-2 border-[var(--border-subtle)] hidden lg:block" />
         </section>
 
         {/* Features Section */}
-        <section className="border-b-2 border-[var(--border-primary)]">
+        <section>
           <div className="container-page section-spacing-lg">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
               <div>
                 <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-3">
-                  01 — Features
+                  Features
                 </p>
                 <h2 className="font-heading">Why Ultrabooks</h2>
               </div>
@@ -89,57 +91,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Formats Section */}
-        <section className="border-b-2 border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-          <div className="container-page section-spacing-lg">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-              <div>
-                <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-3">
-                  02 — Formats
-                </p>
-                <h2 className="font-heading">Supported Files</h2>
-              </div>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="flex items-center gap-6 p-6 border-2 border-[var(--border-primary)] bg-[var(--bg-primary)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0_var(--border-primary)] transition-all duration-100">
-                <PixelIcon name="file-epub" size={40} />
-                <div>
-                  <h3 className="font-heading text-lg mb-1">EPUB</h3>
-                  <p className="font-mono text-[11px] text-[var(--text-tertiary)]">
-                    .epub
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6 p-6 border-2 border-[var(--border-primary)] bg-[var(--bg-primary)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0_var(--border-primary)] transition-all duration-100">
-                <PixelIcon name="file-pdf" size={40} />
-                <div>
-                  <h3 className="font-heading text-lg mb-1">PDF</h3>
-                  <p className="font-mono text-[11px] text-[var(--text-tertiary)]">
-                    .pdf
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6 p-6 border-2 border-[var(--border-primary)] bg-[var(--bg-primary)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0_var(--border-primary)] transition-all duration-100">
-                <PixelIcon name="file-mobi" size={40} />
-                <div>
-                  <h3 className="font-heading text-lg mb-1">MOBI</h3>
-                  <p className="font-mono text-[11px] text-[var(--text-tertiary)]">
-                    .mobi
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
         <section className="bg-[var(--bg-inverse)] text-[var(--text-inverse)]">
           <div className="container-page section-spacing-lg">
             <div className="max-w-2xl mx-auto text-center">
               <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--text-inverse)]/60 mb-4">
-                03 — Get Started
+                Get Started
               </p>
               <h2 className="font-heading mb-8">Start Reading Now</h2>
               <p className="font-body text-[15px] text-[var(--text-inverse)]/70 mb-12 max-w-md mx-auto leading-relaxed">
