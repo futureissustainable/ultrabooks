@@ -327,36 +327,32 @@ export function EpubReader({ book }: EpubReaderProps) {
         isBookmarked={isCurrentLocationBookmarked}
       />
 
-      {/* Left drag handle */}
+      {/* Left drag handle - invisible until hover */}
       <div
-        className={clsx(
-          'fixed top-[60px] bottom-0 w-4 cursor-ew-resize z-40 group',
-          isDragging && dragSide === 'left' && 'bg-[var(--color-accent)]/30'
-        )}
-        style={{ left: `calc(${(100 - contentWidth) / 2}% - 8px)` }}
+        className="fixed top-[60px] bottom-0 w-8 z-40 group"
+        style={{ left: `calc(${(100 - contentWidth) / 2}% - 16px)` }}
         onMouseDown={(e) => handleMouseDown(e, 'left')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-20 rounded-full transition-all',
-          'bg-gray-400 group-hover:bg-[var(--color-accent)] group-hover:w-2 group-hover:h-24',
-          isDragging && dragSide === 'left' && 'bg-[var(--color-accent)] w-2 h-24'
-        )} />
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
+          'opacity-0 group-hover:opacity-100 group-hover:cursor-ew-resize',
+          'bg-current',
+          isDragging && dragSide === 'left' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+        )} style={{ opacity: isDragging && dragSide === 'left' ? 1 : undefined }} />
       </div>
 
-      {/* Right drag handle */}
+      {/* Right drag handle - invisible until hover */}
       <div
-        className={clsx(
-          'fixed top-[60px] bottom-0 w-4 cursor-ew-resize z-40 group',
-          isDragging && dragSide === 'right' && 'bg-[var(--color-accent)]/30'
-        )}
-        style={{ right: `calc(${(100 - contentWidth) / 2}% - 8px)` }}
+        className="fixed top-[60px] bottom-0 w-8 z-40 group"
+        style={{ right: `calc(${(100 - contentWidth) / 2}% - 16px)` }}
         onMouseDown={(e) => handleMouseDown(e, 'right')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-20 rounded-full transition-all',
-          'bg-gray-400 group-hover:bg-[var(--color-accent)] group-hover:w-2 group-hover:h-24',
-          isDragging && dragSide === 'right' && 'bg-[var(--color-accent)] w-2 h-24'
-        )} />
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
+          'opacity-0 group-hover:opacity-100 group-hover:cursor-ew-resize',
+          'bg-current',
+          isDragging && dragSide === 'right' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+        )} style={{ opacity: isDragging && dragSide === 'right' ? 1 : undefined }} />
       </div>
 
       {/* Loading state */}
