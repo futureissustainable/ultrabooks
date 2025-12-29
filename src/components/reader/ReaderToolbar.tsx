@@ -30,7 +30,13 @@ export function ReaderToolbar({
   } = useReaderStore();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-[var(--bg-primary)] border-b-2 border-[var(--border-primary)]">
+    <header
+      className="fixed top-0 left-0 right-0 z-50 border-b-2 border-[var(--border-primary)]"
+      style={{
+        background: 'var(--bg-primary)',
+        color: 'var(--text-primary)'
+      }}
+    >
       <div className="h-14 px-4 flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center gap-3">
@@ -51,8 +57,8 @@ export function ReaderToolbar({
         {/* Center - Title and Progress */}
         <div className="flex-1 text-center mx-4 hidden sm:block">
           <h1 className="font-ui text-sm truncate">{title}</h1>
-          <div className="flex items-center justify-center gap-2 text-[var(--text-tertiary)]">
-            {currentPage && totalPages && (
+          <div className="flex items-center justify-center gap-2 opacity-60">
+            {currentPage !== undefined && totalPages !== undefined && (
               <span className="font-mono text-xs">
                 {currentPage} / {totalPages}
               </span>
@@ -99,7 +105,7 @@ export function ReaderToolbar({
       {/* Progress Bar */}
       <div className="h-1 bg-[var(--bg-tertiary)]">
         <div
-          className="h-full bg-[var(--text-primary)] transition-all duration-300"
+          className="h-full bg-[var(--color-accent)] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
