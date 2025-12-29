@@ -355,6 +355,23 @@
     background-size: 48px 48px;
   }
 
+  /* Dot Grid Background */
+  .bg-dots {
+    background-image: radial-gradient(circle, var(--gray-300) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-dots-lg {
+    background-image: radial-gradient(circle, var(--gray-300) 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+  }
+
+  /* Fade overlay for smooth transitions */
+  .fade-to-white {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
   /* ============================================
      CONTAINER UTILITIES
      ============================================ */
