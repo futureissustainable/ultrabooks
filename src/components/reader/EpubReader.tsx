@@ -27,9 +27,17 @@ interface Section {
   html: string;
 }
 
+interface SelectionInfo {
+  text: string;
+  sectionId: string;
+  range: Range;
+  rect: DOMRect;
+}
+
 export function EpubReader({ book }: EpubReaderProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadingStatus, setLoadingStatus] = useState('Initializing...');
@@ -46,20 +54,235 @@ export function EpubReader({ book }: EpubReaderProps) {
   const dragStartX = useRef(0);
   const dragStartWidth = useRef(0);
 
+  // Selection and highlight state
+  const [selection, setSelection] = useState<SelectionInfo | null>(null);
+  const [showHighlightPopup, setShowHighlightPopup] = useState(false);
+
   const {
     settings,
+    loadSettings,
     loadProgress,
     updateProgress,
     bookmarks,
     loadBookmarks,
     addBookmark,
     removeBookmark,
+    highlights,
     loadHighlights,
+    addHighlight,
   } = useReaderStore();
 
   const isCurrentLocationBookmarked = bookmarks.some(
     (b) => b.location === currentSection
   );
+
+  // Generate theme colors
+  const getThemeColors = useCallback(() => {
+    switch (settings.theme) {
+      case 'dark':
+        return { background: '#000000', color: '#ffffff', linkColor: '#ef4444' };
+      case 'sepia':
+        return { background: '#f4ecd8', color: '#5b4636', linkColor: '#b91c1c' };
+      default:
+        return { background: '#ffffff', color: '#000000', linkColor: '#dc2626' };
+    }
+  }, [settings.theme]);
+
+  // Inject dynamic CSS to force settings on EPUB content
+  useEffect(() => {
+    const colors = getThemeColors();
+
+    // Create or update the style element
+    if (!styleRef.current) {
+      styleRef.current = document.createElement('style');
+      styleRef.current.id = 'epub-reader-dynamic-styles';
+      document.head.appendChild(styleRef.current);
+    }
+
+    // CSS with !important to override EPUB embedded styles
+    styleRef.current.textContent = `
+      .epub-section,
+      .epub-section * {
+        font-family: ${settings.fontFamily}, Georgia, serif !important;
+        line-height: ${settings.lineHeight} !important;
+        text-align: ${settings.textAlign} !important;
+        color: ${colors.color} !important;
+        background-color: transparent !important;
+      }
+
+      .epub-section {
+        font-size: ${settings.fontSize}px !important;
+      }
+
+      .epub-section p,
+      .epub-section div,
+      .epub-section span,
+      .epub-section li,
+      .epub-section td,
+      .epub-section th,
+      .epub-section blockquote {
+        font-size: inherit !important;
+      }
+
+      .epub-section h1 { font-size: 2em !important; font-weight: bold !important; }
+      .epub-section h2 { font-size: 1.5em !important; font-weight: bold !important; }
+      .epub-section h3 { font-size: 1.25em !important; font-weight: bold !important; }
+      .epub-section h4 { font-size: 1.1em !important; font-weight: bold !important; }
+      .epub-section h5 { font-size: 1em !important; font-weight: bold !important; }
+      .epub-section h6 { font-size: 0.9em !important; font-weight: bold !important; }
+
+      .epub-section a {
+        color: ${colors.linkColor} !important;
+      }
+
+      .epub-section pre,
+      .epub-section code {
+        font-family: 'SF Mono', Monaco, Consolas, monospace !important;
+        font-size: 0.9em !important;
+      }
+
+      .epub-section img,
+      .epub-section svg {
+        background-color: transparent !important;
+      }
+
+      /* Highlight styles */
+      .epub-highlight {
+        border-radius: 2px;
+        padding: 0 2px;
+        margin: 0 -2px;
+        cursor: pointer;
+      }
+
+      .epub-highlight-yellow {
+        background-color: rgba(234, 179, 8, 0.4) !important;
+      }
+
+      .epub-highlight-green {
+        background-color: rgba(34, 197, 94, 0.4) !important;
+      }
+
+      .epub-highlight-blue {
+        background-color: rgba(59, 130, 246, 0.4) !important;
+      }
+
+      .epub-highlight-red {
+        background-color: rgba(220, 38, 38, 0.4) !important;
+      }
+    `;
+
+    return () => {
+      if (styleRef.current && document.head.contains(styleRef.current)) {
+        document.head.removeChild(styleRef.current);
+        styleRef.current = null;
+      }
+    };
+  }, [settings, getThemeColors]);
+
+  // Load settings on mount
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
+
+  // Apply existing highlights to content when highlights change
+  useEffect(() => {
+    if (highlights.length === 0 || sections.length === 0) return;
+
+    // Apply each highlight to its section
+    highlights.forEach((highlight) => {
+      const sectionEl = sectionRefs.current.get(highlight.cfi_range);
+      if (!sectionEl) return;
+
+      // Search for the highlighted text in the section
+      const walker = document.createTreeWalker(
+        sectionEl,
+        NodeFilter.SHOW_TEXT,
+        null
+      );
+
+      let node: Text | null;
+      while ((node = walker.nextNode() as Text | null)) {
+        const text = node.textContent || '';
+        const index = text.indexOf(highlight.text);
+
+        if (index !== -1) {
+          // Check if this text is already highlighted
+          if (node.parentElement?.classList.contains('epub-highlight')) {
+            continue;
+          }
+
+          try {
+            const range = document.createRange();
+            range.setStart(node, index);
+            range.setEnd(node, index + highlight.text.length);
+
+            const span = document.createElement('span');
+            span.className = `epub-highlight epub-highlight-${highlight.color || 'yellow'}`;
+            span.dataset.highlightId = highlight.id;
+            span.dataset.highlightColor = highlight.color || 'yellow';
+            range.surroundContents(span);
+            break; // Only highlight the first occurrence
+          } catch {
+            // If range fails, skip this highlight
+          }
+        }
+      }
+    });
+  }, [highlights, sections]);
+
+  // Handle text selection
+  const handleTextSelection = useCallback(() => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+      setSelection(null);
+      setShowHighlightPopup(false);
+      return;
+    }
+
+    const range = sel.getRangeAt(0);
+    const text = sel.toString().trim();
+
+    // Find which section this selection is in
+    let sectionId = '';
+    let node: Node | null = range.commonAncestorContainer;
+    while (node) {
+      if (node instanceof HTMLElement && node.dataset.section) {
+        sectionId = node.dataset.section;
+        break;
+      }
+      node = node.parentNode;
+    }
+
+    if (text && sectionId) {
+      const rect = range.getBoundingClientRect();
+      setSelection({ text, sectionId, range: range.cloneRange(), rect });
+      setShowHighlightPopup(true);
+    }
+  }, []);
+
+  // Create highlight from selection
+  const handleCreateHighlight = useCallback(async (color: string) => {
+    if (!selection) return;
+
+    // Add to store
+    await addHighlight(book.id, selection.sectionId, selection.text, color);
+
+    // Wrap the selected text with highlight span
+    try {
+      const span = document.createElement('span');
+      span.className = `epub-highlight epub-highlight-${color}`;
+      span.dataset.highlightColor = color;
+      selection.range.surroundContents(span);
+    } catch {
+      // If surroundContents fails (crosses element boundaries), use alternative approach
+      console.warn('Could not wrap selection, highlight saved but not visually applied');
+    }
+
+    // Clear selection
+    window.getSelection()?.removeAllRanges();
+    setSelection(null);
+    setShowHighlightPopup(false);
+  }, [selection, book.id, addHighlight]);
 
   // Handle drag to resize
   const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
@@ -290,19 +513,8 @@ export function EpubReader({ book }: EpubReaderProps) {
     }
   }, []);
 
-  // Theme styles
-  const getThemeStyles = () => {
-    switch (settings.theme) {
-      case 'dark':
-        return { background: '#000000', color: '#ffffff' };
-      case 'sepia':
-        return { background: '#f4ecd8', color: '#5b4636' };
-      default:
-        return { background: '#ffffff', color: '#000000' };
-    }
-  };
-
-  const themeStyles = getThemeStyles();
+  // Get theme colors
+  const themeColors = getThemeColors();
 
   if (error) {
     return (
@@ -317,7 +529,11 @@ export function EpubReader({ book }: EpubReaderProps) {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: themeStyles.background, color: themeStyles.color }}>
+    <div
+      className="min-h-screen"
+      style={{ background: themeColors.background, color: themeColors.color }}
+      onMouseUp={handleTextSelection}
+    >
       <ReaderToolbar
         title={book.title}
         currentPage={Math.round(progress)}
@@ -357,7 +573,7 @@ export function EpubReader({ book }: EpubReaderProps) {
 
       {/* Loading state */}
       {isLoading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: themeStyles.background }}>
+        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: themeColors.background }}>
           <div className="flex flex-col items-center gap-4">
             <div className="animate-spin">
               <PixelIcon name="loading" size={32} />
@@ -369,17 +585,55 @@ export function EpubReader({ book }: EpubReaderProps) {
         </div>
       )}
 
+      {/* Highlight popup */}
+      {showHighlightPopup && selection && (
+        <div
+          className="fixed z-50 flex gap-1 p-2 rounded-lg shadow-lg border-2 border-[var(--border-primary)]"
+          style={{
+            left: Math.min(selection.rect.left + selection.rect.width / 2 - 80, window.innerWidth - 180),
+            top: selection.rect.top - 50 + window.scrollY,
+            background: themeColors.background,
+          }}
+        >
+          <button
+            onClick={() => handleCreateHighlight('yellow')}
+            className="w-8 h-8 rounded-full bg-yellow-400 hover:scale-110 transition-transform border-2 border-yellow-600"
+            title="Yellow highlight"
+          />
+          <button
+            onClick={() => handleCreateHighlight('green')}
+            className="w-8 h-8 rounded-full bg-green-400 hover:scale-110 transition-transform border-2 border-green-600"
+            title="Green highlight"
+          />
+          <button
+            onClick={() => handleCreateHighlight('blue')}
+            className="w-8 h-8 rounded-full bg-blue-400 hover:scale-110 transition-transform border-2 border-blue-600"
+            title="Blue highlight"
+          />
+          <button
+            onClick={() => handleCreateHighlight('red')}
+            className="w-8 h-8 rounded-full bg-red-400 hover:scale-110 transition-transform border-2 border-red-600"
+            title="Red highlight"
+          />
+          <button
+            onClick={() => {
+              window.getSelection()?.removeAllRanges();
+              setSelection(null);
+              setShowHighlightPopup(false);
+            }}
+            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            title="Cancel"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Main content - infinite scroll */}
       <div
         ref={contentRef}
         className="pt-[60px] pb-20 mx-auto transition-[width] duration-75"
-        style={{
-          width: `${contentWidth}%`,
-          fontFamily: `${settings.fontFamily}, serif`,
-          fontSize: `${settings.fontSize}px`,
-          lineHeight: settings.lineHeight,
-          textAlign: settings.textAlign as 'left' | 'justify',
-        }}
+        style={{ width: `${contentWidth}%` }}
       >
         {sections.map((section) => (
           <div
