@@ -137,343 +137,361 @@
 }
 
 /* ============================================
-   BASE STYLES
+   BASE STYLES - In layer so Tailwind utilities win
    ============================================ */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.6;
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
 }
 
 /* ============================================
    TYPOGRAPHY - NEO-SWISS HIERARCHY
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  /* Display Scale - Generous, Confident */
+  h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  h4 {
+    font-size: 1.25rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  h6 {
+    font-size: 0.875rem;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+  }
 }
 
-/* Display Scale - Generous, Confident */
-h1 {
-  font-size: clamp(3rem, 8vw, 6rem);
-  letter-spacing: -0.04em;
-}
-
-h2 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-}
-
-h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-}
-
-h4 {
-  font-size: 1.25rem;
-}
-
-h5 {
-  font-size: 1rem;
-}
-
-h6 {
-  font-size: 0.875rem;
-}
-
-p {
-  font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-/* Label/Caption Text */
-.text-label {
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Body Large */
-.text-body-lg {
-  font-size: 16px;
-  line-height: 1.7;
-}
 
 /* ============================================
    LINKS - CLEAN & FUNCTIONAL
    ============================================ */
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-a:hover {
-  color: var(--accent);
-}
+  a:hover {
+    color: var(--accent);
+  }
 
-/* Underline Links */
-.link-underline {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: var(--border-medium);
-}
+  /* ============================================
+     SELECTION
+     ============================================ */
+  ::selection {
+    background: var(--black);
+    color: var(--white);
+  }
 
-.link-underline:hover {
-  text-decoration-color: var(--accent);
-}
+  [data-theme="dark"] ::selection {
+    background: var(--white);
+    color: var(--black);
+  }
 
-/* ============================================
-   SELECTION
-   ============================================ */
-::selection {
-  background: var(--black);
-  color: var(--white);
-}
+  /* ============================================
+     SCROLLBAR - MINIMAL
+     ============================================ */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 
-[data-theme="dark"] ::selection {
-  background: var(--white);
-  color: var(--black);
-}
+  ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+  }
 
-/* ============================================
-   SCROLLBAR - MINIMAL
-   ============================================ */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border-primary);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-/* ============================================
-   FOCUS STATES - HIGH VISIBILITY
-   ============================================ */
-:focus-visible {
-  outline: var(--border-thick) solid var(--accent);
-  outline-offset: 2px;
+  /* ============================================
+     FOCUS STATES - HIGH VISIBILITY
+     ============================================ */
+  :focus-visible {
+    outline: var(--border-thick) solid var(--accent);
+    outline-offset: 2px;
+  }
 }
 
 /* ============================================
    UTILITY CLASSES
    ============================================ */
+@layer utilities {
+  /* Fonts */
+  .font-heading {
+    font-family: var(--font-heading);
+  }
 
-/* Fonts */
-.font-heading {
-  font-family: var(--font-heading);
-}
+  .font-body {
+    font-family: var(--font-body);
+  }
 
-.font-body {
-  font-family: var(--font-body);
-}
+  .font-mono {
+    font-family: var(--font-mono);
+  }
 
-.font-mono {
-  font-family: var(--font-mono);
-}
+  .font-reading {
+    font-family: var(--font-reading);
+  }
 
-.font-reading {
-  font-family: var(--font-reading);
-}
+  /* Legacy aliases */
+  .font-display {
+    font-family: var(--font-heading);
+  }
 
-/* Legacy aliases */
-.font-display {
-  font-family: var(--font-heading);
-}
+  .font-ui {
+    font-family: var(--font-body);
+  }
 
-.font-ui {
-  font-family: var(--font-body);
-}
+  /* Accent */
+  .text-accent {
+    color: var(--accent);
+  }
 
-/* Accent */
-.text-accent {
-  color: var(--accent);
-}
+  .bg-accent {
+    background: var(--accent);
+  }
 
-.bg-accent {
-  background: var(--accent);
-}
+  /* Borders */
+  .border-brutal {
+    border: var(--border-medium) solid var(--border-primary);
+  }
 
-/* Borders */
-.border-brutal {
-  border: var(--border-medium) solid var(--border-primary);
-}
+  .border-brutal-thick {
+    border: var(--border-thick) solid var(--border-primary);
+  }
 
-.border-brutal-thick {
-  border: var(--border-thick) solid var(--border-primary);
-}
+  /* Shadows */
+  .shadow-brutal {
+    box-shadow: var(--shadow-md);
+  }
 
-/* Shadows */
-.shadow-brutal {
-  box-shadow: var(--shadow-md);
-}
+  .shadow-brutal-sm {
+    box-shadow: var(--shadow-sm);
+  }
 
-.shadow-brutal-sm {
-  box-shadow: var(--shadow-sm);
-}
+  .shadow-brutal-lg {
+    box-shadow: var(--shadow-lg);
+  }
 
-.shadow-brutal-lg {
-  box-shadow: var(--shadow-lg);
-}
+  .shadow-brutal-xl {
+    box-shadow: var(--shadow-xl);
+  }
 
-.shadow-brutal-xl {
-  box-shadow: var(--shadow-xl);
-}
+  /* Hover Lift */
+  .hover-lift {
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+  }
 
-/* Hover Lift */
-.hover-lift {
-  transition: transform var(--duration-fast) var(--ease-out),
-              box-shadow var(--duration-fast) var(--ease-out);
-}
+  .hover-lift:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-lg);
+  }
 
-.hover-lift:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow-lg);
-}
+  /* Grid Background */
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
 
-/* Grid Background */
-.bg-grid {
-  background-image:
-    linear-gradient(var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
+  .bg-grid-lg {
+    background-image:
+      linear-gradient(var(--border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
 
-.bg-grid-lg {
-  background-image:
-    linear-gradient(var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-
-/* ============================================
-   CONTAINER UTILITIES
-   ============================================ */
-.container-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-left: var(--space-6);
-  padding-right: var(--space-6);
-}
-
-@media (min-width: 768px) {
+  /* ============================================
+     CONTAINER UTILITIES
+     ============================================ */
   .container-page {
-    padding-left: var(--space-12);
-    padding-right: var(--space-12);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
   }
-}
 
-.container-narrow {
-  max-width: 720px;
-  margin: 0 auto;
-  padding-left: var(--space-6);
-  padding-right: var(--space-6);
-}
+  @media (min-width: 768px) {
+    .container-page {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
 
-/* ============================================
-   SECTION SPACING
-   ============================================ */
-.section-spacing {
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
-}
+  .container-narrow {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 
-@media (min-width: 768px) {
+  /* ============================================
+     SECTION SPACING
+     ============================================ */
   .section-spacing {
-    padding-top: var(--space-24);
-    padding-bottom: var(--space-24);
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
-}
 
-.section-spacing-lg {
-  padding-top: var(--space-20);
-  padding-bottom: var(--space-20);
-}
+  @media (min-width: 768px) {
+    .section-spacing {
+      padding-top: 96px;
+      padding-bottom: 96px;
+    }
+  }
 
-@media (min-width: 768px) {
   .section-spacing-lg {
-    padding-top: var(--space-32);
-    padding-bottom: var(--space-32);
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 768px) {
+    .section-spacing-lg {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
   }
 }
 
 /* ============================================
-   READER STYLES
+   COMPONENT STYLES
    ============================================ */
-.reader-content {
-  font-family: var(--font-reading);
-  line-height: 1.9;
-  font-size: 18px;
-}
+@layer components {
+  /* Reader Styles */
+  .reader-content {
+    font-family: var(--font-reading);
+    line-height: 1.9;
+    font-size: 18px;
+  }
 
-.reader-content p {
-  font-family: inherit;
-  margin-bottom: 1.5em;
-  font-size: inherit;
-}
+  .reader-content p {
+    font-family: inherit;
+    margin-bottom: 1.5em;
+    font-size: inherit;
+  }
 
-/* Highlight Styles */
-.highlight-yellow {
-  background: rgba(234, 179, 8, 0.3);
-}
+  /* Highlight Styles */
+  .highlight-yellow {
+    background: rgba(234, 179, 8, 0.3);
+  }
 
-.highlight-green {
-  background: rgba(34, 197, 94, 0.3);
-}
+  .highlight-green {
+    background: rgba(34, 197, 94, 0.3);
+  }
 
-.highlight-blue {
-  background: rgba(59, 130, 246, 0.3);
-}
+  .highlight-blue {
+    background: rgba(59, 130, 246, 0.3);
+  }
 
-.highlight-red {
-  background: rgba(220, 38, 38, 0.3);
+  .highlight-red {
+    background: rgba(220, 38, 38, 0.3);
+  }
+
+  /* Dividers */
+  .divider {
+    height: var(--border-medium);
+    background: var(--border-primary);
+    border: none;
+  }
+
+  .divider-subtle {
+    height: var(--border-thin);
+    background: var(--border-subtle);
+    border: none;
+  }
+
+  /* Text utilities */
+  .text-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .text-body-lg {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* Link styles */
+  .link-underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: var(--border-medium);
+  }
+
+  .link-underline:hover {
+    text-decoration-color: var(--accent);
+  }
 }
 
 /* ============================================
-   ANIMATIONS
+   ANIMATIONS (outside layers for keyframes)
    ============================================ */
 @keyframes pulse-brutal {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
-.animate-pulse-brutal {
-  animation: pulse-brutal 1.5s ease-in-out infinite;
-}
-
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
 }
 
 @keyframes slide-up {
@@ -487,21 +505,16 @@ a:hover {
   }
 }
 
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
+@layer utilities {
+  .animate-pulse-brutal {
+    animation: pulse-brutal 1.5s ease-in-out infinite;
+  }
 
-/* ============================================
-   DIVIDERS
-   ============================================ */
-.divider {
-  height: var(--border-medium);
-  background: var(--border-primary);
-  border: none;
-}
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
 
-.divider-subtle {
-  height: var(--border-thin);
-  background: var(--border-subtle);
-  border: none;
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
 }
