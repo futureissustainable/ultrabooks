@@ -38,6 +38,9 @@ export function EpubReader({ book }: EpubReaderProps) {
   // Width control state (percentage of viewport)
   const [contentWidth, setContentWidth] = useState(65);
   const [isDragging, setIsDragging] = useState(false);
+  const [dragSide, setDragSide] = useState<'left' | 'right' | null>(null);
+  const dragStartX = useRef(0);
+  const dragStartWidth = useRef(0);
 
   const {
     settings,
@@ -56,31 +59,51 @@ export function EpubReader({ book }: EpubReaderProps) {
     (b) => b.location === currentHref
   );
 
-  // Handle drag to resize
-  const handleMouseDown = useCallback(() => {
+  // Handle drag to resize - improved logic with separate left/right handling
+  const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
+    e.preventDefault();
     setIsDragging(true);
-  }, []);
+    setDragSide(side);
+    dragStartX.current = e.clientX;
+    dragStartWidth.current = contentWidth;
+  }, [contentWidth]);
 
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isDragging || !dragSide) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const newWidth = (e.clientX / window.innerWidth) * 100 * 2;
+      const deltaX = e.clientX - dragStartX.current;
+      const deltaPercent = (deltaX / window.innerWidth) * 100;
+
+      let newWidth: number;
+      if (dragSide === 'right') {
+        // Dragging right edge: right = increase, left = decrease
+        newWidth = dragStartWidth.current + deltaPercent * 2;
+      } else {
+        // Dragging left edge: left = increase, right = decrease
+        newWidth = dragStartWidth.current - deltaPercent * 2;
+      }
+
       setContentWidth(Math.min(Math.max(30, newWidth), 95));
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      setDragSide(null);
     };
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+    document.body.style.cursor = 'ew-resize';
+    document.body.style.userSelect = 'none';
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
-  }, [isDragging]);
+  }, [isDragging, dragSide]);
 
   // Initialize EPUB reader
   useEffect(() => {
@@ -326,13 +349,18 @@ export function EpubReader({ book }: EpubReaderProps) {
           {/* Left drag handle */}
           <div
             className={clsx(
-              'absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize z-20',
-              'hover:bg-[var(--color-accent)] hover:opacity-30 transition-opacity',
-              isDragging && 'bg-[var(--color-accent)] opacity-30'
+              'fixed top-[60px] bottom-0 w-3 cursor-ew-resize z-20',
+              'hover:bg-[var(--color-accent)] hover:opacity-40 transition-opacity',
+              isDragging && dragSide === 'left' && 'bg-[var(--color-accent)] opacity-40'
             )}
-            style={{ transform: 'translateX(-100%)' }}
-            onMouseDown={handleMouseDown}
-          />
+            style={{
+              left: `${(100 - contentWidth) / 2}%`,
+              transform: 'translateX(-100%)'
+            }}
+            onMouseDown={(e) => handleMouseDown(e, 'left')}
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-16 bg-[var(--border-primary)] rounded opacity-50" />
+          </div>
 
           {/* EPUB content */}
           <div
@@ -346,13 +374,18 @@ export function EpubReader({ book }: EpubReaderProps) {
           {/* Right drag handle */}
           <div
             className={clsx(
-              'absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize z-20',
-              'hover:bg-[var(--color-accent)] hover:opacity-30 transition-opacity',
-              isDragging && 'bg-[var(--color-accent)] opacity-30'
+              'fixed top-[60px] bottom-0 w-3 cursor-ew-resize z-20',
+              'hover:bg-[var(--color-accent)] hover:opacity-40 transition-opacity',
+              isDragging && dragSide === 'right' && 'bg-[var(--color-accent)] opacity-40'
             )}
-            style={{ transform: 'translateX(100%)' }}
-            onMouseDown={handleMouseDown}
-          />
+            style={{
+              right: `${(100 - contentWidth) / 2}%`,
+              transform: 'translateX(100%)'
+            }}
+            onMouseDown={(e) => handleMouseDown(e, 'right')}
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-16 bg-[var(--border-primary)] rounded opacity-50" />
+          </div>
         </div>
       </div>
 
