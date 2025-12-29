@@ -13,7 +13,7 @@ interface ReaderPageProps {
 export default function ReaderPage({ params }: ReaderPageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { currentBook, fetchBook, isLoading, error } = useBookStore();
+  const { currentBook, fetchBook, isLoadingBook, error, clearCurrentBook } = useBookStore();
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
@@ -23,13 +23,20 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     }
   }, [id, fetchBook, initialized]);
 
+  // Clean up when leaving the page
   useEffect(() => {
-    if (error && !isLoading) {
+    return () => {
+      clearCurrentBook();
+    };
+  }, [clearCurrentBook]);
+
+  useEffect(() => {
+    if (error && !isLoadingBook) {
       router.push('/library');
     }
-  }, [error, isLoading, router]);
+  }, [error, isLoadingBook, router]);
 
-  if (isLoading || !currentBook) {
+  if (isLoadingBook || !currentBook) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4">
