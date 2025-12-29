@@ -537,39 +537,114 @@
 }
 
 /* ============================================
-   EPUB.JS READER STYLES
-   Continuous/Infinite scroll mode
+   EPUB READER STYLES
+   True infinite scroll - native HTML rendering
    ============================================ */
-.epub-container {
+
+/* Section styling */
+.epub-section {
+  /* Ensure proper content flow */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Typography within epub content */
+.epub-section p {
+  margin-bottom: 1em;
+  text-indent: 0;
+}
+
+.epub-section p + p {
+  text-indent: 1.5em;
+}
+
+.epub-section h1,
+.epub-section h2,
+.epub-section h3,
+.epub-section h4,
+.epub-section h5,
+.epub-section h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.epub-section h1 { font-size: 2em; }
+.epub-section h2 { font-size: 1.5em; }
+.epub-section h3 { font-size: 1.25em; }
+.epub-section h4 { font-size: 1.1em; }
+
+/* Images */
+.epub-section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+.epub-section svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Lists */
+.epub-section ul,
+.epub-section ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.epub-section li {
+  margin-bottom: 0.5em;
+}
+
+/* Blockquotes */
+.epub-section blockquote {
+  margin: 1em 2em;
+  padding-left: 1em;
+  border-left: 3px solid currentColor;
+  opacity: 0.9;
+}
+
+/* Links */
+.epub-section a {
+  color: var(--accent, #dc2626);
+  text-decoration: underline;
+}
+
+/* Tables */
+.epub-section table {
   width: 100%;
-  min-height: 100vh;
+  border-collapse: collapse;
+  margin: 1em 0;
 }
 
-/* epub.js view wrapper - must allow natural height */
-.epub-container > div {
-  height: auto !important;
-  min-height: auto !important;
-  overflow: visible !important;
+.epub-section th,
+.epub-section td {
+  border: 1px solid currentColor;
+  padding: 0.5em;
+  text-align: left;
 }
 
-/* epub.js creates an iframe for content - key for continuous scroll */
-.epub-container iframe {
-  border: none !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 100vh !important;
-  display: block !important;
+/* Code */
+.epub-section pre,
+.epub-section code {
+  font-family: monospace;
+  font-size: 0.9em;
 }
 
-/* epub.js view container - allow content to flow */
-.epub-container .epub-view {
-  width: 100% !important;
-  height: auto !important;
-  overflow: visible !important;
+.epub-section pre {
+  background: rgba(128, 128, 128, 0.1);
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
 }
 
-/* Continuous manager specific - each section flows naturally */
-.epub-container .epub-view > div {
-  height: auto !important;
-  min-height: auto !important;
+/* Horizontal rules */
+.epub-section hr {
+  border: none;
+  border-top: 1px solid currentColor;
+  margin: 2em 0;
+  opacity: 0.3;
 }

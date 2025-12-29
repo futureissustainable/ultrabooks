@@ -12,7 +12,7 @@ interface BookUploadProps {
 }
 
 export function BookUpload({ isOpen, onClose }: BookUploadProps) {
-  const { uploadBook, isLoading } = useBookStore();
+  const { uploadBook, isUploading } = useBookStore();
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -155,9 +155,9 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
           <Button
             fullWidth
             onClick={handleUpload}
-            disabled={!uploadedFile || isLoading}
+            disabled={!uploadedFile || isUploading}
           >
-            {isLoading ? 'Uploading...' : 'Upload'}
+            {isUploading ? 'Uploading...' : 'Upload'}
           </Button>
         </div>
       </div>

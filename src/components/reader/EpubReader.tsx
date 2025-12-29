@@ -22,18 +22,23 @@ interface TocItem {
   subitems?: TocItem[];
 }
 
+interface SpineSection {
+  id: string;
+  href: string;
+  html: string;
+}
+
 export function EpubReader({ book }: EpubReaderProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const renditionRef = useRef<unknown>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const bookRef = useRef<unknown>(null);
+  const sectionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [toc, setToc] = useState<TocItem[]>([]);
-  const [currentHref, setCurrentHref] = useState<string>('');
+  const [sections, setSections] = useState<SpineSection[]>([]);
+  const [currentSection, setCurrentSection] = useState<string>('');
   const [progress, setProgress] = useState(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
 
   // Width control state (percentage of viewport)
   const [contentWidth, setContentWidth] = useState(65);
@@ -51,14 +56,13 @@ export function EpubReader({ book }: EpubReaderProps) {
     addBookmark,
     removeBookmark,
     loadHighlights,
-    addHighlight,
   } = useReaderStore();
 
   const isCurrentLocationBookmarked = bookmarks.some(
-    (b) => b.location === currentHref
+    (b) => b.location === currentSection
   );
 
-  // Handle drag to resize - using pointer events for better tracking
+  // Handle drag to resize
   const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
     e.preventDefault();
     e.stopPropagation();
@@ -68,7 +72,6 @@ export function EpubReader({ book }: EpubReaderProps) {
     dragStartWidth.current = contentWidth;
   }, [contentWidth]);
 
-  // Global mouse move/up handlers for dragging
   useEffect(() => {
     if (!isDragging || !dragSide) return;
 
@@ -84,9 +87,7 @@ export function EpubReader({ book }: EpubReaderProps) {
         newWidth = dragStartWidth.current - deltaPercent * 2;
       }
 
-      // Clamp between 30% and 95%
-      const clampedWidth = Math.min(Math.max(30, newWidth), 95);
-      setContentWidth(clampedWidth);
+      setContentWidth(Math.min(Math.max(30, newWidth), 95));
     };
 
     const handleMouseUp = () => {
@@ -94,7 +95,6 @@ export function EpubReader({ book }: EpubReaderProps) {
       setDragSide(null);
     };
 
-    // Use capture phase for better event handling
     document.addEventListener('mousemove', handleMouseMove, { capture: true });
     document.addEventListener('mouseup', handleMouseUp, { capture: true });
     document.body.style.cursor = 'ew-resize';
@@ -108,16 +108,36 @@ export function EpubReader({ book }: EpubReaderProps) {
     };
   }, [isDragging, dragSide]);
 
-  // Resize rendition when content width changes
+  // Track scroll position and update current section
   useEffect(() => {
-    if (renditionRef.current && !isLoading) {
-      const rendition = renditionRef.current as { resize: (width?: number, height?: number) => void };
-      // Immediate resize, no delay needed
-      rendition.resize();
-    }
-  }, [contentWidth, isLoading]);
+    if (sections.length === 0) return;
 
-  // Initialize EPUB reader
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setProgress(scrollPercent);
+
+      // Find current section based on scroll position
+      let currentId = sections[0]?.id || '';
+      for (const [id, el] of sectionRefs.current.entries()) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 100) {
+          currentId = id;
+        }
+      }
+
+      if (currentId !== currentSection) {
+        setCurrentSection(currentId);
+        updateProgress(book.id, currentId, 0, scrollPercent);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections, currentSection, book.id, updateProgress]);
+
+  // Initialize EPUB reader - extract ALL content for infinite scroll
   useEffect(() => {
     let mounted = true;
 
@@ -125,7 +145,7 @@ export function EpubReader({ book }: EpubReaderProps) {
       try {
         const ePub = (await import('epubjs')).default;
 
-        if (!mounted || !containerRef.current) return;
+        if (!mounted) return;
 
         const epubBook = ePub(book.file_url);
         bookRef.current = epubBook;
@@ -148,26 +168,65 @@ export function EpubReader({ book }: EpubReaderProps) {
           setToc(formatToc(navigation.toc));
         }
 
-        // Create rendition with continuous scroll (scrolled-doc is the correct flow for endless scroll)
-        const rendition = epubBook.renderTo(containerRef.current, {
-          width: '100%',
-          height: '100%',
-          spread: 'none',
-          flow: 'scrolled-doc',
-          manager: 'continuous',
+        // Get all spine items and extract their HTML content
+        const spine = epubBook.spine as unknown as { each: (fn: (item: { href: string; load: (book: unknown) => Promise<{ document: Document }> }) => void) => void };
+        const loadedSections: SpineSection[] = [];
+
+        // Load all sections
+        await new Promise<void>((resolve) => {
+          const items: Array<{ href: string; load: (book: unknown) => Promise<{ document: Document }> }> = [];
+          spine.each((item) => items.push(item));
+
+          Promise.all(
+            items.map(async (item, index) => {
+              try {
+                const content = await item.load(epubBook);
+                const doc = content.document;
+                const body = doc.body;
+
+                // Process images to use absolute URLs
+                const images = body.querySelectorAll('img');
+                images.forEach((img) => {
+                  const src = img.getAttribute('src');
+                  if (src && !src.startsWith('http') && !src.startsWith('data:')) {
+                    // Try to resolve relative URL
+                    const baseHref = item.href;
+                    const basePath = baseHref.substring(0, baseHref.lastIndexOf('/') + 1);
+                    img.setAttribute('src', basePath + src);
+                  }
+                });
+
+                // Get the HTML content
+                const html = body.innerHTML;
+
+                return {
+                  index,
+                  id: item.href,
+                  href: item.href,
+                  html,
+                };
+              } catch (err) {
+                console.warn(`Failed to load section ${item.href}:`, err);
+                return null;
+              }
+            })
+          ).then((results) => {
+            const validResults = results
+              .filter((r): r is NonNullable<typeof r> => r !== null)
+              .sort((a, b) => a.index - b.index);
+
+            loadedSections.push(...validResults.map(r => ({
+              id: r.id,
+              href: r.href,
+              html: r.html,
+            })));
+            resolve();
+          });
         });
-        renditionRef.current = rendition;
 
-        // Apply initial theme/styles
-        applyStyles(rendition);
+        if (!mounted) return;
 
-        // Load saved progress or display first page
-        const savedProgress = await loadProgress(book.id);
-        if (savedProgress?.current_location) {
-          await rendition.display(savedProgress.current_location);
-        } else {
-          await rendition.display();
-        }
+        setSections(loadedSections);
 
         // Load bookmarks and highlights
         await Promise.all([
@@ -175,32 +234,20 @@ export function EpubReader({ book }: EpubReaderProps) {
           loadHighlights(book.id),
         ]);
 
-        // Handle location changes
-        rendition.on('relocated', (location: {start: {cfi: string; href: string; percentage: number; displayed: {page: number; total: number}}}) => {
-          if (!mounted) return;
-
-          const { cfi, href, percentage, displayed } = location.start;
-          setCurrentHref(href);
-          setProgress(percentage * 100);
-          setCurrentPage(displayed.page);
-          setTotalPages(displayed.total);
-
-          updateProgress(book.id, cfi, displayed.page, percentage * 100);
-        });
-
-        // Handle text selection for highlighting
-        rendition.on('selected', (cfiRange: string, contents: unknown) => {
-          const selection = (contents as {window: Window}).window.getSelection();
-          if (selection && selection.toString().trim()) {
-            const text = selection.toString().trim();
-            if (text.length > 0) {
-              addHighlight(book.id, cfiRange, text, 'yellow');
-              selection.removeAllRanges();
-            }
-          }
-        });
+        // Load saved progress
+        const savedProgress = await loadProgress(book.id);
 
         setIsLoading(false);
+
+        // Scroll to saved position after content renders
+        if (savedProgress?.current_location) {
+          setTimeout(() => {
+            const el = sectionRefs.current.get(savedProgress.current_location);
+            if (el) {
+              el.scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+          }, 100);
+        }
       } catch (err) {
         console.error('Error loading EPUB:', err);
         if (mounted) {
@@ -220,93 +267,54 @@ export function EpubReader({ book }: EpubReaderProps) {
     };
   }, [book.file_url, book.id]);
 
-  // Apply reader settings
-  const applyStyles = useCallback((rendition: unknown) => {
-    if (!rendition) return;
-
-    const themes: Record<string, { body: Record<string, string> }> = {
-      light: {
-        body: {
-          background: '#ffffff',
-          color: '#000000',
-        },
-      },
-      dark: {
-        body: {
-          background: '#000000',
-          color: '#ffffff',
-        },
-      },
-      sepia: {
-        body: {
-          background: '#f4ecd8',
-          color: '#5b4636',
-        },
-      },
-    };
-
-    const theme = themes[settings.theme] || themes.light;
-
-    (rendition as {themes: {default: (style: Record<string, unknown>) => void}}).themes.default({
-      body: {
-        ...theme.body,
-        'font-family': `${settings.fontFamily}, serif !important`,
-        'font-size': `${settings.fontSize}px !important`,
-        'line-height': `${settings.lineHeight} !important`,
-        'text-align': `${settings.textAlign} !important`,
-        padding: `${settings.margins}px !important`,
-      },
-      p: {
-        'font-family': 'inherit !important',
-        'font-size': 'inherit !important',
-        'line-height': 'inherit !important',
-      },
-      img: {
-        'max-width': '100% !important',
-        'height': 'auto !important',
-        'object-fit': 'contain !important',
-      },
-      svg: {
-        'max-width': '100% !important',
-        'height': 'auto !important',
-      },
-    });
-  }, [settings]);
-
-  // Update styles when settings change
-  useEffect(() => {
-    if (renditionRef.current) {
-      applyStyles(renditionRef.current);
-    }
-  }, [settings, applyStyles]);
-
   // Navigation handlers
   const handleNavigate = useCallback((href: string) => {
-    if (renditionRef.current) {
-      (renditionRef.current as {display: (href: string) => void}).display(href);
+    // Find the section with this href
+    const el = sectionRefs.current.get(href);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Try to find by partial match
+      for (const [id, element] of sectionRefs.current.entries()) {
+        if (id.includes(href) || href.includes(id)) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        }
+      }
     }
   }, []);
 
   const handleBookmarkToggle = useCallback(() => {
-    const existing = bookmarks.find((b) => b.location === currentHref);
+    const existing = bookmarks.find((b) => b.location === currentSection);
     if (existing) {
       removeBookmark(existing.id);
     } else {
-      addBookmark(book.id, currentHref, currentPage, `Page ${currentPage}`);
+      addBookmark(book.id, currentSection, 0, currentSection);
     }
-  }, [bookmarks, currentHref, currentPage, book.id, addBookmark, removeBookmark]);
+  }, [bookmarks, currentSection, book.id, addBookmark, removeBookmark]);
 
-  // Get theme background color for container
-  const getThemeBackground = () => {
+  // Register section refs
+  const setSectionRef = useCallback((id: string, el: HTMLDivElement | null) => {
+    if (el) {
+      sectionRefs.current.set(id, el);
+    } else {
+      sectionRefs.current.delete(id);
+    }
+  }, []);
+
+  // Get theme styles
+  const getThemeStyles = () => {
     switch (settings.theme) {
       case 'dark':
-        return '#000000';
+        return { background: '#000000', color: '#ffffff' };
       case 'sepia':
-        return '#f4ecd8';
+        return { background: '#f4ecd8', color: '#5b4636' };
       default:
-        return '#ffffff';
+        return { background: '#ffffff', color: '#000000' };
     }
   };
+
+  const themeStyles = getThemeStyles();
 
   if (error) {
     return (
@@ -321,11 +329,11 @@ export function EpubReader({ book }: EpubReaderProps) {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: getThemeBackground() }}>
+    <div className="min-h-screen" style={{ background: themeStyles.background, color: themeStyles.color }}>
       <ReaderToolbar
         title={book.title}
-        currentPage={currentPage}
-        totalPages={totalPages}
+        currentPage={Math.round(progress)}
+        totalPages={100}
         progress={progress}
         onBookmark={handleBookmarkToggle}
         isBookmarked={isCurrentLocationBookmarked}
@@ -340,7 +348,6 @@ export function EpubReader({ book }: EpubReaderProps) {
         style={{ left: `calc(${(100 - contentWidth) / 2}% - 8px)` }}
         onMouseDown={(e) => handleMouseDown(e, 'left')}
       >
-        {/* Visual indicator */}
         <div className={clsx(
           'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-20 rounded-full transition-all',
           'bg-gray-400 group-hover:bg-[var(--color-accent)] group-hover:w-2 group-hover:h-24',
@@ -357,7 +364,6 @@ export function EpubReader({ book }: EpubReaderProps) {
         style={{ right: `calc(${(100 - contentWidth) / 2}% - 8px)` }}
         onMouseDown={(e) => handleMouseDown(e, 'right')}
       >
-        {/* Visual indicator */}
         <div className={clsx(
           'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-20 rounded-full transition-all',
           'bg-gray-400 group-hover:bg-[var(--color-accent)] group-hover:w-2 group-hover:h-24',
@@ -365,38 +371,42 @@ export function EpubReader({ book }: EpubReaderProps) {
         )} />
       </div>
 
-      {/* Reader Container - uses native scroll */}
-      <div
-        className="pt-[60px] min-h-screen"
-        style={{ background: getThemeBackground() }}
-      >
-        {isLoading && (
-          <div className="fixed inset-0 flex items-center justify-center z-10" style={{ background: getThemeBackground() }}>
-            <div className="flex flex-col items-center gap-4">
-              <div className="animate-spin">
-                <PixelIcon name="loading" size={32} />
-              </div>
-              <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
-                Loading book...
-              </p>
+      {/* Loading state */}
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: themeStyles.background }}>
+          <div className="flex flex-col items-center gap-4">
+            <div className="animate-spin">
+              <PixelIcon name="loading" size={32} />
             </div>
+            <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
+              Loading book...
+            </p>
           </div>
-        )}
-
-        {/* Content wrapper with adjustable width */}
-        <div
-          className="mx-auto transition-[width] duration-75"
-          style={{ width: `${contentWidth}%` }}
-        >
-          {/* EPUB content container */}
-          <div
-            ref={containerRef}
-            className={clsx(
-              'epub-container',
-              isLoading && 'invisible'
-            )}
-          />
         </div>
+      )}
+
+      {/* Main content - TRUE infinite scroll */}
+      <div
+        ref={contentRef}
+        className="pt-[60px] pb-20 mx-auto transition-[width] duration-75"
+        style={{
+          width: `${contentWidth}%`,
+          fontFamily: `${settings.fontFamily}, serif`,
+          fontSize: `${settings.fontSize}px`,
+          lineHeight: settings.lineHeight,
+          textAlign: settings.textAlign as 'left' | 'justify',
+        }}
+      >
+        {sections.map((section) => (
+          <div
+            key={section.id}
+            ref={(el) => setSectionRef(section.id, el)}
+            data-section={section.id}
+            className="epub-section"
+            style={{ padding: `${settings.margins}px` }}
+            dangerouslySetInnerHTML={{ __html: section.html }}
+          />
+        ))}
       </div>
 
       {/* Width indicator during drag */}
@@ -409,7 +419,7 @@ export function EpubReader({ book }: EpubReaderProps) {
       {/* Modals */}
       <TableOfContents
         items={toc}
-        currentHref={currentHref}
+        currentHref={currentSection}
         onNavigate={handleNavigate}
       />
       <ReaderSettings />
