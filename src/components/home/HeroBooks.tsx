@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 // Placeholder book covers - will be replaced with actual covers from /public/hero-covers/
-// These generate abstract book cover placeholders
 const generatePlaceholderCovers = (count: number) => {
   const covers: string[] = [];
   for (let i = 0; i < count; i++) {
@@ -13,7 +12,6 @@ const generatePlaceholderCovers = (count: number) => {
   return covers;
 };
 
-// Check if we have real covers or use placeholders
 const PLACEHOLDER_COVERS = generatePlaceholderCovers(50);
 
 interface BookCoverProps {
@@ -29,11 +27,11 @@ function BookCover({ index, useRealCovers }: BookCoverProps) {
     // Render a stylized placeholder
     const patterns = ['stripes', 'dots', 'grid', 'solid', 'gradient'];
     const pattern = patterns[index % patterns.length];
-    const opacity = 0.3 + (index % 4) * 0.15;
+    const baseOpacity = 0.6 + (index % 3) * 0.1;
 
     return (
       <div
-        className="hero-book-cover flex items-center justify-center"
+        className="hero-book-cover"
         style={{
           background: pattern === 'stripes'
             ? `repeating-linear-gradient(45deg, var(--gray-800), var(--gray-800) 4px, var(--gray-900) 4px, var(--gray-900) 8px)`
@@ -45,13 +43,9 @@ function BookCover({ index, useRealCovers }: BookCoverProps) {
             ? `linear-gradient(135deg, var(--gray-800) 0%, var(--gray-950) 100%)`
             : 'var(--gray-900)',
           backgroundSize: pattern === 'dots' ? '8px 8px' : pattern === 'grid' ? '16px 16px' : 'auto',
-          opacity,
+          opacity: baseOpacity,
         }}
-      >
-        <div className="w-8 h-8 border border-[var(--gray-600)] flex items-center justify-center opacity-50">
-          <span className="text-[var(--gray-600)] text-xs font-mono">{index + 1}</span>
-        </div>
-      </div>
+      />
     );
   }
 
@@ -63,7 +57,7 @@ function BookCover({ index, useRealCovers }: BookCoverProps) {
         fill
         className="object-cover"
         onError={() => setHasError(true)}
-        sizes="(max-width: 768px) 100px, (max-width: 1024px) 120px, 140px"
+        sizes="(max-width: 768px) 80px, (max-width: 1024px) 100px, 120px"
       />
     </div>
   );
@@ -75,7 +69,7 @@ export function HeroBooks() {
 
   useEffect(() => {
     setMounted(true);
-    // Check if real covers exist by trying to load the first one
+    // Check if real covers exist
     const img = new window.Image();
     img.onload = () => setUseRealCovers(true);
     img.onerror = () => setUseRealCovers(false);
@@ -86,47 +80,49 @@ export function HeroBooks() {
     return null;
   }
 
-  // Create enough books to fill the rows (duplicated for seamless scrolling)
-  const row1Books = Array.from({ length: 30 }, (_, i) => i);
-  const row2Books = Array.from({ length: 30 }, (_, i) => i + 10);
-  const row3Books = Array.from({ length: 30 }, (_, i) => i + 20);
+  // Create rows with different starting offsets for variety
+  const rows = [
+    { id: 1, offset: 0, direction: 'left' },
+    { id: 2, offset: 5, direction: 'right' },
+    { id: 3, offset: 10, direction: 'left' },
+    { id: 4, offset: 15, direction: 'right' },
+    { id: 5, offset: 20, direction: 'left' },
+    { id: 6, offset: 25, direction: 'right' },
+  ];
+
+  // Books per row (duplicated for seamless loop)
+  const booksPerRow = 20;
 
   return (
     <div className="hero-books-container" aria-hidden="true">
-      {/* Row 1 - Scrolling Left */}
-      <div className="hero-books-row hero-books-row-1">
-        {row1Books.map((i) => (
-          <BookCover key={`r1-${i}`} index={i} useRealCovers={useRealCovers} />
-        ))}
-        {/* Duplicate for seamless loop */}
-        {row1Books.map((i) => (
-          <BookCover key={`r1-dup-${i}`} index={i} useRealCovers={useRealCovers} />
-        ))}
-      </div>
-
-      {/* Row 2 - Scrolling Right */}
-      <div className="hero-books-row hero-books-row-2">
-        {row2Books.map((i) => (
-          <BookCover key={`r2-${i}`} index={i} useRealCovers={useRealCovers} />
-        ))}
-        {/* Duplicate for seamless loop */}
-        {row2Books.map((i) => (
-          <BookCover key={`r2-dup-${i}`} index={i} useRealCovers={useRealCovers} />
-        ))}
-      </div>
-
-      {/* Row 3 - Scrolling Left */}
-      <div className="hero-books-row hero-books-row-3">
-        {row3Books.map((i) => (
-          <BookCover key={`r3-${i}`} index={i} useRealCovers={useRealCovers} />
-        ))}
-        {/* Duplicate for seamless loop */}
-        {row3Books.map((i) => (
-          <BookCover key={`r3-dup-${i}`} index={i} useRealCovers={useRealCovers} />
+      {/* Tilted grid wrapper */}
+      <div className="hero-books-grid">
+        {rows.map((row) => (
+          <div
+            key={row.id}
+            className={`hero-books-row hero-books-row-${row.direction}`}
+          >
+            {/* First set */}
+            {Array.from({ length: booksPerRow }, (_, i) => (
+              <BookCover
+                key={`r${row.id}-${i}`}
+                index={i + row.offset}
+                useRealCovers={useRealCovers}
+              />
+            ))}
+            {/* Duplicate for seamless loop */}
+            {Array.from({ length: booksPerRow }, (_, i) => (
+              <BookCover
+                key={`r${row.id}-dup-${i}`}
+                index={i + row.offset}
+                useRealCovers={useRealCovers}
+              />
+            ))}
+          </div>
         ))}
       </div>
 
-      {/* Gradient Overlay */}
+      {/* Strong gradient overlay for readability */}
       <div className="hero-gradient-overlay" />
     </div>
   );

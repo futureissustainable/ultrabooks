@@ -472,81 +472,105 @@
   z-index: 0;
 }
 
+/* The entire grid is tilted like Netflix */
+.hero-books-grid {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  right: -10%;
+  bottom: -20%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transform: rotate(-12deg);
+  transform-origin: center center;
+}
+
 .hero-books-row {
   display: flex;
-  gap: 16px;
-  position: absolute;
+  gap: 12px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.hero-books-row-1 {
-  top: 5%;
-  animation: scroll-left 60s linear infinite;
-  transform: rotate(-3deg);
-  opacity: 0.4;
+/* Alternating scroll directions - VERY slow */
+.hero-books-row-left {
+  animation: hero-scroll-left 200s linear infinite;
 }
 
-.hero-books-row-2 {
-  top: 35%;
-  animation: scroll-right 50s linear infinite;
-  transform: rotate(2deg);
-  opacity: 0.5;
-}
-
-.hero-books-row-3 {
-  top: 65%;
-  animation: scroll-left 70s linear infinite;
-  transform: rotate(-2deg);
-  opacity: 0.35;
+.hero-books-row-right {
+  animation: hero-scroll-right 200s linear infinite;
 }
 
 .hero-book-cover {
-  width: 100px;
-  height: 150px;
+  width: 80px;
+  height: 120px;
   flex-shrink: 0;
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
-  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
 }
 
 @media (min-width: 768px) {
+  .hero-books-grid {
+    gap: 16px;
+  }
+
+  .hero-books-row {
+    gap: 16px;
+  }
+
+  .hero-book-cover {
+    width: 100px;
+    height: 150px;
+  }
+}
+
+@media (min-width: 1024px) {
   .hero-book-cover {
     width: 120px;
     height: 180px;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .hero-book-cover {
     width: 140px;
     height: 210px;
   }
 }
 
-@keyframes scroll-left {
+@keyframes hero-scroll-left {
   0% {
-    transform: translateX(0) rotate(-3deg);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%) rotate(-3deg);
+    transform: translateX(-50%);
   }
 }
 
-@keyframes scroll-right {
+@keyframes hero-scroll-right {
   0% {
-    transform: translateX(-50%) rotate(2deg);
+    transform: translateX(-50%);
   }
   100% {
-    transform: translateX(0) rotate(2deg);
+    transform: translateX(0);
   }
 }
 
+/* Strong gradient overlay for text readability */
 .hero-gradient-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, var(--bg-primary) 0%, transparent 20%, transparent 80%, var(--bg-primary) 100%),
-    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 30%, transparent 70%, var(--bg-primary) 100%);
+    /* Radial gradient from center - darker at edges */
+    radial-gradient(ellipse at center, transparent 0%, var(--bg-primary) 70%),
+    /* Vertical gradient for top/bottom fade */
+    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 20%, transparent 80%, var(--bg-primary) 100%),
+    /* Horizontal gradient for left/right fade */
+    linear-gradient(to right, var(--bg-primary) 0%, transparent 15%, transparent 85%, var(--bg-primary) 100%),
+    /* Overall darkening layer */
+    linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.5) 100%);
   pointer-events: none;
   z-index: 1;
 }

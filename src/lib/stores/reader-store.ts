@@ -423,5 +423,38 @@ export const useReaderStore = create<ReaderState>()(
   )
 );
 
+/**
+ * HYDRATION FIX EXPLANATION:
+ * --------------------------
+ * The Zustand persist middleware's `onRehydrateStorage` callback can fail to fire
+ * in several scenarios:
+ * 1. No data exists in localStorage yet (first visit)
+ * 2. localStorage is disabled/blocked
+ * 3. Race conditions during SSR hydration in Next.js
+ * 4. The callback itself throws an error
+ *
+ * When this happens, `_hasHydrated` never becomes true, and any component
+ * waiting for `hasHydrated` before rendering/initializing will be stuck
+ * in an infinite loading state.
+ *
+ * SOLUTION: We use a hybrid approach:
+ * 1. `onRehydrateStorage` sets `_hasHydrated` immediately when persist works
+ * 2. A client-side fallback sets `_hasHydrated` after 100ms if it's still false
+ * 3. Components should use `useReaderSettingsHydrated()` which handles both cases
+ *
+ * This ensures the app always becomes interactive, even if localStorage fails.
+ */
+
+// Fallback: ensure hydration completes even if onRehydrateStorage fails
+if (typeof window !== 'undefined') {
+  // Small delay to let onRehydrateStorage fire first if it can
+  setTimeout(() => {
+    if (!useReaderStore.getState()._hasHydrated) {
+      console.warn('Zustand hydration fallback triggered - onRehydrateStorage may have failed');
+      useReaderStore.setState({ _hasHydrated: true });
+    }
+  }, 100);
+}
+
 // Hook to wait for hydration
 export const useReaderSettingsHydrated = () => useReaderStore((state) => state._hasHydrated);
