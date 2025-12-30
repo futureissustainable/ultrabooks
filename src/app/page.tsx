@@ -10,7 +10,7 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="border-b border-[var(--border-primary)]">
+        <section className="border-b border-[var(--border-primary)] bg-dot-grid">
           <div className="container-page py-20 md:py-32 lg:py-40">
             <div className="max-w-3xl">
               <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-6">
@@ -21,7 +21,7 @@ export default function HomePage() {
                 <br />
                 Everywhere
               </h1>
-              <p className="font-[family-name:var(--font-system)] text-base text-[var(--text-secondary)] mb-12 max-w-md leading-relaxed">
+              <p className="font-[family-name:var(--font-ui)] text-base text-[var(--text-secondary)] mb-12 max-w-md leading-relaxed">
                 Upload EPUB, PDF, or MOBI files. Sync your reading progress, bookmarks, and highlights across all your devices.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -58,7 +58,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] text-[12px] uppercase tracking-[0.05em] mb-3">Cross-Device Sync</h3>
-                <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)] leading-relaxed">
                   Reading progress, bookmarks, and highlights sync automatically across all devices in real-time.
                 </p>
               </div>
@@ -72,7 +72,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] text-[12px] uppercase tracking-[0.05em] mb-3">Custom Reader</h3>
-                <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)] leading-relaxed">
                   Adjust fonts, sizes, margins, and themes. Your reading experience, tailored to you.
                 </p>
               </div>
@@ -85,29 +85,10 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] text-[12px] uppercase tracking-[0.05em] mb-3">Highlights & Notes</h3>
-                <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)] leading-relaxed">
                   Highlight passages and add notes. All annotations saved and synced automatically.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="bg-[var(--text-primary)] text-[var(--bg-primary)]">
-          <div className="container-page section-spacing-lg">
-            <div className="max-w-2xl">
-              <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl uppercase mb-6">
-                Start Reading Today
-              </h2>
-              <p className="font-[family-name:var(--font-system)] text-base opacity-70 mb-10 max-w-md leading-relaxed">
-                Create a free account and upload your first book in seconds.
-              </p>
-              <Link href="/signup">
-                <Button size="lg" className="bg-[var(--bg-primary)] text-[var(--text-primary)] border-[var(--bg-primary)] hover:bg-transparent hover:text-[var(--bg-primary)]">
-                  Create Account
-                </Button>
-              </Link>
             </div>
           </div>
         </section>
