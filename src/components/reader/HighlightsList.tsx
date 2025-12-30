@@ -10,11 +10,12 @@ interface HighlightsListProps {
   onNavigate: (location: string) => void;
 }
 
-const highlightColors = [
-  { name: 'yellow', class: 'bg-yellow-300' },
-  { name: 'green', class: 'bg-green-300' },
-  { name: 'blue', class: 'bg-blue-300' },
-  { name: 'red', class: 'bg-red-300' },
+// Monochrome highlight styles for brutalist design
+const highlightStyles = [
+  { name: 'light', class: 'bg-[var(--gray-200)]', label: '25%' },
+  { name: 'medium', class: 'bg-[var(--gray-300)]', label: '50%' },
+  { name: 'dark', class: 'bg-[var(--gray-400)]', label: '75%' },
+  { name: 'solid', class: 'bg-[var(--gray-500)] text-white', label: '100%' },
 ];
 
 export function HighlightsList({ onNavigate }: HighlightsListProps) {
@@ -55,6 +56,11 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
     });
   };
 
+  const getHighlightStyle = (color: string) => {
+    const style = highlightStyles.find(s => s.name === color);
+    return style?.class || highlightStyles[0].class;
+  };
+
   return (
     <Modal
       isOpen={isHighlightsOpen}
@@ -63,80 +69,89 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
       size="md"
     >
       {highlights.length === 0 ? (
-        <div className="py-8 text-center">
-          <PixelIcon name="highlight" size={32} className="mx-auto mb-2 text-[var(--text-tertiary)]" />
-          <p className="font-ui text-sm text-[var(--text-secondary)]">
-            No highlights yet. Select text while reading to highlight it.
+        <div className="py-10 text-center border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
+            <PixelIcon name="highlight" size={20} className="text-[var(--text-tertiary)]" />
+          </div>
+          <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            No highlights yet
+          </p>
+          <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-tertiary)] mt-2">
+            Select text while reading to highlight it
           </p>
         </div>
       ) : (
-        <ul className="space-y-3 max-h-[60vh] overflow-y-auto">
+        <ul className="space-y-[1px] bg-[var(--border-primary)] max-h-[60vh] overflow-y-auto">
           {highlights.map((highlight) => (
             <li
               key={highlight.id}
-              className="border-2 border-[var(--border-primary)] p-3"
+              className="bg-[var(--bg-primary)] p-3"
             >
-              <div className="flex items-start justify-between gap-2 mb-2">
-                <button
-                  onClick={() => handleNavigate(highlight.cfi_range)}
-                  className="flex-1 text-left"
+              <button
+                onClick={() => handleNavigate(highlight.cfi_range)}
+                className="block w-full text-left mb-3"
+              >
+                <p
+                  className={clsx(
+                    'font-[family-name:var(--font-system)] text-[12px] px-1 inline leading-relaxed',
+                    getHighlightStyle(highlight.color)
+                  )}
                 >
-                  <p
-                    className={clsx(
-                      'font-ui text-sm px-1 inline',
-                      highlight.color === 'yellow' && 'bg-yellow-200',
-                      highlight.color === 'green' && 'bg-green-200',
-                      highlight.color === 'blue' && 'bg-blue-200',
-                      highlight.color === 'red' && 'bg-red-200'
-                    )}
-                  >
-                    &ldquo;{highlight.text}&rdquo;
-                  </p>
-                </button>
-              </div>
+                  &ldquo;{highlight.text}&rdquo;
+                </p>
+              </button>
 
-              {/* Color Picker */}
+              {/* Monochrome intensity picker */}
               <div className="flex items-center gap-2 mb-2">
-                {highlightColors.map((color) => (
-                  <button
-                    key={color.name}
-                    onClick={() => updateHighlightColor(highlight.id, color.name)}
-                    className={clsx(
-                      'w-5 h-5 border-2',
-                      color.class,
-                      highlight.color === color.name
-                        ? 'border-[var(--border-primary)]'
-                        : 'border-transparent hover:border-[var(--border-secondary)]'
-                    )}
-                    aria-label={`Change to ${color.name}`}
-                  />
-                ))}
+                <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+                  Intensity:
+                </span>
+                <div className="flex items-center gap-[1px] bg-[var(--border-primary)]">
+                  {highlightStyles.map((style) => (
+                    <button
+                      key={style.name}
+                      onClick={() => updateHighlightColor(highlight.id, style.name)}
+                      className={clsx(
+                        'w-6 h-6 flex items-center justify-center text-[8px] font-[family-name:var(--font-mono)] transition-colors',
+                        style.class,
+                        highlight.color === style.name
+                          ? 'ring-1 ring-[var(--text-primary)] ring-offset-1'
+                          : ''
+                      )}
+                      aria-label={`Change to ${style.label} intensity`}
+                    >
+                      {style.label}
+                    </button>
+                  ))}
+                </div>
                 <div className="flex-1" />
-                <button
-                  onClick={() => handleStartEdit(highlight.id, highlight.note)}
-                  className="p-1 hover:text-[var(--color-accent)]"
-                  aria-label="Edit note"
-                >
-                  <PixelIcon name="edit" size={14} />
-                </button>
-                <button
-                  onClick={() => removeHighlight(highlight.id)}
-                  className="p-1 hover:text-[var(--color-accent)]"
-                  aria-label="Remove highlight"
-                >
-                  <PixelIcon name="trash" size={14} />
-                </button>
+                <div className="flex items-center gap-[1px] bg-[var(--border-primary)]">
+                  <button
+                    onClick={() => handleStartEdit(highlight.id, highlight.note)}
+                    className="p-1.5 bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+                    aria-label="Edit note"
+                  >
+                    <PixelIcon name="edit" size={12} />
+                  </button>
+                  <button
+                    onClick={() => removeHighlight(highlight.id)}
+                    className="p-1.5 bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+                    aria-label="Remove highlight"
+                  >
+                    <PixelIcon name="trash" size={12} />
+                  </button>
+                </div>
               </div>
 
               {editingId === highlight.id ? (
-                <div className="space-y-2">
+                <div className="space-y-2 border-t border-[var(--border-primary)] pt-2 mt-2">
                   <Input
                     value={editNote}
                     onChange={(e) => setEditNote(e.target.value)}
                     placeholder="Add a note..."
                     fullWidth
                   />
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     <Button size="sm" onClick={() => handleSaveNote(highlight.id)}>
                       Save
                     </Button>
@@ -150,12 +165,12 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
                   </div>
                 </div>
               ) : highlight.note ? (
-                <p className="font-ui text-xs text-[var(--text-secondary)] italic">
+                <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
                   {highlight.note}
                 </p>
               ) : null}
 
-              <p className="font-mono text-[10px] text-[var(--text-tertiary)] mt-2">
+              <p className="font-[family-name:var(--font-mono)] text-[9px] text-[var(--text-tertiary)] mt-2 uppercase">
                 {formatDate(highlight.created_at)}
               </p>
             </li>

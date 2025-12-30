@@ -92,24 +92,26 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
               className={clsx(
-                'border-2 border-dashed p-12 text-center cursor-pointer transition-all duration-100',
+                'border border-[var(--border-primary)] p-12 text-center cursor-pointer transition-all duration-[50ms]',
                 isDragging
-                  ? 'border-[var(--accent)] bg-[var(--accent)]/5'
-                  : 'border-[var(--border-primary)] hover:border-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
+                  ? 'border-[var(--text-primary)] bg-[var(--bg-tertiary)]'
+                  : 'hover:border-[var(--border-strong)] hover:bg-[var(--bg-secondary)]'
               )}
             >
-              <PixelIcon
-                name="upload"
-                size={56}
-                className={clsx(
-                  'mx-auto mb-6',
-                  isDragging ? 'text-[var(--accent)]' : 'text-[var(--text-tertiary)]'
-                )}
-              />
-              <p className="font-body text-[13px] mb-2">
-                Drop your file here or click to browse
+              <div className={clsx(
+                'w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center',
+                isDragging && 'border-[var(--text-primary)] bg-[var(--text-primary)]'
+              )}>
+                <PixelIcon
+                  name="upload"
+                  size={32}
+                  className={isDragging ? 'text-[var(--bg-primary)]' : 'text-[var(--text-tertiary)]'}
+                />
+              </div>
+              <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] mb-2">
+                Drop file here or click to browse
               </p>
-              <p className="font-mono text-[11px] text-[var(--text-tertiary)]">
+              <p className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-tertiary)]">
                 EPUB, PDF, MOBI (max 100MB)
               </p>
             </div>
@@ -123,32 +125,34 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
             />
           </>
         ) : (
-          <div className="border-2 border-[var(--border-primary)] p-5">
+          <div className="border border-[var(--border-primary)] p-4 bg-[var(--bg-secondary)]">
             <div className="flex items-center gap-4">
-              <PixelIcon name="book" size={36} />
+              <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center">
+                <PixelIcon name="book" size={20} className="text-[var(--text-secondary)]" />
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="font-body text-[13px] font-bold truncate">{uploadedFile.name}</p>
-                <p className="font-mono text-[11px] text-[var(--text-secondary)]">
+                <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] truncate">{uploadedFile.name}</p>
+                <p className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-secondary)]">
                   {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
               <button
                 onClick={() => setUploadedFile(null)}
-                className="p-2 hover:text-[var(--accent)] transition-colors"
+                className="p-2 hover:bg-[var(--bg-tertiary)] border border-transparent hover:border-[var(--border-primary)] transition-all duration-[50ms]"
               >
-                <PixelIcon name="close" size={18} />
+                <PixelIcon name="close" size={14} className="text-[var(--text-secondary)]" />
               </button>
             </div>
           </div>
         )}
 
         {error && (
-          <div className="p-4 border-2 border-[var(--accent)] bg-[var(--accent)]/5">
-            <p className="font-body text-[13px] text-[var(--accent)]">{error}</p>
+          <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
+            <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
           </div>
         )}
 
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Button variant="secondary" fullWidth onClick={handleCancel}>
             Cancel
           </Button>

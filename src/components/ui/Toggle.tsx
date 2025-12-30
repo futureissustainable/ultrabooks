@@ -26,19 +26,19 @@ export function Toggle({ checked, onChange, label, disabled, className }: Toggle
         disabled={disabled}
         onClick={() => !disabled && onChange(!checked)}
         className={clsx(
-          'relative w-11 h-6 rounded-full transition-colors duration-200',
-          checked ? 'bg-[var(--accent)]' : 'bg-[var(--bg-tertiary)]'
+          'relative w-8 h-4 border border-[var(--border-primary)] transition-all duration-[100ms]',
+          checked ? 'bg-[var(--text-primary)] border-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)]'
         )}
       >
         <span
           className={clsx(
-            'absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200',
-            checked && 'translate-x-5'
+            'absolute top-[2px] left-[2px] w-[10px] h-[10px] transition-transform duration-[100ms]',
+            checked ? 'translate-x-[14px] bg-[var(--bg-primary)]' : 'bg-[var(--text-secondary)]'
           )}
         />
       </button>
       {label && (
-        <span className="text-sm text-[var(--text-primary)]">
+        <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] text-[var(--text-primary)]">
           {label}
         </span>
       )}

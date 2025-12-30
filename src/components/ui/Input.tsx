@@ -14,11 +14,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
-      <div className={clsx('flex flex-col gap-1.5', fullWidth && 'w-full')}>
+      <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full')}>
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-[var(--text-secondary)]"
+            className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]"
           >
             {label}
           </label>
@@ -27,21 +27,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={clsx(
-            'px-4 py-2.5 text-[15px]',
+            'px-3 py-3 text-[13px]',
+            'font-[family-name:var(--font-mono)]',
             'bg-[var(--bg-primary)] text-[var(--text-primary)]',
-            'border border-[var(--border-primary)] rounded-lg',
-            'placeholder:text-[var(--text-tertiary)]',
-            'focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent',
+            'border border-[var(--border-primary)]',
+            'placeholder:text-[var(--text-muted)]',
+            'focus:outline-none focus:border-[var(--text-primary)]',
             'disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--bg-secondary)]',
-            'transition-all duration-150',
-            error && 'border-[var(--error)] focus:ring-[var(--error)]',
+            'transition-all duration-[100ms]',
+            'caret-[var(--text-primary)]',
+            error && 'border-[var(--text-primary)]',
             fullWidth && 'w-full',
             className
           )}
           {...props}
         />
         {error && (
-          <span className="text-sm text-[var(--error)]">
+          <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.02em] text-[var(--text-primary)]">
             {error}
           </span>
         )}

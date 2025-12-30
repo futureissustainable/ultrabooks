@@ -12,12 +12,6 @@ interface BookCardProps {
   book: Book;
 }
 
-const fileTypeColors: Record<string, string> = {
-  epub: 'from-blue-500 to-blue-600',
-  pdf: 'from-red-500 to-red-600',
-  mobi: 'from-orange-500 to-orange-600',
-};
-
 export function BookCard({ book }: BookCardProps) {
   const { deleteBook, isLoading } = useBookStore();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -36,61 +30,61 @@ export function BookCard({ book }: BookCardProps) {
 
   return (
     <>
-      <Card variant="default" padding="none" className="group relative overflow-hidden hover:shadow-[var(--shadow-lg)] transition-all duration-200">
+      <Card variant="default" padding="none" className="group relative overflow-hidden hover:border-[var(--border-strong)] transition-all duration-[50ms]">
         {/* Cover or Placeholder */}
         <Link href={`/reader/${book.id}`}>
-          <div className="aspect-[3/4] bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden">
+          <div className="aspect-[3/4] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden border-b border-[var(--border-primary)]">
             {book.cover_url ? (
               <Image
                 src={book.cover_url}
                 alt={book.title}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover"
               />
             ) : (
               <div className="flex flex-col items-center gap-3 p-6">
-                <div className={`w-16 h-16 bg-gradient-to-br ${fileTypeColors[book.file_type] || 'from-gray-500 to-gray-600'} rounded-2xl flex items-center justify-center shadow-lg`}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--bg-primary)]">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                   </svg>
                 </div>
-                <span className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
+                <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-tertiary)] border border-[var(--border-primary)] px-2 py-1">
                   {book.file_type}
                 </span>
               </div>
             )}
 
             {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-sm">
-              <span className="px-4 py-2 bg-white text-gray-900 rounded-full text-sm font-medium shadow-lg">
-                Open Book
+            <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-[50ms] flex items-center justify-center">
+              <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
+                Open
               </span>
             </div>
           </div>
         </Link>
 
         {/* Book Info */}
-        <div className="p-4">
-          <h3 className="text-sm font-semibold truncate mb-1" title={book.title}>
+        <div className="p-3">
+          <h3 className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] truncate mb-1" title={book.title}>
             {book.title}
           </h3>
           {book.author && (
-            <p className="text-xs text-[var(--text-secondary)] truncate mb-3">
+            <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-secondary)] truncate mb-3">
               {book.author}
             </p>
           )}
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[var(--text-tertiary)]">
+            <span className="font-[family-name:var(--font-mono)] text-[9px] text-[var(--text-tertiary)]">
               {formatFileSize(book.file_size)}
             </span>
-            <div className="flex items-center gap-1 -mr-1">
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => setShowShareModal(true)}
-                className="p-1.5 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--accent)] hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+                className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border border-transparent hover:border-[var(--border-primary)]"
                 aria-label="Share book"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">
                   <circle cx="18" cy="5" r="3"></circle>
                   <circle cx="6" cy="12" r="3"></circle>
                   <circle cx="18" cy="19" r="3"></circle>
@@ -100,10 +94,10 @@ export function BookCard({ book }: BookCardProps) {
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="p-1.5 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--error)] hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+                className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border border-transparent hover:border-[var(--border-primary)]"
                 aria-label="Delete book"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">
                   <polyline points="3 6 5 6 21 6"></polyline>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 </svg>
@@ -121,11 +115,11 @@ export function BookCard({ book }: BookCardProps) {
         size="sm"
       >
         <div className="space-y-6">
-          <p className="text-[var(--text-secondary)] leading-relaxed">
+          <p className="font-[family-name:var(--font-system)] text-[13px] text-[var(--text-secondary)] leading-relaxed">
             Are you sure you want to delete &ldquo;{book.title}&rdquo;? This will also remove all
             bookmarks, highlights, and reading progress.
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <Button
               variant="secondary"
               fullWidth

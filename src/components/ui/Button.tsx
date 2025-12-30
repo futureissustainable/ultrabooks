@@ -16,39 +16,41 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled}
         className={clsx(
-          // Base styles
+          // Base styles - Brutalist
           'inline-flex items-center justify-center',
-          'font-medium',
-          'rounded-lg',
-          'transition-all duration-150',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2',
+          'font-[family-name:var(--font-ui)]',
+          'uppercase tracking-[0.05em]',
+          'border border-[var(--border-primary)]',
+          'transition-all duration-[50ms]',
+          'focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--border-focus)] focus-visible:outline-offset-0',
           'disabled:opacity-50 disabled:cursor-not-allowed',
+          'active:translate-x-[1px] active:translate-y-[1px]',
           // Variant styles
           {
-            // Primary - Filled accent
-            'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] active:scale-[0.98]':
+            // Primary - Inverted
+            'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)] hover:bg-[var(--bg-primary)] hover:text-[var(--text-primary)]':
               variant === 'primary' && !disabled,
-            'bg-[var(--accent)] text-white':
+            'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]':
               variant === 'primary' && disabled,
-            // Secondary - Subtle background
-            'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] border border-[var(--border-primary)] active:scale-[0.98]':
+            // Secondary - Outlined
+            'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)]':
               variant === 'secondary' && !disabled,
-            'bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-primary)]':
+            'bg-[var(--bg-secondary)] text-[var(--text-primary)]':
               variant === 'secondary' && disabled,
             // Ghost - Transparent
-            'bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]':
+            'bg-transparent text-[var(--text-secondary)] border-transparent hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] hover:border-[var(--border-primary)]':
               variant === 'ghost',
-            // Danger - Red
-            'bg-[var(--error)] text-white hover:bg-red-600 active:scale-[0.98]':
+            // Danger - Strong border
+            'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]':
               variant === 'danger' && !disabled,
-            'bg-[var(--error)] text-white':
+            'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--text-primary)]':
               variant === 'danger' && disabled,
           },
           // Size styles
           {
-            'px-3 py-1.5 text-sm gap-1.5': size === 'sm',
-            'px-4 py-2 text-sm gap-2': size === 'md',
-            'px-6 py-3 text-base gap-2': size === 'lg',
+            'px-2 py-1 text-[10px] gap-1': size === 'sm',
+            'px-4 py-2 text-[11px] gap-2': size === 'md',
+            'px-6 py-3 text-[12px] gap-2': size === 'lg',
           },
           fullWidth && 'w-full',
           className

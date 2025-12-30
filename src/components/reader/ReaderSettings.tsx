@@ -1,7 +1,7 @@
 'use client';
 
 import { useReaderStore } from '@/lib/stores/reader-store';
-import { Modal, Select, Slider, Toggle } from '@/components/ui';
+import { Modal, Select, Slider } from '@/components/ui';
 
 export function ReaderSettings() {
   const {
@@ -45,7 +45,7 @@ export function ReaderSettings() {
       title="Reader Settings"
       size="md"
     >
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* Theme */}
         <Select
           label="Theme"
@@ -110,12 +110,12 @@ export function ReaderSettings() {
         />
 
         {/* Preview */}
-        <div className="border-t-2 border-[var(--border-secondary)] pt-4">
-          <p className="font-ui text-xs uppercase tracking-wide text-[var(--text-secondary)] mb-2">
+        <div className="border-t border-[var(--border-primary)] pt-4">
+          <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
             Preview
           </p>
           <div
-            className="p-4 border-2 border-[var(--border-primary)]"
+            className="p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]"
             style={{
               fontFamily: settings.fontFamily,
               fontSize: `${settings.fontSize}px`,

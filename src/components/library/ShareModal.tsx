@@ -50,40 +50,40 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
       <div className="space-y-6">
         {!shareLink ? (
           <>
-            <div className="flex items-start gap-4 p-4 bg-[var(--bg-secondary)] rounded-xl">
+            <div className="flex items-start gap-4 p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
               {book.cover_url ? (
-                <div className="relative w-16 h-24 flex-shrink-0">
+                <div className="relative w-14 h-20 flex-shrink-0 border border-[var(--border-primary)]">
                   <Image
                     src={book.cover_url}
                     alt={book.title}
                     fill
-                    className="object-cover rounded-lg shadow-sm"
+                    className="object-cover"
                   />
                 </div>
               ) : (
-                <div className="w-16 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                <div className="w-14 h-20 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--text-tertiary)]">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                   </svg>
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-[var(--text-primary)] truncate">{book.title}</h3>
+                <h3 className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] text-[var(--text-primary)] truncate">{book.title}</h3>
                 {book.author && (
-                  <p className="text-sm text-[var(--text-secondary)] mt-1">{book.author}</p>
+                  <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)] mt-1">{book.author}</p>
                 )}
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="text-sm font-medium text-[var(--text-primary)]">Include with share</h4>
+            <div className="space-y-3">
+              <h4 className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Include with share</h4>
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg">
+              <div className="border border-[var(--border-primary)]">
+                <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="text-sm font-medium">Bookmarks</p>
-                    <p className="text-xs text-[var(--text-tertiary)]">Share your saved bookmarks</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Bookmarks</p>
+                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your saved bookmarks</p>
                   </div>
                   <Toggle
                     checked={options.includeBookmarks}
@@ -91,10 +91,10 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg">
+                <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="text-sm font-medium">Highlights</p>
-                    <p className="text-xs text-[var(--text-tertiary)]">Share your highlighted passages</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Highlights</p>
+                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your highlighted passages</p>
                   </div>
                   <Toggle
                     checked={options.includeHighlights}
@@ -102,10 +102,10 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg">
+                <div className="flex items-center justify-between p-3">
                   <div>
-                    <p className="text-sm font-medium">Notes</p>
-                    <p className="text-xs text-[var(--text-tertiary)]">Share your personal notes</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Notes</p>
+                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your personal notes</p>
                   </div>
                   <Toggle
                     checked={options.includeNotes}
@@ -115,47 +115,45 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <Button variant="secondary" fullWidth onClick={handleClose}>
                 Cancel
               </Button>
               <Button fullWidth onClick={handleCreateShare} disabled={isCreating}>
-                {isCreating ? 'Creating...' : 'Create Share Link'}
+                {isCreating ? 'Creating...' : 'Create Link'}
               </Button>
             </div>
           </>
         ) : (
           <>
-            <div className="text-center py-4">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="text-center py-6 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="w-12 h-12 border border-[var(--text-primary)] bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-4">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--bg-primary)]">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold mb-2">Share link created!</h3>
-              <p className="text-sm text-[var(--text-secondary)]">
-                Anyone with this link can view your book and annotations.
+              <h3 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Link Created</h3>
+              <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                Anyone with this link can view your book
               </p>
             </div>
 
-            <div className="flex items-center gap-2 p-3 bg-[var(--bg-secondary)] rounded-lg">
+            <div className="flex items-center gap-2 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
               <input
                 type="text"
                 readOnly
                 value={shareLink}
-                className="flex-1 bg-transparent text-sm outline-none truncate"
+                className="flex-1 px-3 py-3 bg-transparent font-[family-name:var(--font-mono)] text-[11px] outline-none truncate"
               />
-              <Button size="sm" onClick={handleCopyLink}>
-                {copied ? 'Copied!' : 'Copy'}
+              <Button size="sm" onClick={handleCopyLink} className="m-1">
+                {copied ? 'Copied' : 'Copy'}
               </Button>
             </div>
 
-            <div className="flex gap-3">
-              <Button variant="secondary" fullWidth onClick={handleClose}>
-                Done
-              </Button>
-            </div>
+            <Button variant="secondary" fullWidth onClick={handleClose}>
+              Done
+            </Button>
           </>
         )}
       </div>

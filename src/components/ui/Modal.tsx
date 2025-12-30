@@ -37,16 +37,16 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/80"
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Modal - OS Window Style */}
       <div
         className={clsx(
-          'relative z-10 bg-[var(--bg-primary)] border border-[var(--border-primary)]',
-          'rounded-2xl',
-          'shadow-[var(--shadow-xl)]',
+          'relative z-10 bg-[var(--bg-window)]',
+          'border border-[var(--border-primary)]',
+          'shadow-[8px_8px_0_rgba(0,0,0,0.5)]',
           'max-h-[90vh] overflow-hidden flex flex-col',
           'animate-scale-in',
           {
@@ -57,19 +57,18 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
           }
         )}
       >
-        {/* Header */}
+        {/* Window Titlebar */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-primary)]">
-            <h2 className="text-lg font-semibold">{title}</h2>
+          <div className="flex items-center justify-between px-3 py-2 bg-[var(--bg-titlebar)] border-b border-[var(--border-primary)]">
+            <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              {title}
+            </span>
             <button
               onClick={onClose}
-              className="p-2 -mr-2 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-colors"
+              className="w-5 h-5 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-all duration-[50ms] font-[family-name:var(--font-mono)] text-[12px]"
               aria-label="Close modal"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              x
             </button>
           </div>
         )}
