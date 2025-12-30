@@ -37,18 +37,9 @@ export const useBookStore = create<BookState>((set, get) => ({
     const supabase = createClient();
     set({ isLoading: true, error: null });
 
-    // Timeout failsafe (1s) - actual fix is hasFetched pattern
-    const timeoutId = setTimeout(() => {
-      if (get().isLoading) {
-        console.warn('fetchBooks timeout - forcing loading to end');
-        set({ isLoading: false, hasFetched: true, error: null });
-      }
-    }, 1000);
-
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        clearTimeout(timeoutId);
         set({ isLoading: false, hasFetched: true, error: null, books: [] });
         return;
       }
@@ -59,8 +50,6 @@ export const useBookStore = create<BookState>((set, get) => ({
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false });
 
-      clearTimeout(timeoutId);
-
       if (error) {
         set({ isLoading: false, hasFetched: true, error: error.message });
         return;
@@ -68,7 +57,6 @@ export const useBookStore = create<BookState>((set, get) => ({
 
       set({ books: data || [], isLoading: false, hasFetched: true });
     } catch (err) {
-      clearTimeout(timeoutId);
       set({ isLoading: false, hasFetched: true, error: 'Failed to fetch books' });
     }
   },
@@ -81,22 +69,12 @@ export const useBookStore = create<BookState>((set, get) => ({
     const supabase = createClient();
     set({ isLoadingBook: true, hasFetchedBook: false, error: null, currentBook: null });
 
-    // Timeout failsafe (1s) - actual fix is hasFetchedBook pattern
-    const timeoutId = setTimeout(() => {
-      if (get().isLoadingBook) {
-        console.warn('fetchBook timeout - forcing loading to end');
-        set({ isLoadingBook: false, hasFetchedBook: true, error: null });
-      }
-    }, 1000);
-
     try {
       const { data, error } = await supabase
         .from('books')
         .select('*')
         .eq('id', id)
         .single();
-
-      clearTimeout(timeoutId);
 
       if (error) {
         set({ isLoadingBook: false, hasFetchedBook: true, error: error.message });
@@ -105,7 +83,6 @@ export const useBookStore = create<BookState>((set, get) => ({
 
       set({ currentBook: data, isLoadingBook: false, hasFetchedBook: true });
     } catch (err) {
-      clearTimeout(timeoutId);
       set({ isLoadingBook: false, hasFetchedBook: true, error: 'Failed to fetch book' });
     }
   },

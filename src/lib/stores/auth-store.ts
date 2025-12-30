@@ -24,14 +24,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   initialize: async () => {
     const supabase = createClient();
 
-    // Timeout failsafe (1s) - prevents infinite loading if auth hangs
-    const timeoutId = setTimeout(() => {
-      if (get().isLoading) {
-        console.warn('Auth initialization timeout - forcing loading to end');
-        set({ isLoading: false });
-      }
-    }, 1000);
-
     try {
       // Get initial session
       const {
@@ -45,10 +37,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           .eq('id', user.id)
           .single();
 
-        clearTimeout(timeoutId);
         set({ user, profile, isLoading: false });
       } else {
-        clearTimeout(timeoutId);
         set({ isLoading: false });
       }
 
@@ -67,7 +57,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
       });
     } catch (err) {
-      clearTimeout(timeoutId);
       console.error('Auth initialization failed:', err);
       set({ isLoading: false, error: 'Failed to initialize auth' });
     }
