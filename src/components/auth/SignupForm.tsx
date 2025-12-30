@@ -1,18 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Button, Input } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
 export function SignupForm() {
-  const { signUp, isLoading } = useAuthStore();
+  const router = useRouter();
+  const { user, signUp, isLoading } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  // Redirect logged-in users to library
+  useEffect(() => {
+    if (user) {
+      router.push('/library');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

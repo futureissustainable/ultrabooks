@@ -19,9 +19,9 @@ export function Header() {
   return (
     <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
       <div className="container-page flex items-center justify-between h-14">
-        {/* Logo */}
+        {/* Logo - always links to main page */}
         <Link
-          href={user ? '/library' : '/'}
+          href="/"
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
           <div className="w-7 h-7 bg-[var(--text-primary)] flex items-center justify-center">

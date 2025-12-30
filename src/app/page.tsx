@@ -1,9 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { useAuthStore } from '@/lib/stores/auth-store';
 
 export default function HomePage() {
+  const { user } = useAuthStore();
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
       <Header />
@@ -21,18 +26,20 @@ export default function HomePage() {
                 <br />
                 Everywhere
               </h1>
-              <p className="font-[family-name:var(--font-ui)] text-base text-[var(--text-secondary)] mb-12 max-w-md leading-relaxed">
+              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] mb-12 max-w-md leading-relaxed">
                 Upload EPUB, PDF, or MOBI files. Sync your reading progress, bookmarks, and highlights across all your devices.
               </p>
               <div className="flex flex-wrap gap-2">
-                <Link href="/signup">
-                  <Button size="lg">Get Started</Button>
+                <Link href={user ? '/library' : '/signup'}>
+                  <Button size="lg">{user ? 'Go to Library' : 'Get Started'}</Button>
                 </Link>
-                <Link href="/login">
-                  <Button variant="secondary" size="lg">
-                    Sign In
-                  </Button>
-                </Link>
+                {!user && (
+                  <Link href="/login">
+                    <Button variant="secondary" size="lg">
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
