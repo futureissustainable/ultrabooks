@@ -1,11 +1,10 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Book } from '@/lib/supabase/types';
-import { PixelIcon, IconName } from '@/components/icons/PixelIcon';
-import { clsx } from 'clsx';
+import { PixelIcon } from '@/components/icons/PixelIcon';
 
 export interface ClassicBook {
   id: string;
@@ -21,9 +20,9 @@ interface BookRowProps {
   subtitle?: string;
   books?: Book[];
   classicBooks?: ClassicBook[];
-  icon?: IconName;
   onBookClick?: (book: Book) => void;
   onClassicClick?: (book: ClassicBook) => void;
+  onViewAll?: () => void;
   emptyMessage?: string;
 }
 
@@ -32,12 +31,35 @@ export function BookRow({
   subtitle,
   books,
   classicBooks,
-  icon,
   onBookClick,
   onClassicClick,
+  onViewAll,
   emptyMessage = 'No books yet',
 }: BookRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll);
+      return () => {
+        el.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [books, classicBooks]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -52,53 +74,62 @@ export function BookRow({
   const hasBooks = (books && books.length > 0) || (classicBooks && classicBooks.length > 0);
 
   return (
-    <div className="mb-8">
+    <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          {icon && (
-            <div className="w-8 h-8 flex items-center justify-center border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              <PixelIcon name={icon} size={14} />
-            </div>
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl md:text-2xl uppercase tracking-tight">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-0.5">
+              {subtitle}
+            </p>
           )}
-          <div>
-            <h2 className="font-[family-name:var(--font-display)] fs-h-sm uppercase tracking-tight">
-              {title}
-            </h2>
-            {subtitle && (
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">
-                {subtitle}
-              </p>
-            )}
-          </div>
         </div>
 
-        {/* Scroll Buttons */}
-        {hasBooks && (
-          <div className="flex gap-1">
+        {/* Controls */}
+        <div className="flex items-center gap-3">
+          {/* View All Button */}
+          {onViewAll && (
             <button
-              onClick={() => scroll('left')}
-              className="w-8 h-8 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
-              aria-label="Scroll left"
+              onClick={onViewAll}
+              className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5"
             >
-              <PixelIcon name="chevron-left" size={14} />
+              View All
+              <PixelIcon name="arrow-right" size={12} />
             </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-8 h-8 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
-              aria-label="Scroll right"
-            >
-              <PixelIcon name="chevron-right" size={14} />
-            </button>
-          </div>
-        )}
+          )}
+
+          {/* Scroll Buttons */}
+          {hasBooks && (
+            <div className="flex gap-1 ml-2">
+              <button
+                onClick={() => scroll('left')}
+                disabled={!canScrollLeft}
+                className="w-9 h-9 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-[var(--text-primary)]"
+                aria-label="Scroll left"
+              >
+                <PixelIcon name="chevron-left" size={14} />
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                disabled={!canScrollRight}
+                className="w-9 h-9 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-[var(--text-primary)]"
+                aria-label="Scroll right"
+              >
+                <PixelIcon name="chevron-right" size={14} />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Books Row */}
       {hasBooks ? (
         <div
           ref={scrollRef}
-          className="book-row border border-[var(--border-primary)] bg-[var(--border-primary)]"
+          className="book-row"
         >
           {/* User's books */}
           {books?.map((book) => (
@@ -154,9 +185,9 @@ export function BookRow({
 
 function BookCover({ book }: { book: Book }) {
   return (
-    <div className="bg-[var(--bg-primary)] h-full flex flex-col border-r border-[var(--border-primary)] last:border-r-0 transition-all duration-[50ms] group-hover:bg-[var(--bg-secondary)]">
+    <div className="h-full flex flex-col transition-transform duration-200 group-hover:scale-[1.02]">
       {/* Cover */}
-      <div className="aspect-[3/4] bg-[var(--bg-tertiary)] relative overflow-hidden border-b border-[var(--border-primary)]">
+      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden rounded-sm shadow-md group-hover:shadow-xl transition-shadow duration-200">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
@@ -166,34 +197,30 @@ function BookCover({ book }: { book: Book }) {
             sizes="180px"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-            <div className="w-10 h-10 bg-[var(--text-primary)] flex items-center justify-center">
-              <PixelIcon name="book" size={20} className="text-[var(--bg-primary)]" />
+          <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-tertiary)]">
+            <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
+              <PixelIcon name="book" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] border border-[var(--border-primary)] px-2 py-0.5">
+            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] px-2 py-0.5 border border-[var(--border-primary)]">
               {book.file_type}
             </span>
           </div>
         )}
 
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-[50ms] flex items-center justify-center">
-          <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] px-3 py-1.5 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
-            Read
-          </span>
-        </div>
+        {/* Subtle hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
       </div>
 
       {/* Info */}
-      <div className="p-3 flex-1 flex flex-col">
+      <div className="pt-3 pb-1">
         <h3
-          className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] truncate mb-1"
+          className="font-[family-name:var(--font-ui)] text-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
         {book.author && (
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] truncate">
+          <p className="font-[family-name:var(--font-ui)] text-xs text-[var(--text-secondary)] truncate mt-0.5">
             {book.author}
           </p>
         )}
@@ -204,9 +231,9 @@ function BookCover({ book }: { book: Book }) {
 
 function ClassicBookCover({ book }: { book: ClassicBook }) {
   return (
-    <div className="bg-[var(--bg-primary)] h-full flex flex-col border-r border-[var(--border-primary)] last:border-r-0 transition-all duration-[50ms] group-hover:bg-[var(--bg-secondary)]">
+    <div className="h-full flex flex-col transition-transform duration-200 group-hover:scale-[1.02]">
       {/* Cover */}
-      <div className="aspect-[3/4] bg-[var(--bg-tertiary)] relative overflow-hidden border-b border-[var(--border-primary)]">
+      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden rounded-sm shadow-md group-hover:shadow-xl transition-shadow duration-200">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
@@ -216,33 +243,29 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
             sizes="180px"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4">
-            <div className="w-10 h-10 bg-[var(--text-primary)] flex items-center justify-center">
-              <PixelIcon name="book-open" size={20} className="text-[var(--bg-primary)]" />
+          <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-tertiary)]">
+            <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
+              <PixelIcon name="book-open" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)] text-center">
-              EPUB
+            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-widest text-[var(--text-tertiary)]">
+              Classic
             </span>
           </div>
         )}
 
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-[50ms] flex items-center justify-center">
-          <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] px-3 py-1.5 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
-            Download
-          </span>
-        </div>
+        {/* Subtle hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
       </div>
 
       {/* Info */}
-      <div className="p-3 flex-1 flex flex-col">
+      <div className="pt-3 pb-1">
         <h3
-          className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] truncate mb-1"
+          className="font-[family-name:var(--font-ui)] text-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
-        <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] truncate">
+        <p className="font-[family-name:var(--font-ui)] text-xs text-[var(--text-secondary)] truncate mt-0.5">
           {book.author}
         </p>
       </div>

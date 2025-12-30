@@ -36,10 +36,6 @@ export function LibraryGrid() {
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
     .slice(0, 10);
 
-  // Get recently added books
-  const recentlyAdded = [...books]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 10);
 
   // Library-wide drag and drop handlers
   const validateFile = (file: File): boolean => {
@@ -205,7 +201,6 @@ export function LibraryGrid() {
           <BookRow
             title="Popular Classics"
             subtitle="Free public domain books"
-            icon="book-open"
             classicBooks={classicBooks}
           />
         </>
@@ -240,24 +235,14 @@ export function LibraryGrid() {
         </>
       ) : viewMode === 'netflix' ? (
         // Netflix-style row view
-        <>
+        <div className="space-y-10">
           {/* Currently Reading */}
           {currentlyReading.length > 0 && (
             <BookRow
               title="Currently Reading"
               subtitle="Continue where you left off"
-              icon="book"
               books={currentlyReading}
-            />
-          )}
-
-          {/* Recently Added */}
-          {recentlyAdded.length > 0 && currentlyReading.length > 0 && (
-            <BookRow
-              title="Recently Added"
-              subtitle="New to your library"
-              icon="clock"
-              books={recentlyAdded}
+              onViewAll={() => setViewMode('grid')}
             />
           )}
 
@@ -265,10 +250,9 @@ export function LibraryGrid() {
           <BookRow
             title="Popular Classics"
             subtitle="Free public domain books"
-            icon="book-open"
             classicBooks={classicBooks}
           />
-        </>
+        </div>
       ) : (
         // Grid view
         <>
