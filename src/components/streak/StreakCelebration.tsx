@@ -82,22 +82,22 @@ export function StreakCelebration() {
         </div>
 
         {/* Main message */}
-        <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-2">
+        <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-2">
           Goal Complete
         </p>
-        <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase tracking-tight mb-4">
+        <h2 className="font-[family-name:var(--font-display)] fs-h-lg uppercase tracking-tight mb-4">
           {streakMessage}
         </h2>
 
         {/* Stats */}
         <div className="border-t border-b border-[var(--border-primary)] py-3 mb-4">
-          <p className="font-[family-name:var(--font-mono)] text-sm">
+          <p className="font-[family-name:var(--font-mono)] fs-p-lg">
             {goal.target} {goal.type === 'pages' ? 'pages' : 'minutes'} read today
           </p>
         </div>
 
         {/* Motivational message */}
-        <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-secondary)]">
+        <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)]">
           {currentStreak === 1
             ? 'Every journey begins with a single step. Keep going!'
             : currentStreak < 7
@@ -111,7 +111,7 @@ export function StreakCelebration() {
         {/* Dismiss button */}
         <button
           onClick={handleDismiss}
-          className="mt-6 px-6 py-2 border border-[var(--border-primary)] font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-wide hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+          className="mt-6 px-6 py-2 border border-[var(--border-primary)] font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
         >
           Continue Reading
         </button>

@@ -588,8 +588,8 @@ export function EpubReader({ book }: EpubReaderProps) {
           <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
             <PixelIcon name="close" size={24} className="text-[var(--text-secondary)]" />
           </div>
-          <h2 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Error Loading Book</h2>
-          <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">{error}</p>
+          <h2 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-2">Error Loading Book</h2>
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">{error}</p>
         </div>
       </div>
     );
@@ -645,7 +645,7 @@ export function EpubReader({ book }: EpubReaderProps) {
             <div className="animate-spin">
               <PixelIcon name="loading" size={24} />
             </div>
-            <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide">
               {loadingStatus}
             </p>
           </div>
@@ -663,28 +663,28 @@ export function EpubReader({ book }: EpubReaderProps) {
         >
           <button
             onClick={() => handleCreateHighlight('light')}
-            className="w-10 h-10 bg-[var(--gray-200)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] text-[9px] text-black border-r border-[var(--border-primary)]"
+            className="w-10 h-10 bg-[var(--gray-200)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] fs-p-sm text-black border-r border-[var(--border-primary)]"
             title="Light highlight"
           >
             25%
           </button>
           <button
             onClick={() => handleCreateHighlight('medium')}
-            className="w-10 h-10 bg-[var(--gray-400)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] text-[9px] text-black border-r border-[var(--border-primary)]"
+            className="w-10 h-10 bg-[var(--gray-400)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] fs-p-sm text-black border-r border-[var(--border-primary)]"
             title="Medium highlight"
           >
             50%
           </button>
           <button
             onClick={() => handleCreateHighlight('dark')}
-            className="w-10 h-10 bg-[var(--gray-600)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] text-[9px] text-white border-r border-[var(--border-primary)]"
+            className="w-10 h-10 bg-[var(--gray-600)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] fs-p-sm text-white border-r border-[var(--border-primary)]"
             title="Dark highlight"
           >
             75%
           </button>
           <button
             onClick={() => handleCreateHighlight('solid')}
-            className="w-10 h-10 bg-[var(--gray-800)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] text-[9px] text-white border-r border-[var(--border-primary)]"
+            className="w-10 h-10 bg-[var(--gray-800)] hover:opacity-80 transition-opacity flex items-center justify-center font-[family-name:var(--font-mono)] fs-p-sm text-white border-r border-[var(--border-primary)]"
             title="Solid highlight"
           >
             100%
@@ -723,7 +723,7 @@ export function EpubReader({ book }: EpubReaderProps) {
 
       {/* Width indicator */}
       {isDragging && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] text-sm">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] fs-p-lg">
           {Math.round(contentWidth)}%
         </div>
       )}

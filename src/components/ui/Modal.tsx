@@ -60,12 +60,12 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         {/* Window Titlebar */}
         {title && (
           <div className="flex items-center justify-between px-3 py-2 bg-[var(--bg-titlebar)] border-b border-[var(--border-primary)]">
-            <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
               {title}
             </span>
             <button
               onClick={onClose}
-              className="w-5 h-5 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-all duration-[50ms] font-[family-name:var(--font-mono)] text-[12px]"
+              className="w-5 h-5 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-all duration-[50ms] font-[family-name:var(--font-mono)] fs-p-sm"
               aria-label="Close modal"
             >
               x

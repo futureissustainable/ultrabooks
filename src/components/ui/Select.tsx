@@ -19,7 +19,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]"
+            className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]"
           >
             {label}
           </label>
@@ -28,7 +28,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={clsx(
-            'px-3 py-3 text-[11px] appearance-none cursor-pointer',
+            'px-3 py-3 fs-p-sm appearance-none cursor-pointer',
             'font-[family-name:var(--font-ui)] uppercase tracking-[0.02em]',
             'bg-[var(--bg-secondary)] text-[var(--text-primary)]',
             'border border-[var(--border-primary)]',
@@ -50,7 +50,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
         {error && (
-          <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.02em] text-[var(--text-primary)]">
+          <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">
             {error}
           </span>
         )}

@@ -65,10 +65,10 @@ export function StreakModal() {
                 className={isGoalMet ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'}
               />
             </div>
-            <p className="font-[family-name:var(--font-display)] text-3xl uppercase tracking-tight">
+            <p className="font-[family-name:var(--font-display)] fs-h-lg uppercase tracking-tight">
               {currentStreak}
             </p>
-            <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
               Current Streak
             </p>
           </div>
@@ -76,10 +76,10 @@ export function StreakModal() {
             <div className="flex items-center justify-center gap-2 mb-1">
               <PixelIcon name="trophy" size={24} className="text-[var(--text-tertiary)]" />
             </div>
-            <p className="font-[family-name:var(--font-display)] text-3xl uppercase tracking-tight">
+            <p className="font-[family-name:var(--font-display)] fs-h-lg uppercase tracking-tight">
               {longestStreak}
             </p>
-            <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
               Longest Streak
             </p>
           </div>
@@ -87,7 +87,7 @@ export function StreakModal() {
 
         {/* Weekly View */}
         <div className="border border-[var(--border-primary)] p-4">
-          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
             This Week
           </p>
           <div className="grid grid-cols-7 gap-[1px] bg-[var(--border-primary)]">
@@ -102,7 +102,7 @@ export function StreakModal() {
                 )}
               >
                 <span className={clsx(
-                  'font-[family-name:var(--font-mono)] text-[10px]',
+                  'font-[family-name:var(--font-mono)] fs-p-sm',
                   day.isToday && !day.goalMet && 'text-[var(--text-primary)]'
                 )}>
                   {day.dayName}
@@ -118,7 +118,7 @@ export function StreakModal() {
         {/* Today's Progress */}
         <div className="border border-[var(--border-primary)] p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
               Today&apos;s Progress
             </p>
             <button
@@ -126,7 +126,7 @@ export function StreakModal() {
                 setStreakModalOpen(false);
                 setGoalModalOpen(true);
               }}
-              className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-wide text-[var(--text-tertiary)] hover:text-[var(--text-primary)] underline"
+              className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-tertiary)] hover:text-[var(--text-primary)] underline"
             >
               Edit Goal
             </button>
@@ -143,7 +143,7 @@ export function StreakModal() {
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <span className={clsx(
-                'font-[family-name:var(--font-mono)] text-xs',
+                'font-[family-name:var(--font-mono)] fs-p-sm',
                 progressPercent > 50 ? 'text-[var(--bg-primary)]' : 'text-[var(--text-secondary)]'
               )}>
                 {progress} / {goal.target} {goal.type === 'pages' ? 'pages' : 'min'}
@@ -152,7 +152,7 @@ export function StreakModal() {
           </div>
 
           <p className={clsx(
-            'font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-center',
+            'font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-center',
             isGoalMet ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'
           )}>
             {isGoalMet
@@ -165,7 +165,7 @@ export function StreakModal() {
         {/* Motivation */}
         {currentStreak > 0 && (
           <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)] p-4 text-center">
-            <p className="font-[family-name:var(--font-display)] text-sm uppercase tracking-tight">
+            <p className="font-[family-name:var(--font-display)] fs-p-lg uppercase tracking-tight">
               {currentStreak >= 30
                 ? '[ Legendary Reader ]'
                 : currentStreak >= 14
@@ -177,7 +177,7 @@ export function StreakModal() {
                       : '[ Great Start ]'
               }
             </p>
-            <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)] mt-1">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-1">
               {currentStreak >= 30
                 ? 'A month of daily reading. Incredible.'
                 : currentStreak >= 14

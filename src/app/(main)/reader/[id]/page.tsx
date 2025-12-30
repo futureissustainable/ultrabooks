@@ -41,7 +41,7 @@ export default function ReaderPage({ params }: ReaderPageProps) {
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4 p-8 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
           <Spinner size="lg" />
-          <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide">
             Loading book...
           </p>
         </div>

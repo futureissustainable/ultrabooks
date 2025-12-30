@@ -56,7 +56,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             )}
           />
         </div>
-        <span className="font-[family-name:var(--font-mono)] text-sm tabular-nums">
+        <span className="font-[family-name:var(--font-mono)] fs-p-lg tabular-nums">
           {currentStreak}
         </span>
       </button>
@@ -75,10 +75,10 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             <PixelIcon name="fire" size={20} />
           </div>
           <div>
-            <p className="font-[family-name:var(--font-display)] text-2xl uppercase tracking-tight">
+            <p className="font-[family-name:var(--font-display)] fs-h-lg uppercase tracking-tight">
               {currentStreak}
             </p>
-            <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
               Day Streak
             </p>
           </div>
@@ -95,10 +95,10 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
       {/* Today's Progress */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             Today&apos;s Goal
           </p>
-          <p className="font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-tertiary)]">
+          <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
             {progress} / {goal.target} {goal.type === 'pages' ? 'pages' : 'min'}
           </p>
         </div>
@@ -121,7 +121,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
           {/* Percentage text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span className={clsx(
-              'font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-wide',
+              'font-[family-name:var(--font-mono)] fs-p-sm uppercase tracking-wide',
               progressPercent > 50 ? 'text-[var(--bg-primary)]' : 'text-[var(--text-secondary)]'
             )}>
               {Math.round(progressPercent)}%
@@ -131,7 +131,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
 
         {/* Status message */}
         <p className={clsx(
-          'mt-3 font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-center',
+          'mt-3 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-center',
           isGoalMet ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]'
         )}>
           {isGoalMet

@@ -30,7 +30,7 @@ export function Header() {
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
             </svg>
           </div>
-          <span className="font-[family-name:var(--font-display)] text-lg tracking-tight uppercase">
+          <span className="font-[family-name:var(--font-display)] fs-h-sm tracking-tight uppercase">
             Ultrabooks
           </span>
         </Link>
@@ -41,13 +41,13 @@ export function Header() {
             <>
               <Link
                 href="/library"
-                className="px-4 py-2 font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+                className="px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
               >
                 Library
               </Link>
               <Link
                 href="/settings"
-                className="px-4 py-2 font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+                className="px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
               >
                 Settings
               </Link>
@@ -84,7 +84,7 @@ export function Header() {
           {user ? (
             <button
               onClick={handleSignOut}
-              className="px-4 py-2 font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+              className="px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             >
               Sign Out
             </button>

@@ -108,10 +108,10 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
                   className={isDragging ? 'text-[var(--bg-primary)]' : 'text-[var(--text-tertiary)]'}
                 />
               </div>
-              <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] mb-2">
+              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] mb-2">
                 Drop file here or click to browse
               </p>
-              <p className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-tertiary)]">
+              <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
                 EPUB, PDF, MOBI (max 100MB)
               </p>
             </div>
@@ -131,8 +131,8 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
                 <PixelIcon name="book" size={20} className="text-[var(--text-secondary)]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] truncate">{uploadedFile.name}</p>
-                <p className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-secondary)]">
+                <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] truncate">{uploadedFile.name}</p>
+                <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)]">
                   {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
@@ -148,7 +148,7 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
 
         {error && (
           <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
-            <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
           </div>
         )}
 

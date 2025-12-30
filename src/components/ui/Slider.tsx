@@ -20,13 +20,13 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
             {label && (
               <label
                 htmlFor={sliderId}
-                className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]"
+                className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]"
               >
                 {label}
               </label>
             )}
             {showValue && (
-              <span className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-primary)]">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-primary)]">
                 {value}
               </span>
             )}

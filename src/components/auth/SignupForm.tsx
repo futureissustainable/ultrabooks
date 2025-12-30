@@ -46,17 +46,17 @@ export function SignupForm() {
               <PixelIcon name="check" size={20} className="text-[var(--bg-primary)]" />
             </div>
             <div>
-              <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide text-[var(--text-secondary)]">
+              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
                 Almost done
               </p>
-              <h1 className="font-[family-name:var(--font-display)] text-xl uppercase">Check Email</h1>
+              <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Check Email</h1>
             </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6">
-          <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)] mb-6 leading-relaxed">
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
             We&apos;ve sent you a confirmation email. Please check your inbox and click the
             link to verify your account.
           </p>
@@ -78,10 +78,10 @@ export function SignupForm() {
             <PixelIcon name="plus" size={20} className="text-[var(--bg-primary)]" />
           </div>
           <div>
-            <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide text-[var(--text-secondary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
               Get started
             </p>
-            <h1 className="font-[family-name:var(--font-display)] text-xl uppercase">Sign Up</h1>
+            <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Sign Up</h1>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ export function SignupForm() {
 
           {error && (
             <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-primary)]">
-              <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-primary)]">{error}</p>
+              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-primary)]">{error}</p>
             </div>
           )}
 
@@ -131,7 +131,7 @@ export function SignupForm() {
         </form>
 
         <div className="mt-6 pt-6 border-t border-[var(--border-primary)]">
-          <p className="font-[family-name:var(--font-ui)] text-sm text-center text-[var(--text-secondary)]">
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-center text-[var(--text-secondary)]">
             Have an account?{' '}
             <Link href="/login" className="text-[var(--text-primary)] hover:underline">
               Sign in

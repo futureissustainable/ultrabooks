@@ -69,21 +69,21 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <h3 className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] text-[var(--text-primary)] truncate">{book.title}</h3>
+                <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)] truncate">{book.title}</h3>
                 {book.author && (
-                  <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-secondary)] mt-1">{book.author}</p>
+                  <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] mt-1">{book.author}</p>
                 )}
               </div>
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Include with share</h4>
+              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Include with share</h4>
 
               <div className="border border-[var(--border-primary)]">
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Bookmarks</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your saved bookmarks</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Bookmarks</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your saved bookmarks</p>
                   </div>
                   <Toggle
                     checked={options.includeBookmarks}
@@ -93,8 +93,8 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
 
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Highlights</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your highlighted passages</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Highlights</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your highlighted passages</p>
                   </div>
                   <Toggle
                     checked={options.includeHighlights}
@@ -104,8 +104,8 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
 
                 <div className="flex items-center justify-between p-3">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Notes</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your personal notes</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Notes</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your personal notes</p>
                   </div>
                   <Toggle
                     checked={options.includeNotes}
@@ -133,8 +133,8 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
               </div>
-              <h3 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Link Created</h3>
-              <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <h3 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-2">Link Created</h3>
+              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 Anyone with this link can view your book
               </p>
             </div>
@@ -144,7 +144,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                 type="text"
                 readOnly
                 value={shareLink}
-                className="flex-1 px-3 py-3 bg-transparent font-[family-name:var(--font-mono)] text-[11px] outline-none truncate"
+                className="flex-1 px-3 py-3 bg-transparent font-[family-name:var(--font-mono)] fs-p-sm outline-none truncate"
               />
               <Button size="sm" onClick={handleCopyLink} className="m-1">
                 {copied ? 'Copied' : 'Copy'}

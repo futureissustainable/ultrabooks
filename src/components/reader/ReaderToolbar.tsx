@@ -45,20 +45,20 @@ export function ReaderToolbar({
         <div className="flex items-center gap-2">
           <Link
             href="/library"
-            className="flex items-center gap-2 px-3 py-1.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
+            className="flex items-center gap-2 px-3 py-1.5 fs-p-lg text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
           >
             <PixelIcon name="chevron-left" size={14} />
-            <span className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide hidden sm:inline">
+            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide hidden sm:inline">
               Library
             </span>
           </Link>
           <button
             onClick={() => setTocOpen(true)}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
+            className="flex items-center gap-2 px-3 py-1.5 fs-p-lg text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
             aria-label="Table of contents"
           >
             <PixelIcon name="menu" size={14} />
-            <span className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide hidden sm:inline">
+            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide hidden sm:inline">
               Contents
             </span>
           </button>
@@ -66,10 +66,10 @@ export function ReaderToolbar({
 
         {/* Center - Title and Progress */}
         <div className="hidden sm:flex items-center gap-4">
-          <span className="font-[family-name:var(--font-display)] text-sm uppercase tracking-tight truncate max-w-[300px]">
+          <span className="font-[family-name:var(--font-display)] fs-p-lg uppercase tracking-tight truncate max-w-[300px]">
             {title}
           </span>
-          <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-tertiary)]">
+          <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
             {currentPage !== undefined && totalPages !== undefined && (
               <>{currentPage}/{totalPages} &middot; </>
             )}
@@ -91,7 +91,7 @@ export function ReaderToolbar({
             aria-label="View streak"
           >
             <PixelIcon name="fire" size={14} />
-            <span className="font-[family-name:var(--font-mono)] text-[11px] tabular-nums">
+            <span className="font-[family-name:var(--font-mono)] fs-p-sm tabular-nums">
               {currentStreak}
             </span>
           </button>

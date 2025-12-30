@@ -48,7 +48,7 @@ export function MobiReader({ book }: MobiReaderProps) {
           <div className="animate-spin">
             <PixelIcon name="loading" size={32} />
           </div>
-          <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
+          <p className="font-ui fs-p-lg uppercase tracking-wide animate-pulse-brutal">
             Processing MOBI file...
           </p>
         </div>
@@ -61,12 +61,12 @@ export function MobiReader({ book }: MobiReaderProps) {
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="text-center p-8 max-w-md">
           <PixelIcon name="file-mobi" size={64} className="mx-auto mb-4 text-[var(--text-tertiary)]" />
-          <h2 className="font-display text-xl mb-4">MOBI Format Notice</h2>
-          <p className="font-ui text-sm text-[var(--text-secondary)] mb-6">
+          <h2 className="font-display fs-h-sm mb-4">MOBI Format Notice</h2>
+          <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-6">
             {error}
           </p>
           <div className="space-y-3">
-            <p className="font-ui text-xs text-[var(--text-tertiary)]">
+            <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">
               Recommended: Use{' '}
               <a
                 href="https://calibre-ebook.com/"

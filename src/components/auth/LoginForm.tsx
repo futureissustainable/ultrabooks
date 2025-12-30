@@ -35,10 +35,10 @@ export function LoginForm() {
             <PixelIcon name="user" size={20} className="text-[var(--bg-primary)]" />
           </div>
           <div>
-            <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide text-[var(--text-secondary)]">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
               Welcome back
             </p>
-            <h1 className="font-[family-name:var(--font-display)] text-xl uppercase">Login</h1>
+            <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Login</h1>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function LoginForm() {
 
           {error && (
             <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-primary)]">
-              <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-primary)]">{error}</p>
+              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-primary)]">{error}</p>
             </div>
           )}
 
@@ -78,7 +78,7 @@ export function LoginForm() {
         </form>
 
         <div className="mt-6 pt-6 border-t border-[var(--border-primary)]">
-          <p className="font-[family-name:var(--font-ui)] text-sm text-center text-[var(--text-secondary)]">
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-center text-[var(--text-secondary)]">
             No account?{' '}
             <Link href="/signup" className="text-[var(--text-primary)] hover:underline">
               Sign up

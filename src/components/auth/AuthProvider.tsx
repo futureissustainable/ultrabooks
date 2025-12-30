@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4">
           <Spinner size="lg" />
-          <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
+          <p className="font-ui fs-p-lg uppercase tracking-wide animate-pulse-brutal">
             Loading...
           </p>
         </div>
@@ -42,40 +42,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             <div className="w-12 h-12 bg-[var(--color-accent)] flex items-center justify-center">
               <PixelIcon name="settings" size={28} className="text-white" />
             </div>
-            <h1 className="font-display text-2xl uppercase">Setup Required</h1>
+            <h1 className="font-display fs-h-lg uppercase">Setup Required</h1>
           </div>
 
-          <p className="font-ui text-sm text-[var(--text-secondary)] mb-6">
+          <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-6">
             ULTRABOOKS needs Supabase to store your books, reading progress, and sync data across devices.
           </p>
 
           <div className="space-y-4 mb-6">
             <div className="p-3 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
-              <p className="font-ui text-xs uppercase text-[var(--text-tertiary)] mb-1">Step 1</p>
-              <p className="font-ui text-sm">Create a free Supabase project at supabase.com</p>
+              <p className="font-ui fs-p-sm uppercase text-[var(--text-tertiary)] mb-1">Step 1</p>
+              <p className="font-ui fs-p-lg">Create a free Supabase project at supabase.com</p>
             </div>
 
             <div className="p-3 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
-              <p className="font-ui text-xs uppercase text-[var(--text-tertiary)] mb-1">Step 2</p>
-              <p className="font-ui text-sm">Run the SQL schema from <code className="font-mono bg-[var(--bg-tertiary)] px-1">supabase/schema.sql</code></p>
+              <p className="font-ui fs-p-sm uppercase text-[var(--text-tertiary)] mb-1">Step 2</p>
+              <p className="font-ui fs-p-lg">Run the SQL schema from <code className="font-mono bg-[var(--bg-tertiary)] px-1">supabase/schema.sql</code></p>
             </div>
 
             <div className="p-3 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
-              <p className="font-ui text-xs uppercase text-[var(--text-tertiary)] mb-1">Step 3</p>
-              <p className="font-ui text-sm">Add environment variables in Vercel:</p>
-              <code className="font-mono text-xs block mt-2 p-2 bg-[var(--bg-tertiary)]">
+              <p className="font-ui fs-p-sm uppercase text-[var(--text-tertiary)] mb-1">Step 3</p>
+              <p className="font-ui fs-p-lg">Add environment variables in Vercel:</p>
+              <code className="font-mono fs-p-sm block mt-2 p-2 bg-[var(--bg-tertiary)]">
                 NEXT_PUBLIC_SUPABASE_URL<br/>
                 NEXT_PUBLIC_SUPABASE_ANON_KEY
               </code>
             </div>
 
             <div className="p-3 bg-[var(--bg-secondary)] border border-[var(--border-secondary)]">
-              <p className="font-ui text-xs uppercase text-[var(--text-tertiary)] mb-1">Step 4</p>
-              <p className="font-ui text-sm">Create a storage bucket named &quot;books&quot; (public)</p>
+              <p className="font-ui fs-p-sm uppercase text-[var(--text-tertiary)] mb-1">Step 4</p>
+              <p className="font-ui fs-p-lg">Create a storage bucket named &quot;books&quot; (public)</p>
             </div>
           </div>
 
-          <p className="font-mono text-xs text-[var(--text-tertiary)]">
+          <p className="font-mono fs-p-sm text-[var(--text-tertiary)]">
             Find these in: Supabase Dashboard → Settings → API
           </p>
         </div>
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4">
           <Spinner size="lg" />
-          <p className="font-ui text-sm uppercase tracking-wide animate-pulse-brutal">
+          <p className="font-ui fs-p-lg uppercase tracking-wide animate-pulse-brutal">
             Loading...
           </p>
         </div>

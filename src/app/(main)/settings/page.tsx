@@ -123,10 +123,10 @@ export default function SettingsPage() {
       <main className="flex-1">
         <div className="container-narrow py-10 md:py-16">
           <div className="mb-10 pb-6 border-b border-[var(--border-primary)]">
-            <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3">
               Preferences
             </p>
-            <h1 className="font-[family-name:var(--font-display)] text-3xl uppercase">Settings</h1>
+            <h1 className="font-[family-name:var(--font-display)] fs-h-lg uppercase">Settings</h1>
           </div>
 
           <div className="space-y-6">
@@ -137,17 +137,17 @@ export default function SettingsPage() {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                   Account
                 </span>
               </div>
 
               <div className="p-6 space-y-5">
                 <div>
-                  <label className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] block mb-2">
+                  <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] block mb-2">
                     Email
                   </label>
-                  <p className="font-[family-name:var(--font-mono)] text-sm">{user?.email}</p>
+                  <p className="font-[family-name:var(--font-mono)] fs-p-lg">{user?.email}</p>
                 </div>
 
                 <Input
@@ -163,7 +163,7 @@ export default function SettingsPage() {
                     {isSaving ? 'Saving...' : 'Save'}
                   </Button>
                   {saveSuccess && (
-                    <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-primary)]">
+                    <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)]">
                       Saved
                     </span>
                   )}
@@ -179,7 +179,7 @@ export default function SettingsPage() {
                   <line x1="12" y1="1" x2="12" y2="3"></line>
                   <line x1="12" y1="21" x2="12" y2="23"></line>
                 </svg>
-                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                   Appearance
                 </span>
               </div>
@@ -187,8 +187,8 @@ export default function SettingsPage() {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Dark Mode</p>
-                    <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Dark Mode</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
                       Toggle between light and dark themes
                     </p>
                   </div>
@@ -207,7 +207,7 @@ export default function SettingsPage() {
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                 </svg>
-                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                   Reader
                 </span>
               </div>
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                   fullWidth
                 />
 
-                <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+                <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                   Settings sync across all devices
                 </p>
               </div>
@@ -276,7 +276,7 @@ export default function SettingsPage() {
                   <polyline points="7 10 12 15 17 10"></polyline>
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                   Data
                 </span>
               </div>
@@ -284,12 +284,12 @@ export default function SettingsPage() {
               <div className="p-6 space-y-4">
                 <div className="flex items-center justify-between p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Cloud Sync</p>
-                    <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Cloud Sync</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
                       Data syncs automatically
                     </p>
                   </div>
-                  <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-primary)] px-2 py-1 border border-[var(--text-primary)]">
+                  <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)] px-2 py-1 border border-[var(--text-primary)]">
                     Active
                   </span>
                 </div>
@@ -297,8 +297,8 @@ export default function SettingsPage() {
                 <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Export Data</p>
-                      <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
+                      <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Export Data</p>
+                      <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
                         Download all your data as JSON
                       </p>
                     </div>
@@ -310,16 +310,16 @@ export default function SettingsPage() {
 
                 <div className="grid grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] text-xl">{books.length}</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Books</p>
+                    <p className="font-[family-name:var(--font-display)] fs-h-sm">{books.length}</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Books</p>
                   </div>
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] text-xl">-</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Bookmarks</p>
+                    <p className="font-[family-name:var(--font-display)] fs-h-sm">-</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Bookmarks</p>
                   </div>
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] text-xl">-</p>
-                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Highlights</p>
+                    <p className="font-[family-name:var(--font-display)] fs-h-sm">-</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Highlights</p>
                   </div>
                 </div>
               </div>
@@ -329,8 +329,8 @@ export default function SettingsPage() {
             <div className="border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
               <div className="p-6 flex items-center justify-between">
                 <div>
-                  <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Sign Out</p>
-                  <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
+                  <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Sign Out</p>
+                  <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
                     You can sign back in anytime
                   </p>
                 </div>

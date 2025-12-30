@@ -46,11 +46,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--text-primary)]':
               variant === 'danger' && disabled,
           },
-          // Size styles
+          // Size styles - using standardized font sizes
           {
-            'px-2 py-1 text-[10px] gap-1': size === 'sm',
-            'px-4 py-2 text-[11px] gap-2': size === 'md',
-            'px-6 py-3 text-[12px] gap-2': size === 'lg',
+            'px-2 py-1 fs-p-sm gap-1': size === 'sm',
+            'px-4 py-2 fs-p-sm gap-2': size === 'md',
+            'px-6 py-3 fs-p-lg gap-2': size === 'lg',
           },
           fullWidth && 'w-full',
           className

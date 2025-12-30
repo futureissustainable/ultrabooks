@@ -412,8 +412,8 @@ export function PdfReader({ book }: PdfReaderProps) {
           <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
             <PixelIcon name="close" size={24} className="text-[var(--text-secondary)]" />
           </div>
-          <h2 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Error Loading PDF</h2>
-          <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">{error}</p>
+          <h2 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-2">Error Loading PDF</h2>
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">{error}</p>
         </div>
       </div>
     );
@@ -471,7 +471,7 @@ export function PdfReader({ book }: PdfReaderProps) {
               <div className="animate-spin">
                 <PixelIcon name="loading" size={24} />
               </div>
-              <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide">
+              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide">
                 Loading PDF...
               </p>
             </div>
@@ -502,7 +502,7 @@ export function PdfReader({ book }: PdfReaderProps) {
                   <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
                     <div className="text-center">
                       <PixelIcon name="loading" size={20} className="animate-spin mx-auto mb-2" />
-                      <p className="font-[family-name:var(--font-mono)] text-xs">Page {page.pageNum}</p>
+                      <p className="font-[family-name:var(--font-mono)] fs-p-sm">Page {page.pageNum}</p>
                     </div>
                   </div>
                 )}
@@ -521,7 +521,7 @@ export function PdfReader({ book }: PdfReaderProps) {
           >
             <PixelIcon name="plus" size={16} />
           </Button>
-          <span className="font-[family-name:var(--font-mono)] text-xs text-center bg-[var(--bg-primary)] border border-[var(--border-primary)] px-2 py-1">
+          <span className="font-[family-name:var(--font-mono)] fs-p-sm text-center bg-[var(--bg-primary)] border border-[var(--border-primary)] px-2 py-1">
             {Math.round(scale * 100)}%
           </span>
           <Button
@@ -536,22 +536,22 @@ export function PdfReader({ book }: PdfReaderProps) {
 
         {/* Page Jump Control */}
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 bg-[var(--bg-primary)] border border-[var(--border-primary)] px-4 py-2">
-          <span className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-wide text-[var(--text-secondary)]">Page</span>
+          <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">Page</span>
           <input
             type="number"
             min={1}
             max={totalPages}
             value={currentPage}
             onChange={(e) => goToPage(parseInt(e.target.value) || 1)}
-            className="w-14 text-center font-[family-name:var(--font-mono)] text-sm border border-[var(--border-primary)] bg-[var(--bg-secondary)] px-2 py-1"
+            className="w-14 text-center font-[family-name:var(--font-mono)] fs-p-lg border border-[var(--border-primary)] bg-[var(--bg-secondary)] px-2 py-1"
           />
-          <span className="font-[family-name:var(--font-mono)] text-sm text-[var(--text-secondary)]">/ {totalPages}</span>
+          <span className="font-[family-name:var(--font-mono)] fs-p-lg text-[var(--text-secondary)]">/ {totalPages}</span>
         </div>
       </div>
 
       {/* Width indicator during drag */}
       {isDragging && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] text-sm">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] fs-p-lg">
           {Math.round(contentWidth)}%
         </div>
       )}

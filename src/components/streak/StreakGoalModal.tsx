@@ -42,7 +42,7 @@ export function StreakGoalModal() {
       <div className="space-y-6">
         {/* Goal Type Toggle */}
         <div>
-          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
             Track By
           </p>
           <div className="grid grid-cols-2 gap-[1px] bg-[var(--border-primary)]">
@@ -60,7 +60,7 @@ export function StreakGoalModal() {
               )}
             >
               <PixelIcon name="clock" size={16} />
-              <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-wide">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide">
                 Minutes
               </span>
             </button>
@@ -78,7 +78,7 @@ export function StreakGoalModal() {
               )}
             >
               <PixelIcon name="book" size={16} />
-              <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-wide">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide">
                 Pages
               </span>
             </button>
@@ -87,7 +87,7 @@ export function StreakGoalModal() {
 
         {/* Daily Target */}
         <div>
-          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
             Daily Target
           </p>
 
@@ -101,7 +101,7 @@ export function StreakGoalModal() {
                   setShowCustom(false);
                 }}
                 className={clsx(
-                  'py-3 transition-colors font-[family-name:var(--font-mono)] text-sm',
+                  'py-3 transition-colors font-[family-name:var(--font-mono)] fs-p-lg',
                   selectedTarget === value && !showCustom
                     ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                     : 'bg-[var(--bg-primary)] hover:bg-[var(--bg-secondary)]'
@@ -117,7 +117,7 @@ export function StreakGoalModal() {
             onClick={() => setShowCustom(!showCustom)}
             className={clsx(
               'w-full py-2 border border-[var(--border-primary)] transition-colors',
-              'font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-wide',
+              'font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide',
               showCustom
                 ? 'bg-[var(--bg-secondary)]'
                 : 'hover:bg-[var(--bg-secondary)]'
@@ -136,9 +136,9 @@ export function StreakGoalModal() {
                 value={customValue}
                 onChange={(e) => setCustomValue(e.target.value)}
                 placeholder={String(selectedTarget)}
-                className="flex-1 px-3 py-2 bg-[var(--bg-primary)] border border-[var(--border-primary)] font-[family-name:var(--font-mono)] text-sm text-center focus:outline-none focus:border-[var(--text-primary)]"
+                className="flex-1 px-3 py-2 bg-[var(--bg-primary)] border border-[var(--border-primary)] font-[family-name:var(--font-mono)] fs-p-lg text-center focus:outline-none focus:border-[var(--text-primary)]"
               />
-              <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase text-[var(--text-tertiary)]">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase text-[var(--text-tertiary)]">
                 {selectedType === 'pages' ? 'pages/day' : 'min/day'}
               </span>
             </div>
@@ -147,13 +147,13 @@ export function StreakGoalModal() {
 
         {/* Preview */}
         <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)] p-4">
-          <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2">
             Your Goal
           </p>
-          <p className="font-[family-name:var(--font-display)] text-lg uppercase tracking-tight">
+          <p className="font-[family-name:var(--font-display)] fs-h-sm uppercase tracking-tight">
             Read {showCustom ? (customValue || selectedTarget) : selectedTarget} {selectedType === 'pages' ? 'pages' : 'minutes'} daily
           </p>
-          <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)] mt-1">
+          <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-1">
             {selectedType === 'minutes'
               ? 'Time tracked automatically while reading'
               : 'Pages tracked from PDF reader progress'

@@ -61,6 +61,19 @@
   --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-reading: 'Georgia', 'Times New Roman', serif;
 
+  /* ============================================
+     STANDARDIZED FONT SIZES (Psychology-Based)
+     ============================================
+     Scale ratios:
+     - 11→14 = 1.27x (minor third - musical harmony)
+     - 14→20 = 1.43x (perfect fourth - musical harmony)
+     - 20→32 = 1.6x (golden ratio - universal harmony)
+     ============================================ */
+  --fs-p-sm: 11px;  /* Paragraph Small: UI text, labels, buttons, metadata */
+  --fs-p-lg: 14px;  /* Paragraph Large: Body text, descriptions, readable content */
+  --fs-h-sm: 20px;  /* Heading Small: Section titles, card headers, feature titles */
+  --fs-h-lg: 32px;  /* Heading Large: Page titles, hero text, major headings */
+
   /* Spacing Scale - 8px Grid */
   --space-0: 0;
   --space-1: 4px;
@@ -161,7 +174,7 @@
     background: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-ui);
-    font-size: 14px;
+    font-size: var(--fs-p-lg);
     line-height: 1.5;
     min-height: 100vh;
     overflow-x: hidden;
@@ -190,40 +203,21 @@
     text-transform: uppercase;
   }
 
-  h1 {
-    font-size: clamp(3rem, 8vw, 6rem);
+  /* Primary Headings - use --fs-h-lg (32px) */
+  h1, h2 {
+    font-size: var(--fs-h-lg);
     letter-spacing: -0.04em;
     line-height: 0.95;
   }
 
-  h2 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    letter-spacing: -0.03em;
-  }
-
-  h3 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-  }
-
-  h4 {
-    font-size: 1.25rem;
+  /* Secondary Headings - use --fs-h-sm (20px) */
+  h3, h4, h5, h6 {
+    font-size: var(--fs-h-sm);
     font-family: var(--font-ui);
-  }
-
-  h5 {
-    font-size: 1rem;
-    font-family: var(--font-ui);
-  }
-
-  h6 {
-    font-size: 0.875rem;
-    font-family: var(--font-ui);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
   }
 
   p {
-    font-size: 14px;
+    font-size: var(--fs-p-lg);
     line-height: 1.6;
     color: var(--text-secondary);
     font-family: var(--font-ui);
@@ -232,7 +226,7 @@
   /* Labels & UI Text */
   .label, label {
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -487,7 +481,7 @@
     background: var(--bg-titlebar);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -516,7 +510,7 @@
     color: var(--text-secondary);
     cursor: pointer;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     line-height: 1;
     transition: all var(--duration-instant) var(--ease-sharp);
   }
@@ -543,7 +537,7 @@
     background: var(--bg-tertiary);
     border-top: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-tertiary);
@@ -562,7 +556,7 @@
     background: var(--bg-secondary);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
   }
 
   .menu-bar-item {
@@ -633,7 +627,7 @@
     background: var(--bg-tertiary);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -655,7 +649,7 @@
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: var(--bg-secondary);
@@ -724,12 +718,12 @@
 
   .btn-sm {
     padding: var(--space-1) var(--space-2);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
   }
 
   .btn-lg {
     padding: var(--space-3) var(--space-6);
-    font-size: 12px;
+    font-size: var(--fs-p-lg);
   }
 
   .btn-icon {
@@ -746,7 +740,7 @@
     width: 100%;
     padding: var(--space-3);
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: var(--fs-p-lg);
     background: var(--bg-primary);
     color: var(--text-primary);
     border: var(--border-width) solid var(--border-primary);
@@ -771,7 +765,7 @@
 
   .input-label {
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -779,7 +773,7 @@
 
   .input-error {
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     color: var(--text-primary);
@@ -789,7 +783,7 @@
     width: 100%;
     padding: var(--space-3);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     background: var(--bg-secondary);
@@ -879,7 +873,7 @@
     gap: var(--space-2);
     cursor: pointer;
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
   }
@@ -919,7 +913,7 @@
     background: var(--bg-tertiary);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -991,7 +985,7 @@
     background: var(--bg-titlebar);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1008,7 +1002,7 @@
     color: var(--text-secondary);
     cursor: pointer;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--fs-p-sm);
     transition: all var(--duration-instant) var(--ease-sharp);
   }
 
@@ -1053,7 +1047,7 @@
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
     font-family: var(--font-display);
-    font-size: 1.25rem;
+    font-size: var(--fs-h-sm);
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--text-primary);
@@ -1069,7 +1063,7 @@
   .nav-item {
     padding: var(--space-3) var(--space-4);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1099,7 +1093,7 @@
     align-items: center;
     gap: var(--space-2);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1137,7 +1131,7 @@
   .reader-content {
     font-family: var(--font-reading);
     line-height: 1.8;
-    font-size: 18px;
+    font-size: var(--fs-h-sm);
     color: var(--text-primary);
     max-width: 720px;
     margin: 0 auto;
@@ -1220,7 +1214,7 @@
 
   .empty-state-title {
     font-family: var(--font-ui);
-    font-size: 14px;
+    font-size: var(--fs-p-lg);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1228,7 +1222,7 @@
   }
 
   .empty-state-description {
-    font-size: 12px;
+    font-size: var(--fs-p-sm);
     color: var(--text-muted);
     max-width: 320px;
   }
@@ -1329,7 +1323,7 @@
     align-items: center;
     padding: var(--space-1) var(--space-2);
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: var(--bg-tertiary);
@@ -1349,7 +1343,7 @@
     gap: var(--space-1);
     padding: var(--space-1) var(--space-2);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     background: var(--bg-secondary);
@@ -1368,7 +1362,7 @@
     background: var(--bg-inverse);
     color: var(--text-inverse);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     border: var(--border-width) solid var(--border-strong);
@@ -1389,7 +1383,7 @@
     background: var(--bg-titlebar);
     border-bottom: var(--border-width) solid var(--border-primary);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1510,7 +1504,7 @@
 .epub-section th {
   background: var(--bg-tertiary);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: var(--fs-p-sm);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
@@ -1584,7 +1578,7 @@
 @layer components {
   .text-label {
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1592,19 +1586,19 @@
 
   .text-body {
     font-family: var(--font-ui);
-    font-size: 14px;
+    font-size: var(--fs-p-lg);
     line-height: 1.6;
     color: var(--text-primary);
   }
 
   .text-body-lg {
-    font-size: 16px;
+    font-size: var(--fs-h-sm);
     line-height: 1.7;
   }
 
   .text-mono {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: var(--fs-p-lg);
   }
 
   .text-display {
@@ -1612,6 +1606,15 @@
     text-transform: uppercase;
     letter-spacing: -0.02em;
   }
+
+  /* ============================================
+     STANDARDIZED FONT SIZE UTILITIES
+     Use ONLY these 4 sizes across the entire site
+     ============================================ */
+  .fs-p-sm { font-size: var(--fs-p-sm) !important; } /* 11px - UI text, labels, buttons */
+  .fs-p-lg { font-size: var(--fs-p-lg) !important; } /* 14px - Body text, descriptions */
+  .fs-h-sm { font-size: var(--fs-h-sm) !important; } /* 20px - Section headings */
+  .fs-h-lg { font-size: var(--fs-h-lg) !important; } /* 32px - Page headings */
 }
 
 /* ============================================
@@ -1655,14 +1658,14 @@
 
   .list-item-title {
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     color: inherit;
   }
 
   .list-item-subtitle {
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     color: var(--text-muted);
     margin-top: 2px;
   }
@@ -1682,7 +1685,7 @@
     justify-content: center;
     padding: var(--space-1) var(--space-2);
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: var(--bg-tertiary);
@@ -1723,7 +1726,7 @@
 
   .progress-text {
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--fs-p-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);

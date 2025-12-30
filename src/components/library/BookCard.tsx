@@ -49,7 +49,7 @@ export function BookCard({ book }: BookCardProps) {
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                   </svg>
                 </div>
-                <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-tertiary)] border border-[var(--border-primary)] px-2 py-1">
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] border border-[var(--border-primary)] px-2 py-1">
                   {book.file_type}
                 </span>
               </div>
@@ -57,7 +57,7 @@ export function BookCard({ book }: BookCardProps) {
 
             {/* Hover Overlay */}
             <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-[50ms] flex items-center justify-center">
-              <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
                 Open
               </span>
             </div>
@@ -66,16 +66,16 @@ export function BookCard({ book }: BookCardProps) {
 
         {/* Book Info */}
         <div className="p-3">
-          <h3 className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] truncate mb-1" title={book.title}>
+          <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] truncate mb-1" title={book.title}>
             {book.title}
           </h3>
           {book.author && (
-            <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-secondary)] truncate mb-3">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] truncate mb-3">
               {book.author}
             </p>
           )}
           <div className="flex items-center justify-between">
-            <span className="font-[family-name:var(--font-mono)] text-[9px] text-[var(--text-tertiary)]">
+            <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
               {formatFileSize(book.file_size)}
             </span>
             <div className="flex items-center gap-1">
@@ -115,7 +115,7 @@ export function BookCard({ book }: BookCardProps) {
         size="sm"
       >
         <div className="space-y-6">
-          <p className="font-[family-name:var(--font-ui)] text-[13px] text-[var(--text-secondary)] leading-relaxed">
+          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] leading-relaxed">
             Are you sure you want to delete &ldquo;{book.title}&rdquo;? This will also remove all
             bookmarks, highlights, and reading progress.
           </p>
