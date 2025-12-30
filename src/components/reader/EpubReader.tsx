@@ -38,6 +38,7 @@ export function EpubReader({ book }: EpubReaderProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const styleRef = useRef<HTMLStyleElement | null>(null);
+  const blobUrlsRef = useRef<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadingStatus, setLoadingStatus] = useState('Initializing...');
@@ -412,14 +413,26 @@ export function EpubReader({ book }: EpubReaderProps) {
             const doc = await section.createDocument();
             if (!doc?.body) continue;
 
-            // Process images - convert to blob URLs
+            // Process images - load from EPUB and convert to blob URLs
             const images = doc.body.querySelectorAll('img');
             for (const img of images) {
               const src = img.getAttribute('src');
               if (src && !src.startsWith('http') && !src.startsWith('data:') && !src.startsWith('blob:')) {
-                // Images in EPUBs are relative, we'll try to load them
-                // For now, just mark them as potentially broken
-                img.setAttribute('data-original-src', src);
+                try {
+                  // Resolve the image path relative to the section
+                  const resolvedPath = section.resolveHref?.(src) || src;
+                  // Load the image blob from the EPUB
+                  const imageBlob = await foliate.loadBlob(resolvedPath);
+                  if (imageBlob) {
+                    const blobUrl = URL.createObjectURL(imageBlob);
+                    blobUrlsRef.current.push(blobUrl); // Track for cleanup
+                    img.setAttribute('src', blobUrl);
+                    img.setAttribute('data-original-src', src);
+                  }
+                } catch (imgErr) {
+                  console.warn(`Failed to load image ${src}:`, imgErr);
+                  // Keep the original src, it might still work
+                }
               }
             }
 
@@ -477,6 +490,9 @@ export function EpubReader({ book }: EpubReaderProps) {
 
     return () => {
       mounted = false;
+      // Cleanup blob URLs to prevent memory leaks
+      blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      blobUrlsRef.current = [];
     };
   }, [book.file_url, book.id, book.title]);
 
