@@ -11,7 +11,7 @@ import { classicBooks } from '@/lib/classics-data';
 import { clsx } from 'clsx';
 
 export function LibraryGrid() {
-  const { books, fetchBooks, isLoading, error, uploadBook, isUploading } = useBookStore();
+  const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, isUploading } = useBookStore();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -19,8 +19,11 @@ export function LibraryGrid() {
   const [viewMode, setViewMode] = useState<'netflix' | 'grid'>('netflix');
 
   useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
+    // Only fetch if we haven't fetched yet
+    if (!hasFetched && !isLoading) {
+      fetchBooks();
+    }
+  }, [fetchBooks, hasFetched, isLoading]);
 
   const filteredBooks = books.filter(
     (book) =>
@@ -84,7 +87,9 @@ export function LibraryGrid() {
     }
   }, [uploadBook]);
 
-  if (isLoading && books.length === 0) {
+  // Show loading only if we're actively loading AND haven't fetched yet
+  // This prevents infinite loading - once hasFetched is true, we show content
+  if (!hasFetched && (isLoading || books.length === 0)) {
     return (
       <div className="flex items-center justify-center py-32">
         <div className="flex flex-col items-center gap-6">
