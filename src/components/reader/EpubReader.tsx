@@ -50,8 +50,7 @@ export function EpubReader({ book }: EpubReaderProps) {
   const [currentSection, setCurrentSection] = useState<string>('');
   const [progress, setProgress] = useState(0);
 
-  // Width control state
-  const [contentWidth, setContentWidth] = useState(65);
+  // Width control state (from store for persistence)
   const [isDragging, setIsDragging] = useState(false);
   const [dragSide, setDragSide] = useState<'left' | 'right' | null>(null);
   const dragStartX = useRef(0);
@@ -63,6 +62,8 @@ export function EpubReader({ book }: EpubReaderProps) {
 
   const {
     settings,
+    updateSettings,
+    syncSettings,
     loadSettings,
     loadProgress,
     updateProgress,
@@ -74,6 +75,9 @@ export function EpubReader({ book }: EpubReaderProps) {
     loadHighlights,
     addHighlight,
   } = useReaderStore();
+
+  // Convenience access to contentWidth from settings
+  const contentWidth = settings.contentWidth;
 
   const { startReadingSession, endReadingSession, checkAndUpdateStreak } = useStreakStore();
 
@@ -336,15 +340,15 @@ export function EpubReader({ book }: EpubReaderProps) {
     setShowHighlightPopup(false);
   }, [selection, book.id, addHighlight]);
 
-  // Handle drag to resize
+  // Handle drag to resize - uses store for persistence
   const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
     setDragSide(side);
     dragStartX.current = e.clientX;
-    dragStartWidth.current = contentWidth;
-  }, [contentWidth]);
+    dragStartWidth.current = settings.contentWidth;
+  }, [settings.contentWidth]);
 
   useEffect(() => {
     if (!isDragging || !dragSide) return;
@@ -361,12 +365,15 @@ export function EpubReader({ book }: EpubReaderProps) {
         newWidth = dragStartWidth.current - deltaPercent * 2;
       }
 
-      setContentWidth(Math.min(Math.max(30, newWidth), 95));
+      const clampedWidth = Math.min(Math.max(30, newWidth), 95);
+      updateSettings({ contentWidth: clampedWidth });
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
       setDragSide(null);
+      // Sync to server when done dragging
+      syncSettings();
     };
 
     document.addEventListener('mousemove', handleMouseMove, { capture: true });
@@ -380,7 +387,7 @@ export function EpubReader({ book }: EpubReaderProps) {
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
     };
-  }, [isDragging, dragSide]);
+  }, [isDragging, dragSide, updateSettings, syncSettings]);
 
   // Track scroll position
   useEffect(() => {

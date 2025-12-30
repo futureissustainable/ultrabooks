@@ -10,6 +10,7 @@ interface ReaderSettings {
   lineHeight: number;
   margins: number;
   textAlign: 'left' | 'justify';
+  contentWidth: number; // Page width as percentage (30-95)
 }
 
 // Local progress storage for each book
@@ -74,6 +75,7 @@ const defaultSettings: ReaderSettings = {
   lineHeight: 1.8,
   margins: 40,
   textAlign: 'left',
+  contentWidth: 65,
 };
 
 export const useReaderStore = create<ReaderState>()(
@@ -108,6 +110,7 @@ export const useReaderStore = create<ReaderState>()(
             line_height: settings.lineHeight,
             margins: settings.margins,
             text_align: settings.textAlign,
+            content_width: settings.contentWidth,
             updated_at: new Date().toISOString(),
           });
       },
@@ -134,6 +137,7 @@ export const useReaderStore = create<ReaderState>()(
               lineHeight: data.line_height || get().settings.lineHeight,
               margins: data.margins ?? get().settings.margins,
               textAlign: data.text_align || get().settings.textAlign,
+              contentWidth: data.content_width ?? get().settings.contentWidth,
             },
           });
         } else {
