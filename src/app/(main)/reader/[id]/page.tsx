@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBookStore } from '@/lib/stores/book-store';
 import { BookReader } from '@/components/reader/BookReader';
@@ -13,22 +13,21 @@ interface ReaderPageProps {
 export default function ReaderPage({ params }: ReaderPageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { currentBook, fetchBook, isLoadingBook, error, clearCurrentBook } = useBookStore();
-  const [initialized, setInitialized] = useState(false);
+  const { currentBook, fetchBook, isLoadingBook, error } = useBookStore();
 
+  // Fetch book when id changes or when currentBook doesn't match
   useEffect(() => {
-    if (id && !initialized) {
+    if (id && (!currentBook || currentBook.id !== id)) {
       fetchBook(id);
-      setInitialized(true);
     }
-  }, [id, fetchBook, initialized]);
+  }, [id, currentBook, fetchBook]);
 
-  // Clean up when leaving the page
+  // Clean up when leaving the page - use store directly to avoid dependency issues
   useEffect(() => {
     return () => {
-      clearCurrentBook();
+      useBookStore.getState().clearCurrentBook();
     };
-  }, [clearCurrentBook]);
+  }, []);
 
   useEffect(() => {
     if (error && !isLoadingBook) {
