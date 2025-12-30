@@ -4,12 +4,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { useStreakStore } from '@/lib/stores/streak-store';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { BookmarksList } from './BookmarksList';
 import { HighlightsList } from './HighlightsList';
 import { Button } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { StreakCelebration, StreakModal, StreakGoalModal } from '@/components/streak';
 
 interface PdfReaderProps {
   book: Book;
@@ -56,10 +58,37 @@ export function PdfReader({ book }: PdfReaderProps) {
     loadHighlights,
   } = useReaderStore();
 
+  const {
+    startReadingSession,
+    endReadingSession,
+    checkAndUpdateStreak,
+  } = useStreakStore();
+
   const progress = totalPages > 0 ? (currentPage / totalPages) * 100 : 0;
   const isCurrentPageBookmarked = bookmarks.some(
     (b) => b.page === currentPage
   );
+
+  // Track reading session for streak (time-based)
+  useEffect(() => {
+    startReadingSession(currentPage);
+    checkAndUpdateStreak();
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        endReadingSession(currentPage);
+      } else {
+        startReadingSession(currentPage);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      endReadingSession(currentPage);
+    };
+  }, [startReadingSession, endReadingSession, checkAndUpdateStreak, currentPage]);
 
   // Handle drag to resize - using pointer events for better tracking
   const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
@@ -531,6 +560,11 @@ export function PdfReader({ book }: PdfReaderProps) {
       <ReaderSettings />
       <BookmarksList onNavigate={handleNavigate} />
       <HighlightsList onNavigate={handleNavigate} />
+
+      {/* Streak */}
+      <StreakModal />
+      <StreakGoalModal />
+      <StreakCelebration />
     </div>
   );
 }

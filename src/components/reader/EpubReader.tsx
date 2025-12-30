@@ -4,12 +4,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { useStreakStore } from '@/lib/stores/streak-store';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { TableOfContents } from './TableOfContents';
 import { BookmarksList } from './BookmarksList';
 import { HighlightsList } from './HighlightsList';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { StreakCelebration, StreakModal, StreakGoalModal } from '@/components/streak';
 
 interface EpubReaderProps {
   book: Book;
@@ -73,9 +75,33 @@ export function EpubReader({ book }: EpubReaderProps) {
     addHighlight,
   } = useReaderStore();
 
+  const { startReadingSession, endReadingSession, checkAndUpdateStreak } = useStreakStore();
+
   const isCurrentLocationBookmarked = bookmarks.some(
     (b) => b.location === currentSection
   );
+
+  // Track reading session for streak
+  useEffect(() => {
+    startReadingSession();
+    checkAndUpdateStreak();
+
+    // End session when component unmounts or page hidden
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        endReadingSession();
+      } else {
+        startReadingSession();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      endReadingSession();
+    };
+  }, [startReadingSession, endReadingSession, checkAndUpdateStreak]);
 
   // Generate theme colors
   const getThemeColors = useCallback(() => {
@@ -711,6 +737,11 @@ export function EpubReader({ book }: EpubReaderProps) {
       <ReaderSettings />
       <BookmarksList onNavigate={handleNavigate} />
       <HighlightsList onNavigate={handleNavigate} />
+
+      {/* Streak */}
+      <StreakModal />
+      <StreakGoalModal />
+      <StreakCelebration />
     </div>
   );
 }

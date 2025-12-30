@@ -42,7 +42,11 @@ type IconName =
   | 'text-size'
   | 'layout'
   | 'sync'
-  | 'loading';
+  | 'loading'
+  | 'fire'
+  | 'trophy'
+  | 'calendar'
+  | 'clock';
 
 const icons: Record<IconName, string> = {
   'book': `M4 2h12v20H4V2zm2 2v16h8V4H6zm2 2h4v2H8V6zm0 4h4v2H8v-2z`,
@@ -79,6 +83,10 @@ const icons: Record<IconName, string> = {
   'layout': `M2 2h20v20H2V2zm2 2v16h16V4H4zm2 2h5v5H6V6zm7 0h5v5h-5V6zM6 13h5v5H6v-5zm7 0h5v5h-5v-5z`,
   'sync': `M12 2v4l4-2-4-2zm0 16v4l4-2-4-2zM6 6l2 4 4-2-4-2H6zm10 8l2 4h2l-4-2v-2zM4 12a8 8 0 0114-5.3l-1.4 1.4A6 6 0 006 12H4zm16 0a8 8 0 01-14 5.3l1.4-1.4A6 6 0 0018 12h2z`,
   'loading': `M12 2v4h-2V2h2zm0 16v4h-2v-4h2zM2 10h4v2H2v-2zm16 0h4v2h-4v-2zM5.6 4.2l2.8 2.8-1.4 1.4-2.8-2.8 1.4-1.4zm9.9 9.9l2.8 2.8-1.4 1.4-2.8-2.8 1.4-1.4zM4.2 18.4l2.8-2.8 1.4 1.4-2.8 2.8-1.4-1.4zm14.2-9.9l-2.8 2.8-1.4-1.4 2.8-2.8 1.4 1.4z`,
+  'fire': `M12 2c-1 3-3 5-3 8a5 5 0 0010 0c0-3-2-5-3-8-1 2-2.5 3-2.5 5s1 3 2.5 3a3 3 0 01-3-3c0-2-1-3-1-5z M9 14a3 3 0 006 0c0-1.5-1.5-3-3-5-1.5 2-3 3.5-3 5z`,
+  'trophy': `M6 2h12v4h2v4c0 2-1 3-2 4v2h-2v2h2v2h2v2H6v-2h2v-2h2v-2H8v-2c-1-1-2-2-2-4V6h2V2zm2 2v2h8V4H8zm-2 4v2c0 1 .5 2 1 2h10c.5 0 1-1 1-2V8h-2v2H8V8H6z`,
+  'calendar': `M6 2h2v2h8V2h2v2h2v18H4V4h2V2zm-2 6v12h16V8H4zm2 2h2v2H6v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM6 14h2v2H6v-2zm4 0h2v2h-2v-2z`,
+  'clock': `M12 2a10 10 0 100 20 10 10 0 000-20zm0 2a8 8 0 110 16 8 8 0 010-16zm-1 2v7h5v-2h-3V6h-2z`,
 };
 
 export function PixelIcon({ name, size = 24, className }: PixelIconProps) {

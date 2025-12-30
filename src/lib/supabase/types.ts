@@ -287,3 +287,25 @@ export type Bookmark = Database['public']['Tables']['bookmarks']['Row'];
 export type Highlight = Database['public']['Tables']['highlights']['Row'];
 export type UserSettings = Database['public']['Tables']['user_settings']['Row'];
 export type SharedBook = Database['public']['Tables']['shared_books']['Row'];
+
+// Streak types (stored in localStorage, synced with user_settings)
+export interface StreakGoal {
+  type: 'pages' | 'minutes';
+  target: number;
+}
+
+export interface DailyProgress {
+  date: string; // YYYY-MM-DD
+  pagesRead: number;
+  minutesRead: number;
+  goalMet: boolean;
+}
+
+export interface StreakData {
+  goal: StreakGoal;
+  currentStreak: number;
+  longestStreak: number;
+  todayProgress: DailyProgress;
+  history: DailyProgress[];
+  lastUpdated: string;
+}
