@@ -445,6 +445,28 @@
 }
 
 /* ============================================
+   DOT GRID BACKGROUND
+   ============================================ */
+.bg-dot-grid {
+  position: relative;
+  background-image: radial-gradient(circle, var(--gray-600) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, transparent 50%, var(--bg-primary) 100%);
+  pointer-events: none;
+}
+
+.bg-dot-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
    OS WINDOW COMPONENTS
    ============================================ */
 @layer components {
