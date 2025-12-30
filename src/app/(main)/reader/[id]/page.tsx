@@ -13,7 +13,7 @@ interface ReaderPageProps {
 export default function ReaderPage({ params }: ReaderPageProps) {
   const { id } = use(params);
   const router = useRouter();
-  const { currentBook, fetchBook, isLoadingBook, error } = useBookStore();
+  const { currentBook, fetchBook, isLoadingBook, hasFetchedBook, error } = useBookStore();
 
   // Fetch book when id changes or when currentBook doesn't match
   useEffect(() => {
@@ -35,7 +35,9 @@ export default function ReaderPage({ params }: ReaderPageProps) {
     }
   }, [error, isLoadingBook, router]);
 
-  if (isLoadingBook || !currentBook) {
+  // Show loading only if we're actively loading AND haven't fetched yet
+  // This prevents infinite loading - once hasFetchedBook is true, we show content or redirect
+  if (!hasFetchedBook && (isLoadingBook || !currentBook)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4 p-8 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
@@ -46,6 +48,12 @@ export default function ReaderPage({ params }: ReaderPageProps) {
         </div>
       </div>
     );
+  }
+
+  // If we've attempted to fetch but no book, redirect (already handled by error effect)
+  if (hasFetchedBook && !currentBook && !error) {
+    router.push('/library');
+    return null;
   }
 
   return <BookReader book={currentBook} />;

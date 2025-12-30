@@ -24,37 +24,53 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   initialize: async () => {
     const supabase = createClient();
 
-    // Get initial session
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // Timeout failsafe (1s) - prevents infinite loading if auth hangs
+    const timeoutId = setTimeout(() => {
+      if (get().isLoading) {
+        console.warn('Auth initialization timeout - forcing loading to end');
+        set({ isLoading: false });
+      }
+    }, 1000);
 
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+    try {
+      // Get initial session
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      set({ user, profile, isLoading: false });
-    } else {
-      set({ isLoading: false });
-    }
-
-    // Listen for auth changes
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+      if (user) {
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', session.user.id)
+          .eq('id', user.id)
           .single();
 
-        set({ user: session.user, profile });
+        clearTimeout(timeoutId);
+        set({ user, profile, isLoading: false });
       } else {
-        set({ user: null, profile: null });
+        clearTimeout(timeoutId);
+        set({ isLoading: false });
       }
-    });
+
+      // Listen for auth changes
+      supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+
+          set({ user: session.user, profile });
+        } else {
+          set({ user: null, profile: null });
+        }
+      });
+    } catch (err) {
+      clearTimeout(timeoutId);
+      console.error('Auth initialization failed:', err);
+      set({ isLoading: false, error: 'Failed to initialize auth' });
+    }
   },
 
   signUp: async (email: string, password: string) => {
