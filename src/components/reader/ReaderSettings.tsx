@@ -1,6 +1,8 @@
 'use client';
 
+import { clsx } from 'clsx';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { READER_THEME_COLORS, DEFAULT_READER_SETTINGS, type ReaderTheme } from '@/lib/constants/reader-theme';
 import { Modal } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
@@ -28,12 +30,6 @@ export function ReaderSettings() {
     { value: 'OpenDyslexic', label: 'OpenDyslexic', style: 'accessibility' },
   ];
 
-  const themeColors = {
-    light: { bg: '#ffffff', text: '#000000' },
-    dark: { bg: '#000000', text: '#ffffff' },
-    sepia: { bg: '#f4ecd8', text: '#5b4636' },
-  };
-
   return (
     <Modal
       isOpen={isSettingsOpen}
@@ -53,19 +49,18 @@ export function ReaderSettings() {
               <button
                 key={theme}
                 onClick={() => handleChange('theme', theme)}
-                className={`
-                  relative p-3 border transition-all duration-100
-                  ${settings.theme === theme
+                className={clsx(
+                  'relative p-3 border transition-all duration-100',
+                  settings.theme === theme
                     ? 'border-[var(--text-primary)] bg-[var(--bg-tertiary)]'
                     : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                  }
-                `}
+                )}
               >
                 <div
                   className="w-full h-8 border border-[var(--border-primary)] mb-2 flex items-center justify-center"
                   style={{
-                    backgroundColor: themeColors[theme].bg,
-                    color: themeColors[theme].text
+                    backgroundColor: READER_THEME_COLORS[theme].bg,
+                    color: READER_THEME_COLORS[theme].text
                   }}
                 >
                   <span className="fs-p-sm font-[family-name:var(--font-reading)]">Aa</span>
@@ -98,13 +93,12 @@ export function ReaderSettings() {
                 <button
                   key={font.value}
                   onClick={() => handleChange('fontFamily', font.value)}
-                  className={`
-                    relative px-3 py-2 text-left border transition-all duration-100
-                    ${settings.fontFamily === font.value
+                  className={clsx(
+                    'relative px-3 py-2 text-left border transition-all duration-100',
+                    settings.fontFamily === font.value
                       ? 'border-[var(--text-primary)] bg-[var(--bg-tertiary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                    }
-                  `}
+                  )}
                 >
                   <span
                     className="block fs-p-lg truncate"
@@ -178,13 +172,12 @@ export function ReaderSettings() {
                 <button
                   key={height}
                   onClick={() => handleChange('lineHeight', height)}
-                  className={`
-                    flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm
-                    ${settings.lineHeight === height
+                  className={clsx(
+                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    settings.lineHeight === height
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                    }
-                  `}
+                  )}
                 >
                   {height}
                 </button>
@@ -200,16 +193,14 @@ export function ReaderSettings() {
             <div className="flex gap-2">
               <button
                 onClick={() => handleChange('textAlign', 'left')}
-                className={`
-                  flex-1 py-2 border transition-all duration-100 flex items-center justify-center gap-2
-                  ${settings.textAlign === 'left'
+                className={clsx(
+                  'flex-1 py-2 border transition-all duration-100 flex items-center justify-center gap-2',
+                  settings.textAlign === 'left'
                     ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                     : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                  }
-                `}
+                )}
               >
-                {/* Left align icon */}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <rect x="3" y="4" width="18" height="2" />
                   <rect x="3" y="9" width="12" height="2" />
                   <rect x="3" y="14" width="18" height="2" />
@@ -219,16 +210,14 @@ export function ReaderSettings() {
               </button>
               <button
                 onClick={() => handleChange('textAlign', 'justify')}
-                className={`
-                  flex-1 py-2 border transition-all duration-100 flex items-center justify-center gap-2
-                  ${settings.textAlign === 'justify'
+                className={clsx(
+                  'flex-1 py-2 border transition-all duration-100 flex items-center justify-center gap-2',
+                  settings.textAlign === 'justify'
                     ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                     : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                  }
-                `}
+                )}
               >
-                {/* Justify icon */}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <rect x="3" y="4" width="18" height="2" />
                   <rect x="3" y="9" width="18" height="2" />
                   <rect x="3" y="14" width="18" height="2" />
@@ -262,13 +251,12 @@ export function ReaderSettings() {
                 <button
                   key={width}
                   onClick={() => handleChange('contentWidth', width)}
-                  className={`
-                    flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm
-                    ${Math.round(settings.contentWidth) === width
+                  className={clsx(
+                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    Math.round(settings.contentWidth) === width
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                    }
-                  `}
+                  )}
                 >
                   {width}%
                 </button>
@@ -294,13 +282,12 @@ export function ReaderSettings() {
                 <button
                   key={margin}
                   onClick={() => handleChange('margins', margin)}
-                  className={`
-                    flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm
-                    ${settings.margins === margin
+                  className={clsx(
+                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    settings.margins === margin
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
-                    }
-                  `}
+                  )}
                 >
                   {margin}
                 </button>
@@ -318,8 +305,8 @@ export function ReaderSettings() {
           <div
             className="p-4 border border-[var(--border-primary)] transition-all duration-200"
             style={{
-              backgroundColor: themeColors[settings.theme].bg,
-              color: themeColors[settings.theme].text,
+              backgroundColor: READER_THEME_COLORS[settings.theme as ReaderTheme].bg,
+              color: READER_THEME_COLORS[settings.theme as ReaderTheme].text,
               fontFamily: settings.fontFamily,
               fontSize: `${settings.fontSize}px`,
               lineHeight: settings.lineHeight,
@@ -341,15 +328,7 @@ export function ReaderSettings() {
         <div className="border-t border-[var(--border-primary)] pt-4">
           <button
             onClick={() => {
-              updateSettings({
-                theme: 'light',
-                fontFamily: 'Georgia',
-                fontSize: 18,
-                lineHeight: 1.8,
-                margins: 40,
-                textAlign: 'left',
-                contentWidth: 65,
-              });
+              updateSettings(DEFAULT_READER_SETTINGS);
               syncSettings();
             }}
             className="w-full py-2 border border-[var(--border-primary)] font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors"

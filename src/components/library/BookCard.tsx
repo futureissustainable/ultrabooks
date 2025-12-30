@@ -32,7 +32,7 @@ export function BookCard({ book }: BookCardProps) {
 
   return (
     <>
-      <Card variant="default" padding="none" className="group relative overflow-hidden hover:border-[var(--border-strong)] transition-all duration-[50ms]">
+      <Card variant="default" padding="none" className="group relative overflow-hidden card-lift focus-ring">
         {/* Cover or Placeholder */}
         <Link href={`/reader/${book.id}`}>
           <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden border-b border-[var(--border-primary)]">
@@ -55,9 +55,9 @@ export function BookCard({ book }: BookCardProps) {
             )}
 
             {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-[50ms] flex items-center justify-center">
-              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)]">
-                Open
+            <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-100 flex items-center justify-center backdrop-blur-sm">
+              <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--text-primary)] btn-shine">
+                Read Now
               </span>
             </div>
           </div>
@@ -82,18 +82,18 @@ export function BookCard({ book }: BookCardProps) {
                 bookId={book.id}
                 fileUrl={book.file_url}
                 variant="icon"
-                className="!p-1 !min-w-0 !min-h-0 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-[50ms] !border-transparent hover:!border-[var(--border-primary)]"
+                className="!p-1.5 !min-w-0 !min-h-0 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-100 !border-transparent hover:!border-[var(--border-primary)] focus-ring"
               />
               <button
                 onClick={() => setShowShareModal(true)}
-                className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border border-transparent hover:border-[var(--border-primary)]"
+                className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-100 border border-transparent hover:border-[var(--border-primary)] focus-ring"
                 aria-label="Share book"
               >
                 <PixelIcon name="share" size={12} />
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border border-transparent hover:border-[var(--border-primary)]"
+                className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-100 border border-transparent hover:border-[var(--border-primary)] focus-ring"
                 aria-label="Delete book"
               >
                 <PixelIcon name="trash" size={12} />

@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
 import { useStreakStore } from '@/lib/stores/streak-store';
+import { READER_THEME_COLORS, READER_CONSTANTS, type ReaderTheme } from '@/lib/constants/reader-theme';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { BookmarksList } from './BookmarksList';
@@ -245,7 +246,7 @@ export function PdfReader({ book }: PdfReaderProps) {
             if (pageElement) {
               pageElement.scrollIntoView({ behavior: 'auto', block: 'start' });
             }
-          }, 100);
+          }, READER_CONSTANTS.SCROLL_TIMEOUT);
         }
       } catch (err) {
         console.error('Error loading PDF:', err);
@@ -393,17 +394,13 @@ export function PdfReader({ book }: PdfReaderProps) {
     }
   }, [totalPages]);
 
-  // Get theme background color
-  const getThemeBackground = () => {
-    switch (settings.theme) {
-      case 'dark':
-        return '#000000';
-      case 'sepia':
-        return '#f4ecd8';
-      default:
-        return '#f5f5f5';
-    }
-  };
+  // Get theme background color using shared constants
+  const getThemeBackground = useCallback(() => {
+    const theme = (settings.theme as ReaderTheme) || 'light';
+    // For PDF, we use a slightly lighter background for light mode for better contrast
+    if (theme === 'light') return '#f5f5f5';
+    return READER_THEME_COLORS[theme].bg;
+  }, [settings.theme]);
 
   if (error) {
     return (
