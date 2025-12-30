@@ -4,12 +4,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { useStreakStore } from '@/lib/stores/streak-store';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { TableOfContents } from './TableOfContents';
 import { BookmarksList } from './BookmarksList';
 import { HighlightsList } from './HighlightsList';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { StreakCelebration, StreakModal, StreakGoalModal } from '@/components/streak';
 
 interface EpubReaderProps {
   book: Book;
@@ -73,9 +75,33 @@ export function EpubReader({ book }: EpubReaderProps) {
     addHighlight,
   } = useReaderStore();
 
+  const { startReadingSession, endReadingSession, checkAndUpdateStreak } = useStreakStore();
+
   const isCurrentLocationBookmarked = bookmarks.some(
     (b) => b.location === currentSection
   );
+
+  // Track reading session for streak
+  useEffect(() => {
+    startReadingSession();
+    checkAndUpdateStreak();
+
+    // End session when component unmounts or page hidden
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        endReadingSession();
+      } else {
+        startReadingSession();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      endReadingSession();
+    };
+  }, [startReadingSession, endReadingSession, checkAndUpdateStreak]);
 
   // Generate theme colors
   const getThemeColors = useCallback(() => {
@@ -474,6 +500,11 @@ export function EpubReader({ book }: EpubReaderProps) {
 
         setSections(loadedSections);
 
+        // Initialize currentSection to first section so bookmarking works immediately
+        if (loadedSections.length > 0) {
+          setCurrentSection(loadedSections[0].id);
+        }
+
         // Load bookmarks and highlights
         await Promise.all([
           loadBookmarks(book.id),
@@ -485,8 +516,9 @@ export function EpubReader({ book }: EpubReaderProps) {
 
         setIsLoading(false);
 
-        // Scroll to saved position
+        // Scroll to saved position and update currentSection
         if (savedProgress?.current_location) {
+          setCurrentSection(savedProgress.current_location);
           setTimeout(() => {
             const el = sectionRefs.current.get(savedProgress.current_location);
             if (el) {
@@ -557,7 +589,7 @@ export function EpubReader({ book }: EpubReaderProps) {
             <PixelIcon name="close" size={24} className="text-[var(--text-secondary)]" />
           </div>
           <h2 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Error Loading Book</h2>
-          <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">{error}</p>
+          <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">{error}</p>
         </div>
       </div>
     );
@@ -585,10 +617,10 @@ export function EpubReader({ book }: EpubReaderProps) {
         onMouseDown={(e) => handleMouseDown(e, 'left')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
-          'opacity-0 group-hover:opacity-100 group-hover:cursor-ew-resize',
-          'bg-current',
-          isDragging && dragSide === 'left' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 transition-all duration-200',
+          'opacity-0 group-hover:opacity-60 group-hover:cursor-ew-resize',
+          'bg-[var(--text-secondary)]',
+          isDragging && dragSide === 'left' && 'opacity-100 w-1 h-24 bg-[var(--text-primary)]'
         )} style={{ opacity: isDragging && dragSide === 'left' ? 1 : undefined }} />
       </div>
 
@@ -599,10 +631,10 @@ export function EpubReader({ book }: EpubReaderProps) {
         onMouseDown={(e) => handleMouseDown(e, 'right')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
-          'opacity-0 group-hover:opacity-100 group-hover:cursor-ew-resize',
-          'bg-current',
-          isDragging && dragSide === 'right' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 transition-all duration-200',
+          'opacity-0 group-hover:opacity-60 group-hover:cursor-ew-resize',
+          'bg-[var(--text-secondary)]',
+          isDragging && dragSide === 'right' && 'opacity-100 w-1 h-24 bg-[var(--text-primary)]'
         )} style={{ opacity: isDragging && dragSide === 'right' ? 1 : undefined }} />
       </div>
 
@@ -691,7 +723,7 @@ export function EpubReader({ book }: EpubReaderProps) {
 
       {/* Width indicator */}
       {isDragging && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-black text-white px-3 py-1 rounded font-mono text-sm">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] text-sm">
           {Math.round(contentWidth)}%
         </div>
       )}
@@ -705,6 +737,11 @@ export function EpubReader({ book }: EpubReaderProps) {
       <ReaderSettings />
       <BookmarksList onNavigate={handleNavigate} />
       <HighlightsList onNavigate={handleNavigate} />
+
+      {/* Streak */}
+      <StreakModal />
+      <StreakGoalModal />
+      <StreakCelebration />
     </div>
   );
 }

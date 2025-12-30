@@ -4,12 +4,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { useStreakStore } from '@/lib/stores/streak-store';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { BookmarksList } from './BookmarksList';
 import { HighlightsList } from './HighlightsList';
 import { Button } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { StreakCelebration, StreakModal, StreakGoalModal } from '@/components/streak';
 
 interface PdfReaderProps {
   book: Book;
@@ -56,10 +58,37 @@ export function PdfReader({ book }: PdfReaderProps) {
     loadHighlights,
   } = useReaderStore();
 
+  const {
+    startReadingSession,
+    endReadingSession,
+    checkAndUpdateStreak,
+  } = useStreakStore();
+
   const progress = totalPages > 0 ? (currentPage / totalPages) * 100 : 0;
   const isCurrentPageBookmarked = bookmarks.some(
     (b) => b.page === currentPage
   );
+
+  // Track reading session for streak (time-based)
+  useEffect(() => {
+    startReadingSession(currentPage);
+    checkAndUpdateStreak();
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        endReadingSession(currentPage);
+      } else {
+        startReadingSession(currentPage);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      endReadingSession(currentPage);
+    };
+  }, [startReadingSession, endReadingSession, checkAndUpdateStreak, currentPage]);
 
   // Handle drag to resize - using pointer events for better tracking
   const handleMouseDown = useCallback((e: React.MouseEvent, side: 'left' | 'right') => {
@@ -384,7 +413,7 @@ export function PdfReader({ book }: PdfReaderProps) {
             <PixelIcon name="close" size={24} className="text-[var(--text-secondary)]" />
           </div>
           <h2 className="font-[family-name:var(--font-display)] text-lg uppercase mb-2">Error Loading PDF</h2>
-          <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">{error}</p>
+          <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">{error}</p>
         </div>
       </div>
     );
@@ -408,10 +437,10 @@ export function PdfReader({ book }: PdfReaderProps) {
         onMouseDown={(e) => handleMouseDown(e, 'left')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 transition-all duration-200',
           'opacity-0 group-hover:opacity-60 group-hover:cursor-ew-resize',
-          'bg-gray-500',
-          isDragging && dragSide === 'left' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+          'bg-[var(--text-secondary)]',
+          isDragging && dragSide === 'left' && 'opacity-100 w-1 h-24 bg-[var(--text-primary)]'
         )} style={{ opacity: isDragging && dragSide === 'left' ? 1 : undefined }} />
       </div>
 
@@ -422,10 +451,10 @@ export function PdfReader({ book }: PdfReaderProps) {
         onMouseDown={(e) => handleMouseDown(e, 'right')}
       >
         <div className={clsx(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 rounded-full transition-all duration-200',
+          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 transition-all duration-200',
           'opacity-0 group-hover:opacity-60 group-hover:cursor-ew-resize',
-          'bg-gray-500',
-          isDragging && dragSide === 'right' && 'opacity-100 w-1 h-24 bg-[var(--color-accent)]'
+          'bg-[var(--text-secondary)]',
+          isDragging && dragSide === 'right' && 'opacity-100 w-1 h-24 bg-[var(--text-primary)]'
         )} style={{ opacity: isDragging && dragSide === 'right' ? 1 : undefined }} />
       </div>
 
@@ -522,7 +551,7 @@ export function PdfReader({ book }: PdfReaderProps) {
 
       {/* Width indicator during drag */}
       {isDragging && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-black text-white px-3 py-1 rounded font-mono text-sm">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[var(--text-primary)] text-[var(--bg-primary)] border border-[var(--border-primary)] px-3 py-1 font-[family-name:var(--font-mono)] text-sm">
           {Math.round(contentWidth)}%
         </div>
       )}
@@ -531,6 +560,11 @@ export function PdfReader({ book }: PdfReaderProps) {
       <ReaderSettings />
       <BookmarksList onNavigate={handleNavigate} />
       <HighlightsList onNavigate={handleNavigate} />
+
+      {/* Streak */}
+      <StreakModal />
+      <StreakGoalModal />
+      <StreakCelebration />
     </div>
   );
 }

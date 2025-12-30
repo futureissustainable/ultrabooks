@@ -36,7 +36,7 @@ function TocItemComponent({
       <button
         onClick={() => onNavigate(item.href)}
         className={clsx(
-          'w-full text-left py-2 px-3 font-[family-name:var(--font-system)] text-[12px] transition-colors',
+          'w-full text-left py-2 px-3 font-[family-name:var(--font-ui)] text-[12px] transition-colors',
           'hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]',
           isActive && 'bg-[var(--text-primary)] text-[var(--bg-primary)]',
         )}

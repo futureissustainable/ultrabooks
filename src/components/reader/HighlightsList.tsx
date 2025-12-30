@@ -76,7 +76,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
           <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             No highlights yet
           </p>
-          <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-tertiary)] mt-2">
+          <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-tertiary)] mt-2">
             Select text while reading to highlight it
           </p>
         </div>
@@ -93,7 +93,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
               >
                 <p
                   className={clsx(
-                    'font-[family-name:var(--font-system)] text-[12px] px-1 inline leading-relaxed',
+                    'font-[family-name:var(--font-ui)] text-[12px] px-1 inline leading-relaxed',
                     getHighlightStyle(highlight.color)
                   )}
                 >
@@ -165,7 +165,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
                   </div>
                 </div>
               ) : highlight.note ? (
-                <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
+                <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
                   {highlight.note}
                 </p>
               ) : null}

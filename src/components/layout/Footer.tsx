@@ -9,7 +9,7 @@ export function Footer() {
             Ultrabooks
           </span>
           <span className="text-[var(--text-tertiary)]">|</span>
-          <span className="font-[family-name:var(--font-system)] text-sm text-[var(--text-tertiary)]">
+          <span className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-tertiary)]">
             Read Anywhere
           </span>
         </div>

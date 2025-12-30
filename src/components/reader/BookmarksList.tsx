@@ -61,7 +61,7 @@ export function BookmarksList({ onNavigate }: BookmarksListProps) {
           <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             No bookmarks yet
           </p>
-          <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-tertiary)] mt-2">
+          <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-tertiary)] mt-2">
             Click the bookmark icon while reading to save your place
           </p>
         </div>
@@ -126,7 +126,7 @@ export function BookmarksList({ onNavigate }: BookmarksListProps) {
                   </div>
                 </div>
               ) : bookmark.note ? (
-                <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
+                <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
                   {bookmark.note}
                 </p>
               ) : null}

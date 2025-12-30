@@ -68,7 +68,7 @@ export function LoginForm() {
 
           {error && (
             <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-primary)]">
-              <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-primary)]">{error}</p>
+              <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-primary)]">{error}</p>
             </div>
           )}
 
@@ -78,7 +78,7 @@ export function LoginForm() {
         </form>
 
         <div className="mt-6 pt-6 border-t border-[var(--border-primary)]">
-          <p className="font-[family-name:var(--font-system)] text-sm text-center text-[var(--text-secondary)]">
+          <p className="font-[family-name:var(--font-ui)] text-sm text-center text-[var(--text-secondary)]">
             No account?{' '}
             <Link href="/signup" className="text-[var(--text-primary)] hover:underline">
               Sign up

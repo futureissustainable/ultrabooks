@@ -188,7 +188,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Dark Mode</p>
-                    <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">
+                    <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
                       Toggle between light and dark themes
                     </p>
                   </div>
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Cloud Sync</p>
-                    <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">
+                    <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
                       Data syncs automatically
                     </p>
                   </div>
@@ -298,7 +298,7 @@ export default function SettingsPage() {
                   <div className="flex items-center justify-between mb-3">
                     <div>
                       <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Export Data</p>
-                      <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">
+                      <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
                         Download all your data as JSON
                       </p>
                     </div>
@@ -330,7 +330,7 @@ export default function SettingsPage() {
               <div className="p-6 flex items-center justify-between">
                 <div>
                   <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Sign Out</p>
-                  <p className="font-[family-name:var(--font-system)] text-sm text-[var(--text-secondary)]">
+                  <p className="font-[family-name:var(--font-ui)] text-sm text-[var(--text-secondary)]">
                     You can sign back in anytime
                   </p>
                 </div>

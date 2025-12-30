@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { clsx } from 'clsx';
 import { useReaderStore } from '@/lib/stores/reader-store';
+import { useStreakStore } from '@/lib/stores/streak-store';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
 interface ReaderToolbarProps {
@@ -27,6 +29,14 @@ export function ReaderToolbar({
     setBookmarksOpen,
     setHighlightsOpen,
   } = useReaderStore();
+
+  const {
+    currentStreak,
+    todayProgress,
+    setStreakModalOpen,
+  } = useStreakStore();
+
+  const isGoalMet = todayProgress.goalMet;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-primary)] border-b border-[var(--border-primary)]">
@@ -56,10 +66,10 @@ export function ReaderToolbar({
 
         {/* Center - Title and Progress */}
         <div className="hidden sm:flex items-center gap-4">
-          <span className="font-[family-name:var(--font-system)] text-sm truncate max-w-[300px]">
+          <span className="font-[family-name:var(--font-display)] text-sm uppercase tracking-tight truncate max-w-[300px]">
             {title}
           </span>
-          <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-tertiary)]">
+          <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-tertiary)]">
             {currentPage !== undefined && totalPages !== undefined && (
               <>{currentPage}/{totalPages} &middot; </>
             )}
@@ -69,13 +79,30 @@ export function ReaderToolbar({
 
         {/* Right - Actions */}
         <div className="flex items-center gap-1">
+          {/* Streak Button */}
+          <button
+            onClick={() => setStreakModalOpen(true)}
+            className={clsx(
+              'flex items-center gap-1.5 px-2 py-1.5 transition-colors border border-[var(--border-primary)]',
+              isGoalMet
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
+            )}
+            aria-label="View streak"
+          >
+            <PixelIcon name="fire" size={14} />
+            <span className="font-[family-name:var(--font-mono)] text-[11px] tabular-nums">
+              {currentStreak}
+            </span>
+          </button>
           <button
             onClick={onBookmark}
-            className={`p-2 transition-colors border border-[var(--border-primary)] ${
+            className={clsx(
+              'p-2 transition-colors border border-[var(--border-primary)]',
               isBookmarked
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
-            }`}
+            )}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
             <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={14} />

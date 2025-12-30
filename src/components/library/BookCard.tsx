@@ -70,7 +70,7 @@ export function BookCard({ book }: BookCardProps) {
             {book.title}
           </h3>
           {book.author && (
-            <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-secondary)] truncate mb-3">
+            <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-secondary)] truncate mb-3">
               {book.author}
             </p>
           )}
@@ -115,7 +115,7 @@ export function BookCard({ book }: BookCardProps) {
         size="sm"
       >
         <div className="space-y-6">
-          <p className="font-[family-name:var(--font-system)] text-[13px] text-[var(--text-secondary)] leading-relaxed">
+          <p className="font-[family-name:var(--font-ui)] text-[13px] text-[var(--text-secondary)] leading-relaxed">
             Are you sure you want to delete &ldquo;{book.title}&rdquo;? This will also remove all
             bookmarks, highlights, and reading progress.
           </p>

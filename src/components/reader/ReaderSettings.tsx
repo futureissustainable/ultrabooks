@@ -111,7 +111,7 @@ export function ReaderSettings() {
 
         {/* Preview */}
         <div className="border-t border-[var(--border-primary)] pt-4">
-          <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
+          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-3">
             Preview
           </p>
           <div

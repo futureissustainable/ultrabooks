@@ -71,7 +71,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
               <div className="flex-1 min-w-0">
                 <h3 className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] text-[var(--text-primary)] truncate">{book.title}</h3>
                 {book.author && (
-                  <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)] mt-1">{book.author}</p>
+                  <p className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-secondary)] mt-1">{book.author}</p>
                 )}
               </div>
             </div>
@@ -83,7 +83,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Bookmarks</p>
-                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your saved bookmarks</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your saved bookmarks</p>
                   </div>
                   <Toggle
                     checked={options.includeBookmarks}
@@ -94,7 +94,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Highlights</p>
-                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your highlighted passages</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your highlighted passages</p>
                   </div>
                   <Toggle
                     checked={options.includeHighlights}
@@ -105,7 +105,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                 <div className="flex items-center justify-between p-3">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em]">Notes</p>
-                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-tertiary)]">Share your personal notes</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[10px] text-[var(--text-tertiary)]">Share your personal notes</p>
                   </div>
                   <Toggle
                     checked={options.includeNotes}
