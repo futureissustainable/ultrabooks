@@ -28,6 +28,7 @@ type IconName =
   | 'download'
   | 'trash'
   | 'edit'
+  | 'edit-box'
   | 'check'
   | 'check-circle'
   | 'plus'
@@ -85,6 +86,7 @@ const icons: Record<IconName, string> = {
   'download': `M11 4h2v10h-2V4zm-4 6l5 5 5-5h-3V4h-4v6H7zm-3 8h16v2H4v-2z`,
   'trash': `M8 2h8v2h4v2H4V4h4V2zM6 8h12v14H6V8zm2 2v10h2V10H8zm4 0v10h2V10h-2z`,
   'edit': `M16 2l4 4-12 12H4v-4L16 2zm-2 6l-8 8v2h2l8-8-2-2z`,
+  'edit-box': `M2 2h14v6h-2V4H4v16h12v-4h2v6H2V2zm16 0l4 4-8 8h-4v-4l8-8zm-2 6l-4 4v2h2l4-4-2-2z`,
   'check': `M4 12l2-2 4 4 8-8 2 2-10 10-6-6z`,
   'plus': `M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7V4z`,
   'minus': `M4 11h16v2H4v-2z`,

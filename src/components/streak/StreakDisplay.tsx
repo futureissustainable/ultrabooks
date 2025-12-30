@@ -48,7 +48,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
           isGoalMet && 'animate-pulse'
         )}>
           <PixelIcon
-            name="fire"
+            name="trophy"
             size={16}
             className={clsx(
               isGoalMet ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)]',
@@ -72,7 +72,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             'w-8 h-8 flex items-center justify-center border border-[var(--border-primary)] flex-shrink-0',
             isGoalMet ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'bg-[var(--bg-primary)]'
           )}>
-            <PixelIcon name="fire" size={14} />
+            <PixelIcon name="trophy" size={14} />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-[family-name:var(--font-mono)] text-lg tabular-nums leading-none">
@@ -88,7 +88,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
           className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
           aria-label="Edit goal"
         >
-          <PixelIcon name="edit" size={14} />
+          <PixelIcon name="edit-box" size={14} />
         </button>
       </div>
 
