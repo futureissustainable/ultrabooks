@@ -67,28 +67,28 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
     <div className={clsx('border border-[var(--border-primary)] bg-[var(--bg-primary)]', className)}>
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <div className={clsx(
-            'w-8 h-8 flex items-center justify-center border border-[var(--border-primary)]',
+            'w-8 h-8 flex items-center justify-center border border-[var(--border-primary)] flex-shrink-0',
             isGoalMet ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'bg-[var(--bg-primary)]'
           )}>
-            <PixelIcon name="fire" size={16} />
+            <PixelIcon name="fire" size={14} />
           </div>
-          <div>
-            <p className="font-[family-name:var(--font-display)] fs-h-sm uppercase tracking-tight leading-none">
+          <div className="flex items-baseline gap-2">
+            <span className="font-[family-name:var(--font-mono)] text-lg tabular-nums leading-none">
               {currentStreak}
-            </p>
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+            </span>
+            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
               Day Streak
-            </p>
+            </span>
           </div>
         </div>
         <button
           onClick={() => setGoalModalOpen(true)}
-          className="p-1.5 text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
+          className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
           aria-label="Edit goal"
         >
-          <PixelIcon name="settings" size={12} />
+          <PixelIcon name="edit" size={14} />
         </button>
       </div>
 

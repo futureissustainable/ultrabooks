@@ -4,9 +4,10 @@ import { useEffect, useState, useCallback } from 'react';
 import { useBookStore } from '@/lib/stores/book-store';
 import { BookCard } from './BookCard';
 import { BookUpload } from './BookUpload';
-import { WhatsNextRow } from './WhatsNextRow';
+import { BookRow } from './BookRow';
 import { Button, Spinner } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { classicBooks } from '@/lib/classics-data';
 import { clsx } from 'clsx';
 
 export function LibraryGrid() {
@@ -15,6 +16,7 @@ export function LibraryGrid() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [dragError, setDragError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'netflix' | 'grid'>('netflix');
 
   useEffect(() => {
     fetchBooks();
@@ -26,10 +28,15 @@ export function LibraryGrid() {
       book.author?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Get 4 most recently added books for "What's Next" section
-  const recentBooks = [...books]
+  // Get books sorted by most recently updated (currently reading)
+  const currentlyReading = [...books]
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+    .slice(0, 10);
+
+  // Get recently added books
+  const recentlyAdded = [...books]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 4);
+    .slice(0, 10);
 
   // Library-wide drag and drop handlers
   const validateFile = (file: File): boolean => {
@@ -56,7 +63,6 @@ export function LibraryGrid() {
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Only set dragging to false if we're leaving the container
     if (e.currentTarget === e.target) {
       setIsDragging(false);
     }
@@ -117,7 +123,7 @@ export function LibraryGrid() {
         </div>
       )}
 
-      {/* Toolbar - OS Style */}
+      {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-1 mb-6 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
         <div className="flex-1 relative border-b sm:border-b-0 sm:border-r border-[var(--border-primary)]">
           <PixelIcon
@@ -132,6 +138,33 @@ export function LibraryGrid() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-3 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border-0"
           />
+        </div>
+        {/* View Toggle */}
+        <div className="flex border-b sm:border-b-0 sm:border-r border-[var(--border-primary)]">
+          <button
+            onClick={() => setViewMode('netflix')}
+            className={clsx(
+              'px-4 py-3 flex items-center justify-center transition-colors',
+              viewMode === 'netflix'
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'hover:bg-[var(--bg-tertiary)]'
+            )}
+            aria-label="Row view"
+          >
+            <PixelIcon name="menu" size={14} />
+          </button>
+          <button
+            onClick={() => setViewMode('grid')}
+            className={clsx(
+              'px-4 py-3 flex items-center justify-center transition-colors border-l border-[var(--border-primary)]',
+              viewMode === 'grid'
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'hover:bg-[var(--bg-tertiary)]'
+            )}
+            aria-label="Grid view"
+          >
+            <PixelIcon name="layout" size={14} />
+          </button>
         </div>
         <Button onClick={() => setIsUploadOpen(true)} className="border-0 px-6 justify-center">
           <PixelIcon name="upload" size={12} className="mr-2" />
@@ -148,36 +181,38 @@ export function LibraryGrid() {
 
       {/* Empty State */}
       {books.length === 0 ? (
-        <div className="text-center py-16 md:py-24 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-          <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
-            <PixelIcon name="library" size={32} className="text-[var(--text-tertiary)]" />
-          </div>
-          <h2 className="font-[family-name:var(--font-display)] fs-h-lg uppercase mb-3">No Books</h2>
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto px-4">
-            Upload your first EPUB, PDF, or MOBI file to get started. Drag & drop anywhere or click below.
-          </p>
-          <Button onClick={() => setIsUploadOpen(true)}>
-            <PixelIcon name="upload" size={12} className="mr-2" />
-            Upload First Book
-          </Button>
-        </div>
-      ) : (
         <>
-          {/* What's Next Section - Only show if we have books and not searching */}
-          {recentBooks.length > 0 && !searchQuery && (
-            <WhatsNextRow books={recentBooks} />
-          )}
-
-          {/* Search Results Info */}
-          {searchQuery && (
-            <div className="mb-4">
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
-                {filteredBooks.length} {filteredBooks.length === 1 ? 'result' : 'results'} for &ldquo;{searchQuery}&rdquo;
-              </p>
+          <div className="text-center py-16 md:py-24 border border-[var(--border-primary)] bg-[var(--bg-secondary)] mb-8">
+            <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
+              <PixelIcon name="library" size={32} className="text-[var(--text-tertiary)]" />
             </div>
-          )}
+            <h2 className="font-[family-name:var(--font-display)] fs-h-lg uppercase mb-3">No Books Yet</h2>
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto px-4">
+              Upload your first EPUB, PDF, or MOBI file. Or browse our collection of free classics below.
+            </p>
+            <Button onClick={() => setIsUploadOpen(true)}>
+              <PixelIcon name="upload" size={12} className="mr-2" />
+              Upload First Book
+            </Button>
+          </div>
 
-          {/* No Search Results */}
+          {/* Show classics even when library is empty */}
+          <BookRow
+            title="Popular Classics"
+            subtitle="Free public domain books"
+            icon="book-open"
+            classicBooks={classicBooks}
+          />
+        </>
+      ) : searchQuery ? (
+        // Search Results
+        <>
+          <div className="mb-4">
+            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              {filteredBooks.length} {filteredBooks.length === 1 ? 'result' : 'results'} for &ldquo;{searchQuery}&rdquo;
+            </p>
+          </div>
+
           {filteredBooks.length === 0 ? (
             <div className="text-center py-16 md:py-24 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
               <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
@@ -189,26 +224,62 @@ export function LibraryGrid() {
               </p>
             </div>
           ) : (
-            <>
-              {/* Section Header */}
-              {!searchQuery && (
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
-                    All Books ({books.length})
-                  </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+              {filteredBooks.map((book) => (
+                <div key={book.id} className="bg-[var(--bg-primary)]">
+                  <BookCard book={book} />
                 </div>
-              )}
-
-              {/* Book Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
-                {filteredBooks.map((book) => (
-                  <div key={book.id} className="bg-[var(--bg-primary)]">
-                    <BookCard book={book} />
-                  </div>
-                ))}
-              </div>
-            </>
+              ))}
+            </div>
           )}
+        </>
+      ) : viewMode === 'netflix' ? (
+        // Netflix-style row view
+        <>
+          {/* Currently Reading */}
+          {currentlyReading.length > 0 && (
+            <BookRow
+              title="Currently Reading"
+              subtitle="Continue where you left off"
+              icon="book"
+              books={currentlyReading}
+            />
+          )}
+
+          {/* Recently Added */}
+          {recentlyAdded.length > 0 && currentlyReading.length > 0 && (
+            <BookRow
+              title="Recently Added"
+              subtitle="New to your library"
+              icon="clock"
+              books={recentlyAdded}
+            />
+          )}
+
+          {/* Popular Classics */}
+          <BookRow
+            title="Popular Classics"
+            subtitle="Free public domain books"
+            icon="book-open"
+            classicBooks={classicBooks}
+          />
+        </>
+      ) : (
+        // Grid view
+        <>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              All Books ({books.length})
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+            {filteredBooks.map((book) => (
+              <div key={book.id} className="bg-[var(--bg-primary)]">
+                <BookCard book={book} />
+              </div>
+            ))}
+          </div>
         </>
       )}
 

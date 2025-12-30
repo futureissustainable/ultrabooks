@@ -412,10 +412,10 @@ export function EpubReader({ book }: EpubReaderProps) {
   }, [sections, currentSection, book.id, updateProgress]);
 
   // Initialize reader with foliate-js
-  // Wait for hydration to ensure local progress is available
+  // NOTE: We no longer block on hydration here. The book loads immediately,
+  // and we restore progress after loading completes. This prevents infinite
+  // loading if hydration fails or is delayed.
   useEffect(() => {
-    if (!hasHydrated) return;
-
     let mounted = true;
 
     const initReader = async () => {
@@ -554,7 +554,8 @@ export function EpubReader({ book }: EpubReaderProps) {
       blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
       blobUrlsRef.current = [];
     };
-  }, [book.file_url, book.id, book.title, hasHydrated, loadBookmarks, loadHighlights, loadProgress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [book.file_url, book.id, book.title]);
 
   // Navigation
   const handleNavigate = useCallback((href: string) => {
