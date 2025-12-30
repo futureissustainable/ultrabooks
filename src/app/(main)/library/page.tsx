@@ -9,11 +9,13 @@ export default function LibraryPage() {
 
       <main className="flex-1">
         <div className="container-page py-12 md:py-16">
-          <div className="mb-12">
-            <p className="font-body text-[11px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-3">
+          <div className="mb-10 pb-6 border-b border-[var(--border-primary)]">
+            <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3">
               Your Collection
             </p>
-            <h1 className="font-heading">My Library</h1>
+            <h1 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl uppercase">
+              Library
+            </h1>
           </div>
           <LibraryGrid />
         </div>

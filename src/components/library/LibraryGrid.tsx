@@ -27,7 +27,7 @@ export function LibraryGrid() {
       <div className="flex items-center justify-center py-32">
         <div className="flex flex-col items-center gap-6">
           <Spinner size="lg" />
-          <p className="font-body text-[12px] uppercase tracking-[0.15em] text-[var(--text-secondary)] animate-pulse-brutal">
+          <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             Loading library...
           </p>
         </div>
@@ -37,60 +37,66 @@ export function LibraryGrid() {
 
   return (
     <div>
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-10">
-        <div className="flex-1 relative">
+      {/* Toolbar - OS Style */}
+      <div className="flex flex-col sm:flex-row gap-1 mb-8 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+        <div className="flex-1 relative border-r border-[var(--border-primary)] sm:border-r">
           <PixelIcon
             name="search"
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
           />
           <input
             type="text"
-            placeholder="Search books..."
+            placeholder="SEARCH BOOKS..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 font-body text-[13px] border-2 border-[var(--border-primary)] bg-[var(--bg-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] transition-colors"
+            className="w-full pl-10 pr-4 py-3 font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border-0"
           />
         </div>
-        <Button onClick={() => setIsUploadOpen(true)}>
-          <PixelIcon name="upload" size={16} className="mr-2" />
-          Upload Book
+        <Button onClick={() => setIsUploadOpen(true)} className="border-0 px-6">
+          <PixelIcon name="upload" size={12} className="mr-2" />
+          Upload
         </Button>
       </div>
 
       {/* Error State */}
       {error && (
-        <div className="p-5 border-2 border-[var(--accent)] bg-[var(--accent)]/5 mb-8">
-          <p className="font-body text-[13px] text-[var(--accent)]">{error}</p>
+        <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)] mb-8">
+          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
         </div>
       )}
 
       {/* Empty State */}
       {books.length === 0 ? (
-        <div className="text-center py-32 border-2 border-dashed border-[var(--border-subtle)]">
-          <PixelIcon name="library" size={72} className="mx-auto mb-6 text-[var(--text-tertiary)]" />
-          <h2 className="font-heading text-2xl mb-4">No Books Yet</h2>
-          <p className="font-body text-[13px] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto">
-            Upload your first EPUB, PDF, or MOBI file to get started.
+        <div className="text-center py-24 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+          <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
+            <PixelIcon name="library" size={32} className="text-[var(--text-tertiary)]" />
+          </div>
+          <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase mb-3">No Books</h2>
+          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto">
+            Upload your first EPUB, PDF, or MOBI file to get started
           </p>
           <Button onClick={() => setIsUploadOpen(true)}>
-            <PixelIcon name="upload" size={16} className="mr-2" />
-            Upload Your First Book
+            <PixelIcon name="upload" size={12} className="mr-2" />
+            Upload First Book
           </Button>
         </div>
       ) : filteredBooks.length === 0 ? (
-        <div className="text-center py-32 border-2 border-dashed border-[var(--border-subtle)]">
-          <PixelIcon name="search" size={56} className="mx-auto mb-6 text-[var(--text-tertiary)]" />
-          <h2 className="font-heading text-xl mb-3">No Results</h2>
-          <p className="font-body text-[13px] text-[var(--text-secondary)]">
-            No books match your search. Try a different query.
+        <div className="text-center py-24 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+          <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
+            <PixelIcon name="search" size={32} className="text-[var(--text-tertiary)]" />
+          </div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl uppercase mb-3">No Results</h2>
+          <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            No books match your search
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
           {filteredBooks.map((book) => (
-            <BookCard key={book.id} book={book} />
+            <div key={book.id} className="bg-[var(--bg-primary)]">
+              <BookCard book={book} />
+            </div>
           ))}
         </div>
       )}

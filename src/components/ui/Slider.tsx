@@ -20,13 +20,13 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
             {label && (
               <label
                 htmlFor={sliderId}
-                className="text-sm font-medium text-[var(--text-secondary)]"
+                className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]"
               >
                 {label}
               </label>
             )}
             {showValue && (
-              <span className="text-sm font-medium text-[var(--text-primary)]">
+              <span className="font-[family-name:var(--font-ui)] text-[11px] text-[var(--text-primary)]">
                 {value}
               </span>
             )}
@@ -38,15 +38,14 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
           type="range"
           value={value}
           className={clsx(
-            'appearance-none h-2 bg-[var(--bg-tertiary)] rounded-full cursor-pointer',
-            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5',
-            '[&::-webkit-slider-thumb]:bg-[var(--accent)] [&::-webkit-slider-thumb]:rounded-full',
-            '[&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-[var(--shadow-sm)]',
-            '[&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform',
-            '[&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5',
-            '[&::-moz-range-thumb]:bg-[var(--accent)] [&::-moz-range-thumb]:rounded-full',
-            '[&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2',
+            'appearance-none h-4 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] cursor-pointer',
+            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-5',
+            '[&::-webkit-slider-thumb]:bg-[var(--text-primary)] [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[var(--border-strong)]',
+            '[&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing',
+            '[&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-5',
+            '[&::-moz-range-thumb]:bg-[var(--text-primary)] [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-[var(--border-strong)]',
+            '[&::-moz-range-thumb]:cursor-grab',
+            'focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--border-focus)] focus-visible:outline-offset-0',
             fullWidth && 'w-full',
             className
           )}

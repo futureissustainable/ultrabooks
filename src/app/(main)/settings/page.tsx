@@ -9,7 +9,7 @@ import { useThemeStore } from '@/lib/stores/theme-store';
 import { createClient } from '@/lib/supabase/client';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Card, Button, Input, Select, Slider, Toggle } from '@/components/ui';
+import { Button, Input, Select, Slider, Toggle } from '@/components/ui';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -59,7 +59,6 @@ export default function SettingsPage() {
     try {
       const supabase = createClient();
 
-      // Fetch all user data
       const [bookmarksRes, highlightsRes, progressRes, settingsRes] = await Promise.all([
         supabase.from('bookmarks').select('*').eq('user_id', user.id),
         supabase.from('highlights').select('*').eq('user_id', user.id),
@@ -87,7 +86,6 @@ export default function SettingsPage() {
         settings: settingsRes.data || settings,
       };
 
-      // Create and download the file
       const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -124,32 +122,32 @@ export default function SettingsPage() {
 
       <main className="flex-1">
         <div className="container-narrow py-10 md:py-16">
-          <div className="mb-10">
-            <h1 className="text-2xl font-bold mb-2">Settings</h1>
-            <p className="text-[var(--text-secondary)]">
-              Manage your account and reading preferences
+          <div className="mb-10 pb-6 border-b border-[var(--border-primary)]">
+            <p className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3">
+              Preferences
             </p>
+            <h1 className="font-[family-name:var(--font-display)] text-3xl uppercase">Settings</h1>
           </div>
 
           <div className="space-y-6">
             {/* Account Settings */}
-            <Card variant="default" padding="lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-                <h2 className="text-lg font-semibold">Account</h2>
+            <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--text-secondary)]">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                  Account
+                </span>
               </div>
 
-              <div className="space-y-5">
+              <div className="p-6 space-y-5">
                 <div>
-                  <label className="text-sm font-medium text-[var(--text-secondary)] block mb-1.5">
+                  <label className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)] block mb-2">
                     Email
                   </label>
-                  <p className="text-sm">{user?.email}</p>
+                  <p className="font-[family-name:var(--font-mono)] text-[13px]">{user?.email}</p>
                 </div>
 
                 <Input
@@ -162,66 +160,59 @@ export default function SettingsPage() {
 
                 <div className="flex items-center gap-3">
                   <Button onClick={handleProfileSave} disabled={isSaving} size="sm">
-                    {isSaving ? 'Saving...' : 'Save Changes'}
+                    {isSaving ? 'Saving...' : 'Save'}
                   </Button>
                   {saveSuccess && (
-                    <span className="text-sm text-[var(--success)] flex items-center gap-1.5">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Saved!
+                    <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-primary)]">
+                      Saved
                     </span>
                   )}
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Appearance */}
-            <Card variant="default" padding="lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                  </svg>
-                </div>
-                <h2 className="text-lg font-semibold">Appearance</h2>
+            <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--text-secondary)]">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                </svg>
+                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                  Appearance
+                </span>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium mb-1">Dark Mode</p>
-                  <p className="text-xs text-[var(--text-secondary)]">
-                    Toggle between light and dark themes
-                  </p>
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Dark Mode</p>
+                    <p className="font-[family-name:var(--font-system)] text-[11px] text-[var(--text-secondary)]">
+                      Toggle between light and dark themes
+                    </p>
+                  </div>
+                  <Toggle
+                    checked={theme === 'dark'}
+                    onChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                  />
                 </div>
-                <Toggle
-                  checked={theme === 'dark'}
-                  onChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-                />
               </div>
-            </Card>
+            </div>
 
             {/* Reader Settings */}
-            <Card variant="default" padding="lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-                </div>
-                <h2 className="text-lg font-semibold">Reader</h2>
+            <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--text-secondary)]">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                  Reader
+                </span>
               </div>
 
-              <div className="space-y-6">
+              <div className="p-6 space-y-6">
                 <Select
                   label="Reader Theme"
                   options={readerThemeOptions}
@@ -271,86 +262,83 @@ export default function SettingsPage() {
                   fullWidth
                 />
 
-                <p className="text-xs text-[var(--text-tertiary)]">
-                  Reader settings sync across all your devices.
+                <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+                  Settings sync across all devices
                 </p>
               </div>
-            </Card>
+            </div>
 
             {/* Data & Export */}
-            <Card variant="default" padding="lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                </div>
-                <h2 className="text-lg font-semibold">Data & Export</h2>
+            <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className="text-[var(--text-secondary)]">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                  Data
+                </span>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-[var(--bg-secondary)] rounded-xl">
+              <div className="p-6 space-y-4">
+                <div className="flex items-center justify-between p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
                   <div>
-                    <p className="text-sm font-medium mb-1">Cloud Sync</p>
-                    <p className="text-xs text-[var(--text-secondary)]">
-                      All data syncs automatically across devices
+                    <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Cloud Sync</p>
+                    <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-secondary)]">
+                      Data syncs automatically
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-[var(--success)]">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span className="text-xs font-medium">Active</span>
-                  </div>
+                  <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-primary)] px-2 py-1 border border-[var(--text-primary)]">
+                    Active
+                  </span>
                 </div>
 
-                <div className="p-4 bg-[var(--bg-secondary)] rounded-xl">
+                <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <p className="text-sm font-medium mb-1">Export All Data</p>
-                      <p className="text-xs text-[var(--text-secondary)]">
-                        Download your books, bookmarks, highlights, and settings
+                      <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Export Data</p>
+                      <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-secondary)]">
+                        Download all your data as JSON
                       </p>
                     </div>
                   </div>
                   <Button variant="secondary" size="sm" onClick={handleExportData} disabled={isExporting}>
-                    {isExporting ? 'Exporting...' : 'Export as JSON'}
+                    {isExporting ? 'Exporting...' : 'Export'}
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="p-3 bg-[var(--bg-secondary)] rounded-xl">
-                    <p className="text-lg font-semibold">{books.length}</p>
-                    <p className="text-xs text-[var(--text-secondary)]">Books</p>
+                <div className="grid grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-[family-name:var(--font-display)] text-xl">{books.length}</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Books</p>
                   </div>
-                  <div className="p-3 bg-[var(--bg-secondary)] rounded-xl">
-                    <p className="text-lg font-semibold">-</p>
-                    <p className="text-xs text-[var(--text-secondary)]">Bookmarks</p>
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-[family-name:var(--font-display)] text-xl">-</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Bookmarks</p>
                   </div>
-                  <div className="p-3 bg-[var(--bg-secondary)] rounded-xl">
-                    <p className="text-lg font-semibold">-</p>
-                    <p className="text-xs text-[var(--text-secondary)]">Highlights</p>
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-[family-name:var(--font-display)] text-xl">-</p>
+                    <p className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.05em] text-[var(--text-secondary)]">Highlights</p>
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Sign Out */}
-            <Card variant="default" padding="lg" className="border-[var(--error)]">
-              <div className="flex items-center justify-between">
+            <div className="border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
+              <div className="p-6 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-[var(--error)] mb-1">Sign Out</h2>
-                  <p className="text-sm text-[var(--text-secondary)]">
+                  <p className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.02em] mb-1">Sign Out</p>
+                  <p className="font-[family-name:var(--font-system)] text-[10px] text-[var(--text-secondary)]">
                     You can sign back in anytime
                   </p>
                 </div>
                 <Button variant="danger" size="sm" onClick={handleSignOut}>
-                  Sign Out
+                  Exit
                 </Button>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       </main>

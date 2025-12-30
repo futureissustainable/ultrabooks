@@ -30,82 +30,99 @@ export function ReaderToolbar({
   } = useReaderStore();
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 border-b-2 border-[var(--border-primary)]"
-      style={{
-        background: 'var(--bg-primary)',
-        color: 'var(--text-primary)'
-      }}
-    >
-      <div className="h-14 px-4 flex items-center justify-between">
-        {/* Left Section */}
-        <div className="flex items-center gap-3">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-primary)] border-b border-[var(--border-primary)]">
+      {/* Window Titlebar */}
+      <div className="flex items-center justify-between px-2 py-1 bg-[var(--bg-titlebar)] border-b border-[var(--border-primary)]">
+        <div className="flex items-center gap-2">
           <Link href="/library">
-            <Button variant="ghost" size="sm">
-              <PixelIcon name="chevron-left" size={16} />
-            </Button>
+            <button className="w-3 h-3 border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:border-[var(--text-primary)] transition-colors" />
+          </Link>
+          <div className="w-3 h-3 border border-[var(--border-primary)]" />
+          <div className="w-3 h-3 border border-[var(--border-primary)]" />
+        </div>
+        <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.05em] text-[var(--text-secondary)] truncate max-w-[200px] sm:max-w-none">
+          {title}
+        </span>
+        <div className="w-[52px]" /> {/* Spacer for balance */}
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex items-center justify-between px-2 py-1 bg-[var(--bg-secondary)]">
+        {/* Left Section - Navigation */}
+        <div className="flex items-center border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          <Link href="/library">
+            <button className="flex items-center gap-1 px-2 py-1 border-r border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors">
+              <PixelIcon name="chevron-left" size={12} />
+              <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.02em] hidden sm:inline">
+                Library
+              </span>
+            </button>
           </Link>
           <button
             onClick={() => setTocOpen(true)}
-            className="p-2 hover:text-[var(--color-accent)] transition-colors"
+            className="flex items-center gap-1 px-2 py-1 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             aria-label="Table of contents"
           >
-            <PixelIcon name="menu" size={20} />
+            <PixelIcon name="menu" size={12} />
+            <span className="font-[family-name:var(--font-ui)] text-[9px] uppercase tracking-[0.02em] hidden sm:inline">
+              Contents
+            </span>
           </button>
         </div>
 
-        {/* Center - Title and Progress */}
-        <div className="flex-1 text-center mx-4 hidden sm:block">
-          <h1 className="font-ui text-sm truncate">{title}</h1>
-          <div className="flex items-center justify-center gap-2 opacity-60">
-            {currentPage !== undefined && totalPages !== undefined && (
-              <span className="font-mono text-xs">
-                {currentPage} / {totalPages}
-              </span>
-            )}
-            <span className="font-mono text-xs">{Math.round(progress)}%</span>
-          </div>
+        {/* Center - Progress */}
+        <div className="hidden sm:flex items-center gap-3 px-3 py-1 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+          {currentPage !== undefined && totalPages !== undefined && (
+            <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-secondary)]">
+              {currentPage}/{totalPages}
+            </span>
+          )}
+          <span className="font-[family-name:var(--font-mono)] text-[10px]">
+            {Math.round(progress)}%
+          </span>
         </div>
 
-        {/* Right Section */}
-        <div className="flex items-center gap-1">
+        {/* Right Section - Actions */}
+        <div className="flex items-center border border-[var(--border-primary)] bg-[var(--bg-primary)]">
           <button
             onClick={onBookmark}
-            className={`p-2 transition-colors ${
-              isBookmarked ? 'text-[var(--color-accent)]' : 'hover:text-[var(--color-accent)]'
+            className={`flex items-center gap-1 px-2 py-1 border-r border-[var(--border-primary)] transition-colors ${
+              isBookmarked
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
             }`}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
-            <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={20} />
+            <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={12} />
           </button>
           <button
             onClick={() => setBookmarksOpen(true)}
-            className="p-2 hover:text-[var(--color-accent)] transition-colors"
+            className="flex items-center gap-1 px-2 py-1 border-r border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             aria-label="View bookmarks"
           >
-            <PixelIcon name="book-open" size={20} />
+            <PixelIcon name="book-open" size={12} />
           </button>
           <button
             onClick={() => setHighlightsOpen(true)}
-            className="p-2 hover:text-[var(--color-accent)] transition-colors"
+            className="flex items-center gap-1 px-2 py-1 border-r border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             aria-label="View highlights"
           >
-            <PixelIcon name="highlight" size={20} />
+            <PixelIcon name="highlight" size={12} />
           </button>
           <button
             onClick={() => setSettingsOpen(true)}
-            className="p-2 hover:text-[var(--color-accent)] transition-colors"
+            className="flex items-center gap-1 px-2 py-1 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
             aria-label="Reader settings"
           >
-            <PixelIcon name="settings" size={20} />
+            <PixelIcon name="settings" size={12} />
           </button>
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="h-1 bg-[var(--bg-tertiary)]">
+      {/* Progress Bar - Brutalist style */}
+      <div className="h-[2px] bg-[var(--bg-tertiary)]">
         <div
-          className="h-full bg-[var(--color-accent)] transition-all duration-300"
+          className="h-full bg-[var(--text-primary)] transition-all duration-100"
           style={{ width: `${progress}%` }}
         />
       </div>

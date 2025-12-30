@@ -15,28 +15,28 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={clsx(
-          'bg-[var(--bg-primary)]',
-          'rounded-xl',
-          'transition-all duration-200',
+          'bg-[var(--bg-secondary)]',
+          'border border-[var(--border-primary)]',
+          'transition-all duration-[50ms]',
           // Variant styles
           {
-            'border border-[var(--border-primary)]': variant === 'default',
-            'border border-[var(--border-primary)] shadow-[var(--shadow-md)]': variant === 'elevated',
-            'border border-[var(--border-subtle)]': variant === 'outlined',
+            '': variant === 'default',
+            'shadow-[4px_4px_0_rgba(0,0,0,0.3)]': variant === 'elevated',
+            'border-[var(--border-subtle)]': variant === 'outlined',
           },
           // Padding styles
           {
             'p-0': padding === 'none',
-            'p-4': padding === 'sm',
-            'p-6': padding === 'md',
-            'p-8': padding === 'lg',
-            'p-10': padding === 'xl',
+            'p-3': padding === 'sm',
+            'p-4': padding === 'md',
+            'p-6': padding === 'lg',
+            'p-8': padding === 'xl',
           },
           // Hover effect
           hoverable && [
             'cursor-pointer',
-            'hover:border-[var(--border-hover)]',
-            'hover:shadow-[var(--shadow-lg)]',
+            'hover:border-[var(--border-strong)]',
+            'hover:bg-[var(--bg-tertiary)]',
           ],
           className
         )}

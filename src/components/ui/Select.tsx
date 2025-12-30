@@ -15,11 +15,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
-      <div className={clsx('flex flex-col gap-1.5', fullWidth && 'w-full')}>
+      <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full')}>
         {label && (
           <label
             htmlFor={selectId}
-            className="text-sm font-medium text-[var(--text-secondary)]"
+            className="font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.05em] text-[var(--text-secondary)]"
           >
             {label}
           </label>
@@ -28,14 +28,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={clsx(
-            'px-4 py-2.5 text-[15px] appearance-none cursor-pointer',
-            'bg-[var(--bg-primary)] text-[var(--text-primary)]',
-            'border border-[var(--border-primary)] rounded-lg',
-            'focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent',
+            'px-3 py-3 text-[11px] appearance-none cursor-pointer',
+            'font-[family-name:var(--font-ui)] uppercase tracking-[0.02em]',
+            'bg-[var(--bg-secondary)] text-[var(--text-primary)]',
+            'border border-[var(--border-primary)]',
+            'focus:outline-none focus:border-[var(--text-primary)]',
             'disabled:opacity-50 disabled:cursor-not-allowed',
-            'transition-all duration-150',
-            'bg-[url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%236b7280\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'%3E%3C/polyline%3E%3C/svg%3E")] bg-no-repeat bg-[right_12px_center]',
-            error && 'border-[var(--error)]',
+            'transition-all duration-[100ms]',
+            "bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M2 4l4 4 4-4'/%3E%3C/svg%3E\")] bg-no-repeat bg-[right_12px_center]",
+            'pr-8',
+            error && 'border-[var(--text-primary)]',
             fullWidth && 'w-full',
             className
           )}
@@ -48,7 +50,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
         {error && (
-          <span className="text-sm text-[var(--error)]">
+          <span className="font-[family-name:var(--font-ui)] text-[10px] uppercase tracking-[0.02em] text-[var(--text-primary)]">
             {error}
           </span>
         )}
