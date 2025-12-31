@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore, useReaderSettingsHydrated } from '@/lib/stores/reader-store';
 import { useStreakStore } from '@/lib/stores/streak-store';
+import { useSignedUrl } from '@/lib/hooks/useSignedUrl';
 import { READER_THEME_COLORS, READER_CONSTANTS, type ReaderTheme } from '@/lib/constants/reader-theme';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
@@ -81,6 +82,9 @@ export function EpubReader({ book }: EpubReaderProps) {
   const contentWidth = settings.contentWidth;
 
   const { startReadingSession, endReadingSession, checkAndUpdateStreak } = useStreakStore();
+
+  // Get signed URL for the book file (handles both legacy URLs and new paths)
+  const { url: signedFileUrl, isLoading: isUrlLoading, error: urlError } = useSignedUrl(book.file_url);
 
   // Wait for hydration to ensure persisted settings are loaded
   const hasHydrated = useReaderSettingsHydrated();
@@ -425,12 +429,21 @@ export function EpubReader({ book }: EpubReaderProps) {
   useEffect(() => {
     let mounted = true;
 
+    // Wait for signed URL to be ready
+    if (isUrlLoading || !signedFileUrl) {
+      if (urlError) {
+        setError(urlError);
+        setIsLoading(false);
+      }
+      return;
+    }
+
     const initReader = async () => {
       try {
         setLoadingStatus('Fetching book...');
 
-        // Fetch the book file
-        const response = await fetch(book.file_url);
+        // Fetch the book file using signed URL
+        const response = await fetch(signedFileUrl);
         if (!response.ok) throw new Error('Failed to fetch book file');
 
         const blob = await response.blob();
@@ -561,8 +574,8 @@ export function EpubReader({ book }: EpubReaderProps) {
       blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
       blobUrlsRef.current = [];
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [book.file_url, book.id, book.title]);
+    // eslint-disable-next-line react-hooks-exhaustive-deps
+  }, [signedFileUrl, isUrlLoading, urlError, book.id, book.title]);
 
   // Navigation
   const handleNavigate = useCallback((href: string) => {

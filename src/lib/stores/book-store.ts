@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { createClient } from '@/lib/supabase/client';
 import type { Book } from '@/lib/supabase/types';
 import { extractEpubCover, extractEpubMetadata } from '@/lib/epub-utils';
+import { generateFileId, extractPathFromLegacyUrl, isLegacyUrl } from '@/lib/supabase/storage';
 
 interface BookState {
   books: Book[];
@@ -112,9 +113,9 @@ export const useBookStore = create<BookState>((set, get) => ({
         return { book: null, error: 'Unsupported file type. Please upload EPUB, PDF, or MOBI files.' };
       }
 
-      // Upload file to storage
-      const timestamp = Date.now();
-      const filePath = `${user.id}/${timestamp}-${file.name}`;
+      // Upload file to storage with UUID path (unguessable)
+      const fileId = generateFileId();
+      const filePath = `${user.id}/${fileId}.${fileType}`;
       const { error: uploadError } = await supabase.storage
         .from('books')
         .upload(filePath, file);
@@ -124,10 +125,7 @@ export const useBookStore = create<BookState>((set, get) => ({
         return { book: null, error: uploadError.message };
       }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('books')
-        .getPublicUrl(filePath);
+      // Store just the path (not full URL) - signed URLs generated on demand
 
       // Extract title from filename (fallback)
       let title = file.name.replace(/\.(epub|pdf|mobi)$/i, '');
@@ -146,23 +144,22 @@ export const useBookStore = create<BookState>((set, get) => ({
             author = metadata.author;
           }
 
-          // Extract and upload cover
+          // Extract and upload cover to public 'covers' bucket
           const coverBlob = await extractEpubCover(file);
           if (coverBlob) {
             const coverExt = coverBlob.type.split('/')[1] || 'jpg';
-            const coverPath = `${user.id}/covers/${timestamp}-cover.${coverExt}`;
+            const coverId = generateFileId();
+            const coverPath = `${user.id}/${coverId}.${coverExt}`;
 
             const { error: coverUploadError } = await supabase.storage
-              .from('books')
+              .from('covers')
               .upload(coverPath, coverBlob, {
                 contentType: coverBlob.type,
               });
 
             if (!coverUploadError) {
-              const { data: coverUrlData } = supabase.storage
-                .from('books')
-                .getPublicUrl(coverPath);
-              coverUrl = coverUrlData.publicUrl;
+              // Store just the path - public URL constructed on demand
+              coverUrl = coverPath;
             }
           }
         } catch (epubError) {
@@ -171,7 +168,7 @@ export const useBookStore = create<BookState>((set, get) => ({
         }
       }
 
-      // Create book record
+      // Create book record - store paths, not full URLs
       const { data: book, error: insertError } = await supabase
         .from('books')
         .insert({
@@ -179,7 +176,7 @@ export const useBookStore = create<BookState>((set, get) => ({
           title,
           author,
           cover_url: coverUrl,
-          file_url: urlData.publicUrl,
+          file_url: filePath,  // Store path only, signed URL generated on demand
           file_type: fileType,
           file_size: file.size,
         })
@@ -208,19 +205,32 @@ export const useBookStore = create<BookState>((set, get) => ({
     set({ error: null });
 
     try {
-      // Get the book first to delete the file
+      // Get the book first to delete the files
       const { data: book } = await supabase
         .from('books')
-        .select('file_url')
+        .select('file_url, cover_url')
         .eq('id', id)
         .single();
 
       if (book) {
-        // Extract file path from URL and delete from storage
-        const url = new URL(book.file_url);
-        const pathMatch = url.pathname.match(/\/storage\/v1\/object\/public\/books\/(.+)/);
-        if (pathMatch) {
-          await supabase.storage.from('books').remove([pathMatch[1]]);
+        // Delete book file from storage
+        const filePath = isLegacyUrl(book.file_url)
+          ? extractPathFromLegacyUrl(book.file_url)
+          : book.file_url;
+        if (filePath) {
+          await supabase.storage.from('books').remove([filePath]);
+        }
+
+        // Delete cover from covers bucket if it exists
+        if (book.cover_url) {
+          const coverPath = isLegacyUrl(book.cover_url)
+            ? extractPathFromLegacyUrl(book.cover_url)
+            : book.cover_url;
+          if (coverPath) {
+            // Try covers bucket first (new), then books bucket (legacy)
+            await supabase.storage.from('covers').remove([coverPath]);
+            await supabase.storage.from('books').remove([coverPath]);
+          }
         }
       }
 

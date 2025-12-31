@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Book } from '@/lib/supabase/types';
+import { getCoverUrl } from '@/lib/supabase/storage';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
 export interface ClassicBook {
@@ -184,13 +185,15 @@ export function BookRow({
 }
 
 function BookCover({ book }: { book: Book }) {
+  const coverUrl = getCoverUrl(book.cover_url);
+
   return (
     <div className="h-full flex flex-col transition-transform duration-200 group-hover:scale-[1.02]">
       {/* Cover */}
       <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden rounded-sm shadow-md group-hover:shadow-xl transition-shadow duration-200">
-        {book.cover_url ? (
+        {coverUrl ? (
           <Image
-            src={book.cover_url}
+            src={coverUrl}
             alt={book.title}
             fill
             className="object-cover"

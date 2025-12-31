@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useShareStore } from '@/lib/stores/share-store';
+import { getCoverUrl } from '@/lib/supabase/storage';
 import { Card, Button, Spinner } from '@/components/ui';
 import type { SharedBook, Book, Bookmark, Highlight } from '@/lib/supabase/types';
 import { PixelIcon } from '@/components/icons/PixelIcon';
@@ -73,6 +74,9 @@ export default function SharePage() {
 
   const { book, bookmarks, highlights, share } = data;
 
+  // Get cover URL (handles both legacy URLs and new paths)
+  const coverUrl = getCoverUrl(book.cover_url);
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
@@ -98,10 +102,10 @@ export default function SharePage() {
           {/* Book Info */}
           <Card padding="lg" className="mb-8">
             <div className="flex flex-col md:flex-row gap-6">
-              {book.cover_url ? (
+              {coverUrl ? (
                 <div className="relative w-40 h-60 mx-auto md:mx-0 flex-shrink-0">
                   <Image
-                    src={book.cover_url}
+                    src={coverUrl}
                     alt={book.title}
                     fill
                     className="object-cover rounded-xl shadow-lg"

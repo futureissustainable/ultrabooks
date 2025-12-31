@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Book } from '@/lib/supabase/types';
 import { useBookStore } from '@/lib/stores/book-store';
+import { getCoverUrl } from '@/lib/supabase/storage';
 import { Card, Button, Modal } from '@/components/ui';
 import { ShareModal } from './ShareModal';
 import { PixelIcon } from '@/components/icons/PixelIcon';
@@ -18,6 +19,9 @@ export function BookCard({ book }: BookCardProps) {
   const { deleteBook, isLoading } = useBookStore();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+
+  // Get cover URL (handles both legacy URLs and new paths)
+  const coverUrl = getCoverUrl(book.cover_url);
 
   const handleDelete = async () => {
     await deleteBook(book.id);
@@ -36,9 +40,9 @@ export function BookCard({ book }: BookCardProps) {
         {/* Cover or Placeholder */}
         <Link href={`/reader/${book.id}`}>
           <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden border-b border-[var(--border-primary)]">
-            {book.cover_url ? (
+            {coverUrl ? (
               <Image
-                src={book.cover_url}
+                src={coverUrl}
                 alt={book.title}
                 fill
                 className="object-cover"

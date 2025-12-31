@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Modal, Button, Toggle } from '@/components/ui';
 import { useShareStore } from '@/lib/stores/share-store';
+import { getCoverUrl } from '@/lib/supabase/storage';
 import type { Book } from '@/lib/supabase/types';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
@@ -22,6 +23,9 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
     includeHighlights: true,
     includeNotes: false,
   });
+
+  // Get cover URL (handles both legacy URLs and new paths)
+  const coverUrl = getCoverUrl(book.cover_url);
 
   const handleCreateShare = async () => {
     const { shareCode, error } = await createShare(book.id, options);
@@ -52,10 +56,10 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
         {!shareLink ? (
           <>
             <div className="flex items-start gap-4 p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              {book.cover_url ? (
+              {coverUrl ? (
                 <div className="relative w-14 h-20 flex-shrink-0 border border-[var(--border-primary)]">
                   <Image
-                    src={book.cover_url}
+                    src={coverUrl}
                     alt={book.title}
                     fill
                     className="object-cover"
