@@ -58,7 +58,7 @@ export function Header() {
               <PixelIcon name="book" size={16} className="text-[var(--bg-primary)]" />
             </div>
             <span className="font-display fs-h-sm tracking-tight uppercase hidden sm:inline">
-              Ultrabooks
+              ULTRABOOKS
             </span>
           </Link>
 

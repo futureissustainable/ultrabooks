@@ -89,6 +89,7 @@ export function HeroBooks() {
   }
 
   // Create rows with different starting offsets for variety
+  // 9 rows to ensure full coverage on mobile
   const rows = [
     { id: 1, offset: 0, direction: 'left' },
     { id: 2, offset: 5, direction: 'right' },
@@ -96,6 +97,9 @@ export function HeroBooks() {
     { id: 4, offset: 15, direction: 'right' },
     { id: 5, offset: 20, direction: 'left' },
     { id: 6, offset: 25, direction: 'right' },
+    { id: 7, offset: 30, direction: 'left' },
+    { id: 8, offset: 35, direction: 'right' },
+    { id: 9, offset: 40, direction: 'left' },
   ];
 
   // Books per row (duplicated for seamless loop)
