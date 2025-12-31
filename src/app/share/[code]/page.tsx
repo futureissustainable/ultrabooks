@@ -123,16 +123,16 @@ export default function SharePage() {
           <Card padding="lg" className="mb-8">
             <div className="flex flex-col md:flex-row gap-6">
               {coverUrl ? (
-                <div className="relative w-40 h-60 mx-auto md:mx-0 flex-shrink-0">
+                <div className="relative w-40 h-60 mx-auto md:mx-0 flex-shrink-0 border border-[var(--border-primary)] book-shadow">
                   <Image
                     src={coverUrl}
                     alt={book.title}
                     fill
-                    className="object-cover rounded-xl shadow-lg"
+                    className="object-cover"
                   />
                 </div>
               ) : (
-                <div className="w-40 h-60 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center mx-auto md:mx-0 flex-shrink-0">
+                <div className="w-40 h-60 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center mx-auto md:mx-0 flex-shrink-0 book-shadow">
                   <PixelIcon name="book" size={48} className="text-[var(--text-secondary)]" />
                 </div>
               )}

@@ -30,7 +30,7 @@ export default function HomePage() {
                 <div className="w-7 h-7 md:w-8 md:h-8 bg-[var(--text-primary)] flex items-center justify-center">
                   <PixelIcon name="book" size={12} className="text-[var(--bg-primary)]" />
                 </div>
-                <p className="font-ui text-[11px] md:fs-p-sm uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+                <p className="font-ui fs-p-sm uppercase tracking-[0.12em] text-[var(--text-secondary)]">
                   Digital Book Reader
                 </p>
               </div>
@@ -43,7 +43,7 @@ export default function HomePage() {
               </h1>
 
               {/* Subheadline */}
-              <p className="font-ui text-[15px] md:text-[16px] text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-[1.5] reveal reveal-delay-3">
+              <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-relaxed reveal reveal-delay-3">
                 Upload your books once. Read anywhere. Your progress, highlights, and notes sync automatically.
               </p>
 
@@ -90,7 +90,7 @@ export default function HomePage() {
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="sync" size={28} className="text-[var(--bg-primary)]" />
                 </div>
-                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
                   Never Lose Your Place
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
@@ -103,7 +103,7 @@ export default function HomePage() {
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="font" size={28} className="text-[var(--bg-primary)]" />
                 </div>
-                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
                   Your Way, Always
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
@@ -116,7 +116,7 @@ export default function HomePage() {
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="users" size={28} className="text-[var(--bg-primary)]" />
                 </div>
-                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
                   Read Together
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
@@ -156,7 +156,7 @@ export default function HomePage() {
             <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-3">
               No books yet?
             </p>
-            <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight">
+            <h2 className="font-display fs-h-sm md:fs-h-lg uppercase tracking-tight">
               Start with the Classics
             </h2>
             <p className="font-ui fs-p-lg text-[var(--text-secondary)] mt-3 max-w-md mx-auto">

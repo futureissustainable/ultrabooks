@@ -35,7 +35,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'bg-[var(--bg-primary)] text-[var(--text-primary)]',
             'border border-[var(--border-primary)]',
             'placeholder:text-[var(--text-muted)]',
-            'focus:outline-none focus:border-[var(--text-primary)] focus:ring-1 focus:ring-[var(--text-primary)]',
+            'focus:outline-none focus-visible:border-[var(--text-primary)] focus-visible:ring-1 focus-visible:ring-[var(--text-primary)]',
             'disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--bg-secondary)]',
             'transition-all duration-100',
             'caret-[var(--text-primary)]',

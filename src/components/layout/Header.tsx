@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { useThemeStore } from '@/lib/stores/theme-store';
+import { useScrollLock } from '@/lib/hooks/use-scroll-lock';
 import { Button } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 import { clsx } from 'clsx';
@@ -21,17 +22,8 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileMenuOpen]);
+  // Prevent body scroll when mobile menu is open (with reference counting)
+  useScrollLock(mobileMenuOpen);
 
   const handleSignOut = async () => {
     await signOut();

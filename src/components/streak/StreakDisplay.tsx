@@ -75,7 +75,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             <PixelIcon name="trophy" size={14} />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-mono text-lg tabular-nums leading-none">
+            <span className="font-mono fs-p-lg tabular-nums leading-none">
               {currentStreak}
             </span>
             <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">

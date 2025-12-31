@@ -12,7 +12,7 @@ export default function ClubsPage() {
           <div className="w-16 h-16 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-6">
             <PixelIcon name="users" size={32} className="text-[var(--text-secondary)]" />
           </div>
-          <h1 className="font-display text-[24px] md:text-[32px] uppercase leading-[0.9] mb-3">
+          <h1 className="font-display fs-h-lg uppercase leading-[0.9] mb-3">
             Book Clubs
           </h1>
           <p className="font-ui fs-p-lg uppercase tracking-[0.15em] text-[var(--text-tertiary)]">

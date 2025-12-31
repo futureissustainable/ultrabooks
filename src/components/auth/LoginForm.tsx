@@ -44,7 +44,7 @@ export function LoginForm() {
             <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-1">
               Welcome back
             </p>
-            <h1 className="font-display text-[24px] uppercase leading-none">Sign In</h1>
+            <h1 className="font-display fs-h-sm uppercase leading-none">Sign In</h1>
           </div>
         </div>
       </div>

@@ -27,7 +27,7 @@ export function ClassicsCarousel() {
             key={`${book.id}-${index}`}
             className="classics-carousel-item group"
           >
-            <div className="aspect-[2/3] relative overflow-hidden rounded-sm shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div className="aspect-[2/3] relative overflow-hidden border border-[var(--border-primary)] book-shadow transition-all duration-300 group-hover:scale-105">
               {book.cover_url ? (
                 <Image
                   src={book.cover_url}
@@ -37,15 +37,15 @@ export function ClassicsCarousel() {
                   sizes="(max-width: 640px) 120px, (max-width: 1024px) 150px, 180px"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-tertiary)] flex items-center justify-center">
-                  <span className="font-mono text-xs text-[var(--text-tertiary)]">
+                <div className="w-full h-full bg-[var(--bg-tertiary)] flex items-center justify-center">
+                  <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
                     {book.title.slice(0, 2).toUpperCase()}
                   </span>
                 </div>
               )}
             </div>
             <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <p className="font-ui text-xs text-[var(--text-secondary)] truncate text-center">
+              <p className="font-ui fs-p-sm text-[var(--text-secondary)] truncate text-center">
                 {book.title}
               </p>
             </div>

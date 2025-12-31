@@ -201,17 +201,17 @@ export default function CollectionSharePage() {
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {shareLink.include_bookmarks && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full fs-p-lg">
-                      Includes Bookmarks
+                    <span className="px-3 py-1 border border-[var(--border-primary)] bg-[var(--bg-tertiary)] text-[var(--text-secondary)] fs-p-sm uppercase tracking-wide">
+                      Bookmarks
                     </span>
                   )}
                   {shareLink.include_highlights && (
-                    <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full fs-p-lg">
-                      Includes Highlights
+                    <span className="px-3 py-1 border border-[var(--border-primary)] bg-[var(--bg-tertiary)] text-[var(--text-secondary)] fs-p-sm uppercase tracking-wide">
+                      Highlights
                     </span>
                   )}
                   {shareLink.allow_add_to_library && (
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full fs-p-lg">
+                    <span className="px-3 py-1 border border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)] fs-p-sm uppercase tracking-wide">
                       Add to Library
                     </span>
                   )}
@@ -230,7 +230,6 @@ export default function CollectionSharePage() {
                   <Button
                     onClick={handleAddAllToLibrary}
                     disabled={isCopying || allBooksAdded}
-                    className={allBooksAdded ? 'bg-green-600 hover:bg-green-600' : ''}
                   >
                     {allBooksAdded ? (
                       <>
@@ -251,8 +250,8 @@ export default function CollectionSharePage() {
 
           {/* Error Message */}
           {addError && (
-            <div className="mb-6 p-4 border border-red-500 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400">
-              <p className="fs-p-sm">{addError}</p>
+            <div className="mb-6 p-4 border-2 border-[var(--text-primary)] bg-[var(--bg-secondary)]">
+              <p className="fs-p-sm text-[var(--text-primary)]">{addError}</p>
             </div>
           )}
 
@@ -292,7 +291,6 @@ export default function CollectionSharePage() {
                           size="sm"
                           onClick={() => handleAddToLibrary(book)}
                           disabled={isAdding || isAdded || isCopying}
-                          className={isAdded ? 'bg-green-600 hover:bg-green-600' : ''}
                         >
                           {isAdding ? (
                             <Spinner size="sm" />
@@ -313,8 +311,8 @@ export default function CollectionSharePage() {
 
                     {/* Added indicator */}
                     {isAdded && (
-                      <div className="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                        <PixelIcon name="check" size={12} className="text-white" />
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-[var(--text-primary)] flex items-center justify-center border border-[var(--border-primary)]">
+                        <PixelIcon name="check" size={12} className="text-[var(--bg-primary)]" />
                       </div>
                     )}
                   </div>
@@ -348,13 +346,13 @@ export default function CollectionSharePage() {
 
           {/* Sign up CTA for non-authenticated users */}
           {!isAuthenticated && shareLink.allow_add_to_library && (
-            <Card padding="lg" className="text-center bg-gradient-to-br from-[var(--accent)] to-blue-700">
-              <h2 className="fs-h-sm font-bold text-white mb-3">Add These Books to Your Library</h2>
-              <p className="text-white/80 mb-6 max-w-md mx-auto">
+            <Card padding="lg" className="text-center border-2 border-[var(--text-primary)]">
+              <h2 className="fs-h-sm font-bold mb-3">Add These Books to Your Library</h2>
+              <p className="text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
                 Sign up for a free account to add these {books.length} books to your personal library and sync across all devices.
               </p>
               <Link href="/signup">
-                <Button className="bg-white text-[var(--accent)] hover:bg-gray-100">
+                <Button className="btn-shine">
                   Create Free Account
                 </Button>
               </Link>
@@ -363,9 +361,9 @@ export default function CollectionSharePage() {
 
           {/* Already added message */}
           {isAuthenticated && allBooksAdded && (
-            <Card padding="lg" className="text-center">
-              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <PixelIcon name="check" size={32} className="text-white" />
+            <Card padding="lg" className="text-center border-2 border-[var(--text-primary)]">
+              <div className="w-16 h-16 bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-4">
+                <PixelIcon name="check" size={32} className="text-[var(--bg-primary)]" />
               </div>
               <h2 className="fs-h-sm font-bold mb-3">All Books Added!</h2>
               <p className="text-[var(--text-secondary)] mb-6">

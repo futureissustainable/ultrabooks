@@ -388,15 +388,15 @@ export default function SettingsPage() {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-display text-[24px] md:text-[28px] mb-1">{books.length}</p>
+                    <p className="font-display fs-h-sm mb-1">{books.length}</p>
                     <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Books</p>
                   </div>
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-display text-[24px] md:text-[28px] mb-1">-</p>
+                    <p className="font-display fs-h-sm mb-1">-</p>
                     <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Bookmarks</p>
                   </div>
                   <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-display text-[24px] md:text-[28px] mb-1">-</p>
+                    <p className="font-display fs-h-sm mb-1">-</p>
                     <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Highlights</p>
                   </div>
                 </div>

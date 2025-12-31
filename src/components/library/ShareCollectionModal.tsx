@@ -102,7 +102,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
                 })}
                 {books.length > 6 && (
                   <div className="flex-shrink-0 w-12 h-18 border border-[var(--border-primary)] bg-[var(--bg-tertiary)] flex items-center justify-center">
-                    <span className="font-mono text-xs text-[var(--text-secondary)]">
+                    <span className="font-mono fs-p-sm text-[var(--text-secondary)]">
                       +{books.length - 6}
                     </span>
                   </div>

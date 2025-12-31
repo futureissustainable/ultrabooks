@@ -79,7 +79,7 @@ export function BookRow({
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="font-display text-xl md:text-2xl uppercase tracking-tight">
+          <h2 className="font-display fs-h-sm md:fs-h-lg uppercase tracking-tight">
             {title}
           </h2>
           {subtitle && (
@@ -190,7 +190,7 @@ function BookCover({ book }: { book: Book }) {
   return (
     <div className="h-full flex flex-col transition-transform duration-200 group-hover:scale-[1.02]">
       {/* Cover */}
-      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden rounded-sm shadow-md group-hover:shadow-xl transition-shadow duration-200">
+      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden border border-[var(--border-primary)] book-shadow">
         {coverUrl ? (
           <Image
             src={coverUrl}
@@ -204,7 +204,7 @@ function BookCover({ book }: { book: Book }) {
             <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
               <PixelIcon name="book" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] px-2 py-0.5 border border-[var(--border-primary)]">
+            <span className="font-mono fs-p-sm uppercase tracking-widest text-[var(--text-tertiary)] px-2 py-0.5 border border-[var(--border-primary)]">
               {book.file_type}
             </span>
           </div>
@@ -217,13 +217,13 @@ function BookCover({ book }: { book: Book }) {
       {/* Info */}
       <div className="pt-3 pb-1">
         <h3
-          className="font-ui text-sm font-medium truncate leading-tight"
+          className="font-ui fs-p-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
         {book.author && (
-          <p className="font-ui text-xs text-[var(--text-secondary)] truncate mt-0.5">
+          <p className="font-ui fs-p-sm text-[var(--text-secondary)] truncate mt-0.5">
             {book.author}
           </p>
         )}
@@ -236,7 +236,7 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
   return (
     <div className="h-full flex flex-col transition-transform duration-200 group-hover:scale-[1.02]">
       {/* Cover */}
-      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden rounded-sm shadow-md group-hover:shadow-xl transition-shadow duration-200">
+      <div className="aspect-[2/3] bg-[var(--bg-tertiary)] relative overflow-hidden border border-[var(--border-primary)] book-shadow">
         {book.cover_url ? (
           <Image
             src={book.cover_url}
@@ -250,7 +250,7 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
             <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
               <PixelIcon name="book-open" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)]">
+            <span className="font-mono fs-p-sm uppercase tracking-widest text-[var(--text-tertiary)]">
               Classic
             </span>
           </div>
@@ -263,12 +263,12 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
       {/* Info */}
       <div className="pt-3 pb-1">
         <h3
-          className="font-ui text-sm font-medium truncate leading-tight"
+          className="font-ui fs-p-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
-        <p className="font-ui text-xs text-[var(--text-secondary)] truncate mt-0.5">
+        <p className="font-ui fs-p-sm text-[var(--text-secondary)] truncate mt-0.5">
           {book.author}
         </p>
       </div>
