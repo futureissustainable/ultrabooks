@@ -372,26 +372,50 @@ export const useBookStore = create<BookState>((set, get) => ({
 
           if (fileType === 'epub') {
             try {
-              const metadata = await extractEpubMetadata(file);
-              if (metadata.title) title = metadata.title;
-              if (metadata.author) author = metadata.author;
+              // Add timeout to prevent hanging on problematic EPUBs
+              const metadataPromise = Promise.race([
+                extractEpubMetadata(file),
+                new Promise<{ title?: string; author?: string }>((_, reject) =>
+                  setTimeout(() => reject(new Error('Metadata extraction timeout')), 10000)
+                )
+              ]);
 
-              const coverBlob = await extractEpubCover(file);
-              if (coverBlob) {
-                const coverExt = coverBlob.type.split('/')[1] || 'jpg';
-                const coverId = generateFileId();
-                const coverPath = `${user.id}/${coverId}.${coverExt}`;
+              try {
+                const metadata = await metadataPromise;
+                if (metadata.title) title = metadata.title;
+                if (metadata.author) author = metadata.author;
+              } catch (metaErr) {
+                console.warn(`Metadata extraction failed for ${file.name}:`, metaErr);
+              }
 
-                const { error: coverUploadError } = await supabase.storage
-                  .from('covers')
-                  .upload(coverPath, coverBlob, { contentType: coverBlob.type });
+              // Cover extraction with timeout
+              try {
+                const coverPromise = Promise.race([
+                  extractEpubCover(file),
+                  new Promise<Blob | null>((resolve) =>
+                    setTimeout(() => resolve(null), 10000)
+                  )
+                ]);
 
-                if (!coverUploadError) {
-                  coverUrl = coverPath;
+                const coverBlob = await coverPromise;
+                if (coverBlob) {
+                  const coverExt = coverBlob.type.split('/')[1] || 'jpg';
+                  const coverId = generateFileId();
+                  const coverPath = `${user.id}/${coverId}.${coverExt}`;
+
+                  const { error: coverUploadError } = await supabase.storage
+                    .from('covers')
+                    .upload(coverPath, coverBlob, { contentType: coverBlob.type });
+
+                  if (!coverUploadError) {
+                    coverUrl = coverPath;
+                  }
                 }
+              } catch (coverErr) {
+                console.warn(`Cover extraction failed for ${file.name}:`, coverErr);
               }
             } catch (epubError) {
-              // Continue without metadata
+              console.warn(`EPUB processing failed for ${file.name}:`, epubError);
             }
           }
 
