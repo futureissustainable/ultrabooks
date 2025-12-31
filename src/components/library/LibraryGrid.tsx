@@ -317,6 +317,14 @@ export function LibraryGrid() {
       ) : viewMode === 'netflix' ? (
         // Netflix-style row view
         <div className="space-y-10">
+          {/* Your Books - show first */}
+          <BookRow
+            title="Your Library"
+            subtitle={`${books.length} ${books.length === 1 ? 'book' : 'books'}`}
+            books={filteredBooks}
+            onViewAll={() => setViewMode('grid')}
+          />
+
           {/* Popular Classics */}
           <BookRow
             title="Popular Classics"

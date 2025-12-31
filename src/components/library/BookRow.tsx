@@ -98,7 +98,7 @@ export function BookRow({
               className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5"
             >
               View All
-              <PixelIcon name="arrow-right" size={12} />
+              <PixelIcon name="chevron-right" size={12} />
             </button>
           )}
 
