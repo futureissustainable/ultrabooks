@@ -7,7 +7,7 @@ import { Spinner } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { initialize, isLoading } = useAuthStore();
+  const { initialize, isLoading, hasInitialized } = useAuthStore();
   const [supabaseReady, setSupabaseReady] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -25,9 +25,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4">
           <Spinner size="lg" />
-          <p className="font-ui fs-p-lg uppercase tracking-wide animate-pulse-brutal">
-            Loading...
-          </p>
         </div>
       </div>
     );
@@ -83,15 +80,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Supabase configured, waiting for auth
-  if (isLoading) {
+  // Supabase configured, waiting for auth - only block if not yet initialized
+  // Once hasInitialized is true, we render children even if still loading
+  // This prevents infinite loading if initialization fails
+  if (isLoading && !hasInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="flex flex-col items-center gap-4">
           <Spinner size="lg" />
-          <p className="font-ui fs-p-lg uppercase tracking-wide animate-pulse-brutal">
-            Loading...
-          </p>
         </div>
       </div>
     );

@@ -7,6 +7,7 @@ interface AuthState {
   user: User | null;
   profile: Profile | null;
   isLoading: boolean;
+  hasInitialized: boolean; // Track if we've attempted initialization
   error: string | null;
   initialize: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -19,13 +20,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   profile: null,
   isLoading: true,
+  hasInitialized: false,
   error: null,
 
   initialize: async () => {
-    const supabase = createClient();
+    // Prevent duplicate initialization
+    if (get().hasInitialized) return;
+
+    // Mark as initialized IMMEDIATELY - prevents infinite loading
+    set({ hasInitialized: true });
 
     try {
-      // Get initial session
+      const supabase = createClient();
       const {
         data: { user },
       } = await supabase.auth.getUser();
