@@ -13,7 +13,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 
 export function LibraryGrid() {
-  const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, uploadBooks, isUploading, uploadProgress, quota, fetchQuota } = useBookStore();
+  const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, uploadBooks, isUploading, uploadProgress, fetchQuota } = useBookStore();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -219,15 +219,6 @@ export function LibraryGrid() {
               Cancel
             </Button>
           </div>
-        </div>
-      )}
-
-      {/* Upload Quota Info */}
-      {quota && (quota.daily_remaining < 20 || quota.total_remaining < 1000) && (
-        <div className="flex justify-end mb-2">
-          <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
-            Uploads: {quota.daily_remaining}/day | {quota.total_remaining.toLocaleString()} total remaining
-          </span>
         </div>
       )}
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { clsx } from 'clsx';
 import { useBookStore } from '@/lib/stores/book-store';
 import { Button, Modal } from '@/components/ui';
@@ -17,7 +17,7 @@ interface UploadResult {
 }
 
 export function BookUpload({ isOpen, onClose }: BookUploadProps) {
-  const { uploadBook, uploadBooks, isUploading, uploadProgress, quota, fetchQuota } = useBookStore();
+  const { uploadBook, uploadBooks, isUploading, uploadProgress } = useBookStore();
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -25,13 +25,6 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const acceptedTypes = ['.epub', '.pdf', '.mobi'];
-
-  // Fetch quota when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      fetchQuota();
-    }
-  }, [isOpen, fetchQuota]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -155,16 +148,6 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
   return (
     <Modal isOpen={isOpen} onClose={handleCancel} title="Upload Books" size="md">
       <div className="space-y-6">
-        {/* Quota Info */}
-        {quota && (
-          <div className="p-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-            <div className="flex justify-between text-[var(--text-secondary)]">
-              <span className="font-mono fs-p-sm">Today: {quota.daily_remaining}/{quota.daily_limit}</span>
-              <span className="font-mono fs-p-sm">Total: {quota.total_remaining.toLocaleString()}/{quota.total_limit.toLocaleString()}</span>
-            </div>
-          </div>
-        )}
-
         {/* Drop Zone */}
         <div
           onDragOver={handleDragOver}
