@@ -483,16 +483,17 @@
 /* The entire grid is tilted in 3D like Netflix */
 .hero-books-grid {
   position: absolute;
-  /* Mobile: extend much further to fill full viewport height hero */
-  top: -80%;
+  /* Mobile: use viewport height and center properly */
+  top: 50%;
   left: -40%;
   right: -40%;
-  bottom: -80%;
+  height: 250vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 12px;
-  /* 3D rotation: tilted away and to the side */
-  transform: rotateX(25deg) rotateZ(-8deg);
+  /* 3D rotation: tilted away and to the side - include centering transform */
+  transform: translateY(-50%) rotateX(25deg) rotateZ(-8deg);
   transform-origin: center center;
   transform-style: preserve-3d;
 }
@@ -524,11 +525,11 @@
 
 @media (min-width: 768px) {
   .hero-books-grid {
-    /* Desktop: hero is shorter so use less extension */
-    top: -30%;
+    /* Desktop: hero is shorter, use simpler positioning */
+    top: 50%;
     left: -20%;
     right: -20%;
-    bottom: -30%;
+    height: 200vh;
     gap: 16px;
   }
 
