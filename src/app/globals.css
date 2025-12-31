@@ -568,19 +568,84 @@
   }
 }
 
-/* Simple vignette overlay - books visible in center, fades at edges */
+/* Hero overlay - strong fade on left for text readability, books visible on right */
 .hero-gradient-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%,
-    transparent 0%,
-    transparent 30%,
-    rgba(10, 10, 10, 0.4) 55%,
-    rgba(10, 10, 10, 0.8) 75%,
-    var(--bg-primary) 100%
-  );
+  /* Mobile: strong overall coverage for readability */
+  background:
+    /* Strong left-to-right fade */
+    linear-gradient(to right,
+      var(--bg-primary) 0%,
+      rgba(10, 10, 10, 0.95) 25%,
+      rgba(10, 10, 10, 0.7) 50%,
+      rgba(10, 10, 10, 0.4) 75%,
+      rgba(10, 10, 10, 0.3) 100%
+    ),
+    /* Top fade */
+    linear-gradient(to bottom,
+      var(--bg-primary) 0%,
+      transparent 15%
+    ),
+    /* Bottom fade */
+    linear-gradient(to top,
+      var(--bg-primary) 0%,
+      transparent 20%
+    );
+}
+
+/* Tablet and up: allow more books to show on right */
+@media (min-width: 768px) {
+  .hero-gradient-overlay {
+    background:
+      /* Left side solid to semi-transparent */
+      linear-gradient(to right,
+        var(--bg-primary) 0%,
+        rgba(10, 10, 10, 0.92) 20%,
+        rgba(10, 10, 10, 0.75) 40%,
+        rgba(10, 10, 10, 0.4) 60%,
+        rgba(10, 10, 10, 0.2) 80%,
+        transparent 100%
+      ),
+      /* Top edge fade */
+      linear-gradient(to bottom,
+        var(--bg-primary) 0%,
+        transparent 10%
+      ),
+      /* Bottom edge fade */
+      linear-gradient(to top,
+        var(--bg-primary) 0%,
+        transparent 15%
+      );
+  }
+}
+
+/* Large screens: even more books visible */
+@media (min-width: 1280px) {
+  .hero-gradient-overlay {
+    background:
+      /* Left side strong, fades to show books on right */
+      linear-gradient(to right,
+        var(--bg-primary) 0%,
+        rgba(10, 10, 10, 0.9) 15%,
+        rgba(10, 10, 10, 0.7) 30%,
+        rgba(10, 10, 10, 0.35) 50%,
+        rgba(10, 10, 10, 0.15) 70%,
+        transparent 90%
+      ),
+      /* Top edge */
+      linear-gradient(to bottom,
+        var(--bg-primary) 0%,
+        transparent 8%
+      ),
+      /* Bottom edge */
+      linear-gradient(to top,
+        var(--bg-primary) 0%,
+        transparent 12%
+      );
+  }
 }
 
 /* ============================================
