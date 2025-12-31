@@ -130,7 +130,7 @@ export async function getFileUrl(
 
 /**
  * Get a usable URL for a cover image
- * Covers are stored in the public 'covers' bucket
+ * Covers are stored in the 'books' bucket under covers/ prefix
  */
 export function getCoverUrl(coverPathOrUrl: string | null | undefined): string | null {
   if (!coverPathOrUrl) return null;
@@ -140,8 +140,8 @@ export function getCoverUrl(coverPathOrUrl: string | null | undefined): string |
     return coverPathOrUrl;
   }
 
-  // New path format - get from public covers bucket
-  return getPublicUrl(coverPathOrUrl, 'covers');
+  // New path format - get from books bucket (covers are stored there too)
+  return getPublicUrl(coverPathOrUrl, 'books');
 }
 
 /**
