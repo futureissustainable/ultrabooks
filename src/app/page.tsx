@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 import { HeroBooks } from '@/components/home/HeroBooks';
+import { ClassicsCarousel } from '@/components/home/ClassicsCarousel';
 
 export default function HomePage() {
   const { user } = useAuthStore();
@@ -16,12 +17,12 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section with Scrolling Books */}
+        {/* ============================================
+            SECTION 1: HERO
+            ============================================ */}
         <section className="relative border-b border-[var(--border-primary)] overflow-hidden min-h-[560px] md:min-h-[640px] lg:min-h-[720px]">
-          {/* Scrolling Book Covers Background */}
           <HeroBooks />
 
-          {/* Hero Content */}
           <div className="container-page py-20 md:py-28 lg:py-36 relative z-10">
             <div className="max-w-2xl">
               {/* Eyebrow */}
@@ -43,7 +44,7 @@ export default function HomePage() {
 
               {/* Subheadline */}
               <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 md:mb-14 max-w-lg leading-relaxed reveal reveal-delay-3">
-                Upload EPUB, PDF, or MOBI files. Sync your reading progress, bookmarks, and highlights across all your devices.
+                Upload your books once. Read anywhere. Your progress, highlights, and notes sync automatically.
               </p>
 
               {/* CTA Buttons */}
@@ -51,7 +52,7 @@ export default function HomePage() {
                 <Link href={user ? '/library' : '/signup'} className="w-full sm:w-auto">
                   <Button size="lg" className="w-full sm:w-auto btn-shine">
                     <PixelIcon name="arrow-right" size={14} className="mr-2" />
-                    {user ? 'Go to Library' : 'Get Started Free'}
+                    {user ? 'Go to Library' : 'Start Reading Free'}
                   </Button>
                 </Link>
                 {!user && (
@@ -62,180 +63,163 @@ export default function HomePage() {
                   </Link>
                 )}
               </div>
-
-              {/* Trust indicators */}
-              <div className="flex items-center gap-4 mt-8 md:mt-10 reveal reveal-delay-4">
-                <div className="flex items-center gap-2">
-                  <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
-                  <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">Free forever</span>
-                </div>
-                <div className="w-px h-3 bg-[var(--border-primary)]" />
-                <div className="flex items-center gap-2">
-                  <PixelIcon name="lock" size={12} className="text-[var(--text-secondary)]" />
-                  <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">Your data, your control</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* ============================================
+            SECTION 2: FEATURES / ADVANTAGES
+            Psychologically enhanced - focus on benefits
+            ============================================ */}
         <section className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
           <div className="container-page section-spacing-lg">
             {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
-              <div>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)] mb-4">
-                  Core Features
-                </p>
-                <h2 className="font-display fs-h-lg md:text-[40px] uppercase leading-[0.9]">
-                  Everything You Need
-                </h2>
-              </div>
-              <p className="font-ui fs-p-lg text-[var(--text-tertiary)] max-w-sm">
-                A complete reading experience designed for the modern reader
+            <div className="text-center mb-12 md:mb-16">
+              <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)] mb-4">
+                Why readers love it
               </p>
-            </div>
-
-            {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
-              <div className="bg-[var(--bg-primary)] p-8 md:p-10 card-interactive group">
-                <div className="w-14 h-14 bg-[var(--text-primary)] flex items-center justify-center mb-8 group-hover:scale-105 transition-transform">
-                  <PixelIcon name="globe" size={24} className="text-[var(--bg-primary)]" />
-                </div>
-                <h3 className="font-ui fs-h-sm uppercase tracking-[0.02em] mb-4">Cross-Device Sync</h3>
-                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed">
-                  Reading progress, bookmarks, and highlights sync automatically across all devices in real-time.
-                </p>
-              </div>
-
-              <div className="bg-[var(--bg-primary)] p-8 md:p-10 card-interactive group">
-                <div className="w-14 h-14 bg-[var(--text-primary)] flex items-center justify-center mb-8 group-hover:scale-105 transition-transform">
-                  <PixelIcon name="layout" size={24} className="text-[var(--bg-primary)]" />
-                </div>
-                <h3 className="font-ui fs-h-sm uppercase tracking-[0.02em] mb-4">Custom Reader</h3>
-                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed">
-                  Adjust fonts, sizes, margins, and themes. Your reading experience, tailored to you.
-                </p>
-              </div>
-
-              <div className="bg-[var(--bg-primary)] p-8 md:p-10 card-interactive group">
-                <div className="w-14 h-14 bg-[var(--text-primary)] flex items-center justify-center mb-8 group-hover:scale-105 transition-transform">
-                  <PixelIcon name="edit" size={24} className="text-[var(--bg-primary)]" />
-                </div>
-                <h3 className="font-ui fs-h-sm uppercase tracking-[0.02em] mb-4">Highlights & Notes</h3>
-                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed">
-                  Highlight passages and add notes. All annotations saved and synced automatically.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Additional Features Row */}
-        <section className="bg-[var(--bg-primary)] border-b border-[var(--border-primary)]">
-          <div className="container-page section-spacing">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
-              <div className="bg-[var(--bg-secondary)] p-6 md:p-8 hover:bg-[var(--bg-tertiary)] transition-colors group">
-                <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center mb-5 group-hover:border-[var(--text-primary)] transition-colors">
-                  <PixelIcon name="download" size={18} className="text-[var(--text-secondary)]" />
-                </div>
-                <h3 className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">Offline Reading</h3>
-                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] leading-relaxed">
-                  Download books to read without internet connection
-                </p>
-              </div>
-
-              <div className="bg-[var(--bg-secondary)] p-6 md:p-8 hover:bg-[var(--bg-tertiary)] transition-colors group">
-                <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center mb-5 group-hover:border-[var(--text-primary)] transition-colors">
-                  <PixelIcon name="fire" size={18} className="text-[var(--text-secondary)]" />
-                </div>
-                <h3 className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">Reading Streaks</h3>
-                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] leading-relaxed">
-                  Build habits with daily goals and streak tracking
-                </p>
-              </div>
-
-              <div className="bg-[var(--bg-secondary)] p-6 md:p-8 hover:bg-[var(--bg-tertiary)] transition-colors group">
-                <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center mb-5 group-hover:border-[var(--text-primary)] transition-colors">
-                  <PixelIcon name="users" size={18} className="text-[var(--text-secondary)]" />
-                </div>
-                <h3 className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">Book Clubs</h3>
-                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] leading-relaxed">
-                  Read together with friends, share progress
-                </p>
-              </div>
-
-              <div className="bg-[var(--bg-secondary)] p-6 md:p-8 hover:bg-[var(--bg-tertiary)] transition-colors group">
-                <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center mb-5 group-hover:border-[var(--text-primary)] transition-colors">
-                  <PixelIcon name="share" size={18} className="text-[var(--text-secondary)]" />
-                </div>
-                <h3 className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">Share Books</h3>
-                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] leading-relaxed">
-                  Share books with annotations via secure links
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
-          <div className="container-page">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-[var(--border-primary)]">
-              <div className="bg-[var(--bg-secondary)] py-10 md:py-14 text-center">
-                <p className="font-display text-[32px] md:text-[40px] mb-2">3</p>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">File Formats</p>
-              </div>
-              <div className="bg-[var(--bg-secondary)] py-10 md:py-14 text-center">
-                <p className="font-display text-[32px] md:text-[40px] mb-2">∞</p>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Cloud Storage</p>
-              </div>
-              <div className="bg-[var(--bg-secondary)] py-10 md:py-14 text-center">
-                <p className="font-display text-[32px] md:text-[40px] mb-2">100%</p>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Free</p>
-              </div>
-              <div className="bg-[var(--bg-secondary)] py-10 md:py-14 text-center">
-                <p className="font-display text-[32px] md:text-[40px] mb-2">0</p>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Ads</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="bg-[var(--bg-primary)]">
-          <div className="container-page section-spacing-lg">
-            <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)] p-10 md:p-16 text-center">
-              <div className="w-16 h-16 bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-8">
-                <PixelIcon name="book" size={28} className="text-[var(--bg-primary)]" />
-              </div>
-              <h2 className="font-display text-[28px] md:text-[36px] uppercase mb-4 leading-[0.95]">
-                Start Reading Today
+              <h2 className="font-display fs-h-lg md:text-[40px] uppercase leading-[0.9]">
+                Reading Without Friction
               </h2>
-              <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 max-w-md mx-auto leading-relaxed">
-                Free to use. No credit card required. Your books, your data, your way.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href={user ? '/library' : '/signup'}>
-                  <Button size="lg" className="btn-shine">
-                    <PixelIcon name="arrow-right" size={14} className="mr-2" />
-                    {user ? 'Open Library' : 'Create Free Account'}
-                  </Button>
-                </Link>
-                {!user && (
-                  <Link href="/login">
-                    <Button variant="secondary" size="lg">
-                      I have an account
-                    </Button>
-                  </Link>
-                )}
+            </div>
+
+            {/* Feature Cards - Psychological triggers */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+              {/* Loss Aversion: Never lose progress */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <PixelIcon name="shield" size={28} className="text-[var(--bg-primary)]" />
+                </div>
+                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                  Never Lose Your Place
+                </h3>
+                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
+                  Switch devices mid-sentence. Your exact position, highlights, and notes are always there.
+                </p>
               </div>
+
+              {/* Autonomy: Complete control */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <PixelIcon name="sliders" size={28} className="text-[var(--bg-primary)]" />
+                </div>
+                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                  Your Way, Always
+                </h3>
+                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
+                  Fonts, sizes, colors, margins—every detail adjustable. No one reads the same way.
+                </p>
+              </div>
+
+              {/* Social Proof & Belonging */}
+              <div className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <PixelIcon name="users" size={28} className="text-[var(--bg-primary)]" />
+                </div>
+                <h3 className="font-display text-xl uppercase tracking-tight mb-3">
+                  Read Together
+                </h3>
+                <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
+                  Book clubs, shared annotations, reading streaks. Books are better with others.
+                </p>
+              </div>
+            </div>
+
+            {/* Trust signals row */}
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 mt-12 md:mt-16 pt-8 border-t border-[var(--border-primary)]">
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Free forever</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-secondary)]">No ads, ever</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Your data stays yours</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Works offline</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================
+            SECTION 3: CLASSICS CAROUSEL
+            "No books yet? Start with the classics!"
+            ============================================ */}
+        <section className="bg-[var(--bg-primary)] border-b border-[var(--border-primary)] py-16 md:py-24">
+          <div className="text-center mb-8 md:mb-12">
+            <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-3">
+              No books yet?
+            </p>
+            <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight">
+              Start with the Classics
+            </h2>
+            <p className="font-ui fs-p-lg text-[var(--text-secondary)] mt-3 max-w-md mx-auto">
+              Timeless literature, beautifully formatted. Free to download.
+            </p>
+          </div>
+
+          <ClassicsCarousel />
+
+          <div className="text-center mt-8">
+            <Link href={user ? '/library' : '/signup'}>
+              <Button variant="secondary" size="md">
+                <PixelIcon name="book-open" size={14} className="mr-2" />
+                Browse All Classics
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        {/* ============================================
+            SECTION 4: SIGN UP CTA
+            Clear, compelling, minimal
+            ============================================ */}
+        <section className="bg-[var(--bg-secondary)]">
+          <div className="container-page section-spacing-lg">
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="w-20 h-20 bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-8">
+                <PixelIcon name="book" size={36} className="text-[var(--bg-primary)]" />
+              </div>
+
+              <h2 className="font-display text-[32px] md:text-[44px] uppercase mb-5 leading-[0.9]">
+                {user ? 'Welcome Back' : 'Start Reading Today'}
+              </h2>
+
+              <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 max-w-md mx-auto leading-relaxed">
+                {user
+                  ? 'Your library is waiting. Pick up where you left off.'
+                  : 'Join thousands of readers. Free forever, no credit card needed.'}
+              </p>
+
+              <Link href={user ? '/library' : '/signup'}>
+                <Button size="lg" className="btn-shine px-10">
+                  <PixelIcon name="arrow-right" size={14} className="mr-2" />
+                  {user ? 'Open Library' : 'Create Free Account'}
+                </Button>
+              </Link>
+
+              {!user && (
+                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-6">
+                  Already have an account?{' '}
+                  <Link href="/login" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] underline transition-colors">
+                    Sign in
+                  </Link>
+                </p>
+              )}
             </div>
           </div>
         </section>
       </main>
 
+      {/* ============================================
+          SECTION 5: FOOTER
+          ============================================ */}
       <Footer />
     </div>
   );

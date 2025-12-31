@@ -3,16 +3,24 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-// Placeholder book covers - will be replaced with actual covers from /public/hero-covers/
-const generatePlaceholderCovers = (count: number) => {
-  const covers: string[] = [];
-  for (let i = 0; i < count; i++) {
-    covers.push(`/hero-covers/${String(i + 1).padStart(2, '0')}.jpg`);
-  }
-  return covers;
-};
-
-const PLACEHOLDER_COVERS = generatePlaceholderCovers(50);
+// Hero cover images from /public/hero-covers/
+// We have 14 covers: 01-13 are .avif, 14 is .jpg
+const HERO_COVERS = [
+  '/hero-covers/01.avif',
+  '/hero-covers/02.avif',
+  '/hero-covers/03.avif',
+  '/hero-covers/04.avif',
+  '/hero-covers/05.avif',
+  '/hero-covers/06.avif',
+  '/hero-covers/07.avif',
+  '/hero-covers/08.avif',
+  '/hero-covers/09.avif',
+  '/hero-covers/10.avif',
+  '/hero-covers/11.avif',
+  '/hero-covers/12.avif',
+  '/hero-covers/13.avif',
+  '/hero-covers/14.jpg',
+];
 
 interface BookCoverProps {
   index: number;
@@ -21,7 +29,7 @@ interface BookCoverProps {
 
 function BookCover({ index, useRealCovers }: BookCoverProps) {
   const [hasError, setHasError] = useState(false);
-  const coverPath = PLACEHOLDER_COVERS[index % PLACEHOLDER_COVERS.length];
+  const coverPath = HERO_COVERS[index % HERO_COVERS.length];
 
   if (!useRealCovers || hasError) {
     // Render a stylized placeholder
@@ -73,7 +81,7 @@ export function HeroBooks() {
     const img = new window.Image();
     img.onload = () => setUseRealCovers(true);
     img.onerror = () => setUseRealCovers(false);
-    img.src = '/hero-covers/01.jpg';
+    img.src = '/hero-covers/01.avif';
   }, []);
 
   if (!mounted) {

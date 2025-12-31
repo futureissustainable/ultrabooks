@@ -584,6 +584,94 @@
 }
 
 /* ============================================
+   CLASSICS CAROUSEL - Horizontal scrolling
+   ============================================ */
+.classics-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.classics-carousel-track {
+  display: flex;
+  gap: 24px;
+  animation: classics-scroll 60s linear infinite;
+  width: max-content;
+}
+
+.classics-carousel-item {
+  flex-shrink: 0;
+  width: 120px;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .classics-carousel-item {
+    width: 150px;
+  }
+
+  .classics-carousel-track {
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .classics-carousel-item {
+    width: 180px;
+  }
+}
+
+@keyframes classics-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.classics-carousel-container:hover .classics-carousel-track {
+  animation-play-state: paused;
+}
+
+/* Fade overlays */
+.classics-carousel-fade-left,
+.classics-carousel-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.classics-carousel-fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
+}
+
+.classics-carousel-fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+  .classics-carousel-fade-left,
+  .classics-carousel-fade-right {
+    width: 150px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .classics-carousel-fade-left,
+  .classics-carousel-fade-right {
+    width: 200px;
+  }
+}
+
+/* ============================================
    MOBILE MENU
    ============================================ */
 .mobile-menu-overlay {
