@@ -24,20 +24,20 @@ export default function HomePage() {
           {/* Hero Content */}
           <div className="container-page py-16 md:py-24 lg:py-32 relative z-10">
             <div className="max-w-2xl">
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-4 md:mb-6">
+              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-4 md:mb-6 reveal reveal-delay-1">
                 Digital Book Reader
               </p>
-              <h1 className="font-[family-name:var(--font-display)] text-[28px] sm:text-[36px] md:fs-h-xl lg:fs-h-xl uppercase tracking-tight mb-6 md:mb-8 leading-[0.9]">
-                Your Books,
+              <h1 className="font-[family-name:var(--font-display)] text-[28px] sm:text-[36px] md:fs-h-xl lg:fs-h-xl uppercase tracking-tight mb-6 md:mb-8 leading-[0.9] reveal reveal-delay-2">
+                <span className="gradient-text">Your Books,</span>
                 <br />
                 Everywhere
               </h1>
-              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-relaxed">
+              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-relaxed reveal reveal-delay-3">
                 Upload EPUB, PDF, or MOBI files. Sync your reading progress, bookmarks, and highlights across all your devices.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 reveal reveal-delay-4">
                 <Link href={user ? '/library' : '/signup'} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto btn-shine">
                     {user ? 'Go to Library' : 'Get Started'}
                   </Button>
                 </Link>
@@ -65,9 +65,9 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
-              <div className="bg-[var(--bg-primary)] p-6 md:p-8">
-                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
+              <div className="bg-[var(--bg-primary)] p-6 md:p-8 card-interactive">
+                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6 icon-interactive">
                   <PixelIcon name="globe" size={20} className="text-[var(--text-secondary)]" />
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] mb-3">Cross-Device Sync</h3>
@@ -76,8 +76,8 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="bg-[var(--bg-primary)] p-6 md:p-8">
-                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6">
+              <div className="bg-[var(--bg-primary)] p-6 md:p-8 card-interactive">
+                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6 icon-interactive">
                   <PixelIcon name="layout" size={20} className="text-[var(--text-secondary)]" />
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] mb-3">Custom Reader</h3>
@@ -86,8 +86,8 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="bg-[var(--bg-primary)] p-6 md:p-8">
-                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6">
+              <div className="bg-[var(--bg-primary)] p-6 md:p-8 card-interactive">
+                <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mb-6 icon-interactive">
                   <PixelIcon name="edit" size={20} className="text-[var(--text-secondary)]" />
                 </div>
                 <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] mb-3">Highlights & Notes</h3>

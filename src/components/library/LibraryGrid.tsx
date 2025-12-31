@@ -137,7 +137,7 @@ export function LibraryGrid() {
             placeholder="SEARCH BOOKS..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-[50ms] border-0"
+            className="w-full pl-10 pr-4 py-3 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-100 border-0 input-focus"
           />
         </div>
         {/* View Toggle */}
@@ -145,7 +145,7 @@ export function LibraryGrid() {
           <button
             onClick={() => setViewMode('netflix')}
             className={clsx(
-              'px-4 py-3 flex items-center justify-center transition-colors',
+              'px-4 py-3 flex items-center justify-center transition-all duration-100 focus-ring',
               viewMode === 'netflix'
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'hover:bg-[var(--bg-tertiary)]'
@@ -157,7 +157,7 @@ export function LibraryGrid() {
           <button
             onClick={() => setViewMode('grid')}
             className={clsx(
-              'px-4 py-3 flex items-center justify-center transition-colors border-l border-[var(--border-primary)]',
+              'px-4 py-3 flex items-center justify-center transition-all duration-100 border-l border-[var(--border-primary)] focus-ring',
               viewMode === 'grid'
                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                 : 'hover:bg-[var(--bg-tertiary)]'
@@ -224,7 +224,7 @@ export function LibraryGrid() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
               {filteredBooks.map((book) => (
                 <div key={book.id} className="bg-[var(--bg-primary)]">
                   <BookCard book={book} />
@@ -262,7 +262,7 @@ export function LibraryGrid() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
             {filteredBooks.map((book) => (
               <div key={book.id} className="bg-[var(--bg-primary)]">
                 <BookCard book={book} />

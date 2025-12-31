@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore, useReaderSettingsHydrated } from '@/lib/stores/reader-store';
 import { useStreakStore } from '@/lib/stores/streak-store';
+import { READER_THEME_COLORS, READER_CONSTANTS, type ReaderTheme } from '@/lib/constants/reader-theme';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
 import { TableOfContents } from './TableOfContents';
@@ -110,16 +111,15 @@ export function EpubReader({ book }: EpubReaderProps) {
     };
   }, [startReadingSession, endReadingSession, checkAndUpdateStreak]);
 
-  // Generate theme colors
+  // Generate theme colors using shared constants
   const getThemeColors = useCallback(() => {
-    switch (settings.theme) {
-      case 'dark':
-        return { background: '#000000', color: '#ffffff', linkColor: '#ef4444' };
-      case 'sepia':
-        return { background: '#f4ecd8', color: '#5b4636', linkColor: '#b91c1c' };
-      default:
-        return { background: '#ffffff', color: '#000000', linkColor: '#dc2626' };
-    }
+    const theme = (settings.theme as ReaderTheme) || 'light';
+    const colors = READER_THEME_COLORS[theme];
+    return {
+      background: colors.bg,
+      color: colors.text,
+      linkColor: colors.link,
+    };
   }, [settings.theme]);
 
   // Inject dynamic CSS to force settings on EPUB content
@@ -403,7 +403,7 @@ export function EpubReader({ book }: EpubReaderProps) {
       let currentId = sections[0]?.id || '';
       for (const [id, el] of sectionRefs.current.entries()) {
         const rect = el.getBoundingClientRect();
-        if (rect.top <= 100) {
+        if (rect.top <= READER_CONSTANTS.SCROLL_THRESHOLD) {
           currentId = id;
         }
       }
@@ -542,7 +542,7 @@ export function EpubReader({ book }: EpubReaderProps) {
             if (el) {
               el.scrollIntoView({ behavior: 'auto', block: 'start' });
             }
-          }, 100);
+          }, READER_CONSTANTS.SCROLL_TIMEOUT);
         }
       } catch (err) {
         console.error('Error loading book:', err);
