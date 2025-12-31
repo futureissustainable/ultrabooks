@@ -23,6 +23,11 @@ interface LocalProgress {
   };
 }
 
+// Track when settings were last updated locally
+interface SettingsMetadata {
+  updatedAt: string;
+}
+
 interface ReaderState {
   // Hydration state
   _hasHydrated: boolean;
@@ -30,6 +35,7 @@ interface ReaderState {
 
   // Settings
   settings: ReaderSettings;
+  settingsMetadata: SettingsMetadata;
   updateSettings: (settings: Partial<ReaderSettings>) => void;
   syncSettings: () => Promise<void>;
   loadSettings: () => Promise<void>;
@@ -78,6 +84,10 @@ const defaultSettings: ReaderSettings = {
   contentWidth: 65,
 };
 
+const defaultSettingsMetadata: SettingsMetadata = {
+  updatedAt: new Date(0).toISOString(), // Epoch - will be overwritten by any real update
+};
+
 export const useReaderStore = create<ReaderState>()(
   persist(
     (set, get) => ({
@@ -87,10 +97,13 @@ export const useReaderStore = create<ReaderState>()(
 
       // Settings
       settings: defaultSettings,
+      settingsMetadata: defaultSettingsMetadata,
 
       updateSettings: (newSettings) => {
+        const now = new Date().toISOString();
         set((state) => ({
           settings: { ...state.settings, ...newSettings },
+          settingsMetadata: { updatedAt: now },
         }));
       },
 
@@ -99,20 +112,24 @@ export const useReaderStore = create<ReaderState>()(
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        const { settings } = get();
-        await supabase
-          .from('user_settings')
-          .upsert({
-            user_id: user.id,
-            theme: settings.theme,
-            font_family: settings.fontFamily,
-            font_size: settings.fontSize,
-            line_height: settings.lineHeight,
-            margins: settings.margins,
-            text_align: settings.textAlign,
-            content_width: settings.contentWidth,
-            updated_at: new Date().toISOString(),
-          });
+        const { settings, settingsMetadata } = get();
+        try {
+          await supabase
+            .from('user_settings')
+            .upsert({
+              user_id: user.id,
+              theme: settings.theme,
+              font_family: settings.fontFamily,
+              font_size: settings.fontSize,
+              line_height: settings.lineHeight,
+              margins: settings.margins,
+              text_align: settings.textAlign,
+              content_width: settings.contentWidth,
+              updated_at: settingsMetadata.updatedAt,
+            });
+        } catch (error) {
+          console.warn('Failed to sync settings to server:', error);
+        }
       },
 
       loadSettings: async () => {
@@ -127,19 +144,29 @@ export const useReaderStore = create<ReaderState>()(
           .single();
 
         if (data) {
-          // Only update from Supabase if there's actual data
-          // This ensures syncing across devices while respecting local persisted settings
-          set({
-            settings: {
-              theme: data.theme || get().settings.theme,
-              fontFamily: data.font_family || get().settings.fontFamily,
-              fontSize: data.font_size || get().settings.fontSize,
-              lineHeight: data.line_height || get().settings.lineHeight,
-              margins: data.margins ?? get().settings.margins,
-              textAlign: data.text_align || get().settings.textAlign,
-              contentWidth: data.content_width ?? get().settings.contentWidth,
-            },
-          });
+          // Compare timestamps - only use server data if it's newer than local
+          const serverTime = new Date(data.updated_at || 0).getTime();
+          const localTime = new Date(get().settingsMetadata.updatedAt).getTime();
+
+          if (serverTime > localTime) {
+            // Server data is newer, use it
+            set({
+              settings: {
+                theme: data.theme || get().settings.theme,
+                fontFamily: data.font_family || get().settings.fontFamily,
+                fontSize: data.font_size || get().settings.fontSize,
+                lineHeight: data.line_height || get().settings.lineHeight,
+                margins: data.margins ?? get().settings.margins,
+                textAlign: data.text_align || get().settings.textAlign,
+                contentWidth: data.content_width ?? get().settings.contentWidth,
+              },
+              settingsMetadata: { updatedAt: data.updated_at },
+            });
+          } else if (localTime > serverTime) {
+            // Local data is newer, sync it to server
+            get().syncSettings();
+          }
+          // If equal, no action needed
         } else {
           // If no Supabase settings exist, sync current local settings to Supabase
           get().syncSettings();
@@ -418,6 +445,7 @@ export const useReaderStore = create<ReaderState>()(
       name: 'ultrabooks-reader-settings',
       partialize: (state) => ({
         settings: state.settings,
+        settingsMetadata: state.settingsMetadata,
         localProgress: state.localProgress,
       }),
       onRehydrateStorage: () => (state) => {

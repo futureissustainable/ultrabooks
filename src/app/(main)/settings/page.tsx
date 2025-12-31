@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
-import { useReaderStore } from '@/lib/stores/reader-store';
+import { useReaderStore, useReaderSettingsHydrated } from '@/lib/stores/reader-store';
 import { useBookStore } from '@/lib/stores/book-store';
 import { useThemeStore } from '@/lib/stores/theme-store';
 import { useNotificationStore } from '@/lib/stores/notification-store';
@@ -17,6 +17,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { user, profile, updateProfile, signOut } = useAuthStore();
   const { settings, updateSettings, syncSettings, loadSettings } = useReaderStore();
+  const hasHydrated = useReaderSettingsHydrated();
   const { books, fetchBooks } = useBookStore();
   const { theme, setTheme } = useThemeStore();
   const {
@@ -49,9 +50,11 @@ export default function SettingsPage() {
   };
 
   useEffect(() => {
-    loadSettings();
+    if (hasHydrated) {
+      loadSettings();
+    }
     fetchBooks();
-  }, [loadSettings, fetchBooks]);
+  }, [loadSettings, fetchBooks, hasHydrated]);
 
   useEffect(() => {
     if (profile?.display_name) {
