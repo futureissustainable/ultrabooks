@@ -515,8 +515,9 @@
 }
 
 .hero-book-cover {
-  width: 80px;
-  height: 120px;
+  /* Mobile: 25% larger (was 80x120) */
+  width: 100px;
+  height: 150px;
   flex-shrink: 0;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
@@ -535,11 +536,6 @@
 
   .hero-books-row {
     gap: 16px;
-  }
-
-  .hero-book-cover {
-    width: 100px;
-    height: 150px;
   }
 }
 
