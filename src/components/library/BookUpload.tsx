@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { useBookStore } from '@/lib/stores/book-store';
 import { Button, Modal } from '@/components/ui';
@@ -11,14 +11,27 @@ interface BookUploadProps {
   onClose: () => void;
 }
 
+interface UploadResult {
+  successCount: number;
+  failedFiles: { name: string; error: string }[];
+}
+
 export function BookUpload({ isOpen, onClose }: BookUploadProps) {
-  const { uploadBook, isUploading } = useBookStore();
+  const { uploadBook, uploadBooks, isUploading, uploadProgress, quota, fetchQuota } = useBookStore();
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const acceptedTypes = ['.epub', '.pdf', '.mobi'];
+
+  // Fetch quota when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchQuota();
+    }
+  }, [isOpen, fetchQuota]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -30,138 +43,258 @@ export function BookUpload({ isOpen, onClose }: BookUploadProps) {
     setIsDragging(false);
   }, []);
 
-  const validateFile = (file: File): boolean => {
+  const validateFile = (file: File): { valid: boolean; error?: string } => {
     const extension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!acceptedTypes.includes(extension)) {
-      setError(`Invalid file type. Accepted formats: ${acceptedTypes.join(', ')}`);
-      return false;
+      return { valid: false, error: `Invalid file type: ${file.name}` };
     }
     // Max 100MB
     if (file.size > 100 * 1024 * 1024) {
-      setError('File too large. Maximum size is 100MB.');
-      return false;
+      return { valid: false, error: `File too large: ${file.name} (max 100MB)` };
     }
-    return true;
+    return { valid: true };
+  };
+
+  const validateFiles = (files: File[]): { validFiles: File[]; errors: string[] } => {
+    const validFiles: File[] = [];
+    const errors: string[] = [];
+
+    for (const file of files) {
+      const result = validateFile(file);
+      if (result.valid) {
+        validFiles.push(file);
+      } else if (result.error) {
+        errors.push(result.error);
+      }
+    }
+
+    return { validFiles, errors };
   };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     setError(null);
+    setUploadResult(null);
 
-    const file = e.dataTransfer.files[0];
-    if (file && validateFile(file)) {
-      setUploadedFile(file);
+    const files = Array.from(e.dataTransfer.files);
+    const { validFiles, errors } = validateFiles(files);
+
+    if (errors.length > 0) {
+      setError(errors.join('. '));
+    }
+
+    if (validFiles.length > 0) {
+      setSelectedFiles(prev => [...prev, ...validFiles]);
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
-    const file = e.target.files?.[0];
-    if (file && validateFile(file)) {
-      setUploadedFile(file);
+    setUploadResult(null);
+    const files = Array.from(e.target.files || []);
+    const { validFiles, errors } = validateFiles(files);
+
+    if (errors.length > 0) {
+      setError(errors.join('. '));
+    }
+
+    if (validFiles.length > 0) {
+      setSelectedFiles(prev => [...prev, ...validFiles]);
+    }
+
+    // Reset input so same files can be selected again
+    if (e.target) {
+      e.target.value = '';
     }
   };
 
-  const handleUpload = async () => {
-    if (!uploadedFile) return;
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
 
-    const result = await uploadBook(uploadedFile);
-    if (result.error) {
-      setError(result.error);
+  const handleUpload = async () => {
+    if (selectedFiles.length === 0) return;
+
+    setUploadResult(null);
+
+    if (selectedFiles.length === 1) {
+      const result = await uploadBook(selectedFiles[0]);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setSelectedFiles([]);
+        onClose();
+      }
     } else {
-      setUploadedFile(null);
-      onClose();
+      const result = await uploadBooks(selectedFiles);
+      if (result.failed.length > 0) {
+        setUploadResult({
+          successCount: result.successful.length,
+          failedFiles: result.failed.map(f => ({ name: f.file.name, error: f.error }))
+        });
+      }
+      if (result.successful.length > 0 && result.failed.length === 0) {
+        setSelectedFiles([]);
+        onClose();
+      } else if (result.successful.length > 0) {
+        // Remove successful files from selection, keep failed ones
+        const failedNames = new Set(result.failed.map(f => f.file.name));
+        setSelectedFiles(prev => prev.filter(f => failedNames.has(f.name)));
+      }
     }
   };
 
   const handleCancel = () => {
-    setUploadedFile(null);
+    setSelectedFiles([]);
     setError(null);
+    setUploadResult(null);
     onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCancel} title="Upload Book" size="md">
+    <Modal isOpen={isOpen} onClose={handleCancel} title="Upload Books" size="md">
       <div className="space-y-6">
-        {!uploadedFile ? (
-          <>
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={clsx(
-                'border border-[var(--border-primary)] p-12 text-center cursor-pointer transition-all duration-[50ms]',
-                isDragging
-                  ? 'border-[var(--text-primary)] bg-[var(--bg-tertiary)]'
-                  : 'hover:border-[var(--border-strong)] hover:bg-[var(--bg-secondary)]'
-              )}
-            >
-              <div className={clsx(
-                'w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center',
-                isDragging && 'border-[var(--text-primary)] bg-[var(--text-primary)]'
-              )}>
-                <PixelIcon
-                  name="upload"
-                  size={32}
-                  className={isDragging ? 'text-[var(--bg-primary)]' : 'text-[var(--text-tertiary)]'}
-                />
-              </div>
-              <p className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">
-                Drop file here or click to browse
-              </p>
-              <p className="font-mono fs-p-sm text-[var(--text-tertiary)]">
-                EPUB, PDF, MOBI (max 100MB)
-              </p>
-            </div>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept={acceptedTypes.join(',')}
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-          </>
-        ) : (
-          <div className="border border-[var(--border-primary)] p-4 bg-[var(--bg-secondary)]">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 border border-[var(--border-primary)] flex items-center justify-center">
-                <PixelIcon name="book" size={20} className="text-[var(--text-secondary)]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-ui fs-p-sm uppercase tracking-[0.02em] truncate">{uploadedFile.name}</p>
-                <p className="font-mono fs-p-sm text-[var(--text-secondary)]">
-                  {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
-                </p>
-              </div>
-              <button
-                onClick={() => setUploadedFile(null)}
-                className="p-2 hover:bg-[var(--bg-tertiary)] border border-transparent hover:border-[var(--border-primary)] transition-all duration-[50ms]"
-              >
-                <PixelIcon name="close" size={14} className="text-[var(--text-secondary)]" />
-              </button>
+        {/* Quota Info */}
+        {quota && (
+          <div className="p-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+            <div className="flex justify-between text-[var(--text-secondary)]">
+              <span className="font-mono fs-p-sm">Today: {quota.daily_remaining}/{quota.daily_limit}</span>
+              <span className="font-mono fs-p-sm">Total: {quota.total_remaining.toLocaleString()}/{quota.total_limit.toLocaleString()}</span>
             </div>
           </div>
         )}
 
+        {/* Drop Zone */}
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={clsx(
+            'border border-[var(--border-primary)] p-8 text-center cursor-pointer transition-all duration-[50ms]',
+            isDragging
+              ? 'border-[var(--text-primary)] bg-[var(--bg-tertiary)]'
+              : 'hover:border-[var(--border-strong)] hover:bg-[var(--bg-secondary)]'
+          )}
+        >
+          <div className={clsx(
+            'w-12 h-12 mx-auto mb-4 border border-[var(--border-primary)] flex items-center justify-center',
+            isDragging && 'border-[var(--text-primary)] bg-[var(--text-primary)]'
+          )}>
+            <PixelIcon
+              name="upload"
+              size={24}
+              className={isDragging ? 'text-[var(--bg-primary)]' : 'text-[var(--text-tertiary)]'}
+            />
+          </div>
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] mb-2">
+            Drop files here or click to browse
+          </p>
+          <p className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+            EPUB, PDF, MOBI (max 100MB each)
+          </p>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={acceptedTypes.join(',')}
+          onChange={handleFileSelect}
+          className="hidden"
+          multiple
+        />
+
+        {/* Selected Files List */}
+        {selectedFiles.length > 0 && (
+          <div className="border border-[var(--border-primary)] divide-y divide-[var(--border-primary)] max-h-48 overflow-y-auto">
+            {selectedFiles.map((file, index) => (
+              <div key={`${file.name}-${index}`} className="p-3 bg-[var(--bg-secondary)] flex items-center gap-3">
+                <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center flex-shrink-0">
+                  <PixelIcon name="book" size={16} className="text-[var(--text-secondary)]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-ui fs-p-sm uppercase tracking-[0.02em] truncate">{file.name}</p>
+                  <p className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+                    {(file.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleRemoveFile(index); }}
+                  className="p-1.5 hover:bg-[var(--bg-tertiary)] border border-transparent hover:border-[var(--border-primary)] transition-all duration-[50ms]"
+                  disabled={isUploading}
+                >
+                  <PixelIcon name="close" size={12} className="text-[var(--text-secondary)]" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Upload Progress */}
+        {isUploading && uploadProgress && (
+          <div className="p-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+            <div className="flex justify-between mb-2">
+              <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
+                Uploading {uploadProgress.current} of {uploadProgress.total}
+              </span>
+              <span className="font-mono fs-p-sm text-[var(--text-secondary)]">
+                {Math.round((uploadProgress.current / uploadProgress.total) * 100)}%
+              </span>
+            </div>
+            <div className="h-1 bg-[var(--bg-tertiary)]">
+              <div
+                className="h-full bg-[var(--text-primary)] transition-all duration-300"
+                style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+              />
+            </div>
+            <p className="font-mono fs-p-sm text-[var(--text-tertiary)] mt-2 truncate">
+              {uploadProgress.currentFile}
+            </p>
+          </div>
+        )}
+
+        {/* Upload Results */}
+        {uploadResult && (
+          <div className="p-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+            {uploadResult.successCount > 0 && (
+              <p className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-secondary)] mb-2">
+                {uploadResult.successCount} book{uploadResult.successCount !== 1 ? 's' : ''} uploaded successfully
+              </p>
+            )}
+            {uploadResult.failedFiles.length > 0 && (
+              <div>
+                <p className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)] mb-1">
+                  {uploadResult.failedFiles.length} failed:
+                </p>
+                <ul className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+                  {uploadResult.failedFiles.map((f, i) => (
+                    <li key={i} className="truncate">{f.name}: {f.error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Error */}
         {error && (
           <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
             <p className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
           </div>
         )}
 
+        {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button variant="secondary" fullWidth onClick={handleCancel}>
+          <Button variant="secondary" fullWidth onClick={handleCancel} disabled={isUploading}>
             Cancel
           </Button>
           <Button
             fullWidth
             onClick={handleUpload}
-            disabled={!uploadedFile || isUploading}
+            disabled={selectedFiles.length === 0 || isUploading}
           >
-            {isUploading ? 'Uploading...' : 'Upload'}
+            {isUploading ? 'Uploading...' : `Upload${selectedFiles.length > 1 ? ` (${selectedFiles.length})` : ''}`}
           </Button>
         </div>
       </div>
