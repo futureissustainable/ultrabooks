@@ -16,7 +16,7 @@ export default function LoginPage() {
                 <PixelIcon name="book" size={20} className="text-[var(--bg-primary)]" />
               </div>
               <span className="font-display fs-h-sm tracking-tight uppercase">
-                Ultrabooks
+                ULTRABOOKS
               </span>
             </Link>
           </div>
