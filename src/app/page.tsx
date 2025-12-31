@@ -20,44 +20,44 @@ export default function HomePage() {
         {/* ============================================
             SECTION 1: HERO
             ============================================ */}
-        <section className="relative border-b border-[var(--border-primary)] overflow-hidden min-h-[560px] md:min-h-[640px] lg:min-h-[720px]">
+        <section className="relative border-b border-[var(--border-primary)] overflow-hidden h-[calc(100svh-60px)] min-h-[500px] md:min-h-[640px] lg:min-h-[720px] md:h-auto">
           <HeroBooks />
 
-          <div className="container-page py-20 md:py-28 lg:py-36 relative z-10">
+          <div className="container-page relative z-10 h-full flex items-center py-12 md:py-28 lg:py-36">
             <div className="max-w-2xl">
               {/* Eyebrow */}
-              <div className="flex items-center gap-3 mb-6 md:mb-8 reveal reveal-delay-1">
-                <div className="w-8 h-8 bg-[var(--text-primary)] flex items-center justify-center">
-                  <PixelIcon name="book" size={14} className="text-[var(--bg-primary)]" />
+              <div className="flex items-center gap-2 mb-5 md:mb-8 reveal reveal-delay-1">
+                <div className="w-7 h-7 md:w-8 md:h-8 bg-[var(--text-primary)] flex items-center justify-center">
+                  <PixelIcon name="book" size={12} className="text-[var(--bg-primary)]" />
                 </div>
-                <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)]">
+                <p className="font-ui text-[11px] md:fs-p-sm uppercase tracking-[0.12em] text-[var(--text-secondary)]">
                   Digital Book Reader
                 </p>
               </div>
 
               {/* Headline */}
-              <h1 className="font-display text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] uppercase tracking-tight mb-6 md:mb-8 leading-[0.85] reveal reveal-delay-2">
+              <h1 className="font-display text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px] uppercase tracking-tight mb-5 md:mb-8 leading-[0.9] reveal reveal-delay-2">
                 <span className="gradient-text">Your Books,</span>
                 <br />
                 <span className="text-[var(--text-primary)]">Everywhere</span>
               </h1>
 
               {/* Subheadline */}
-              <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 md:mb-14 max-w-lg leading-relaxed reveal reveal-delay-3">
+              <p className="font-ui text-[15px] md:text-[16px] text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-[1.5] reveal reveal-delay-3">
                 Upload your books once. Read anywhere. Your progress, highlights, and notes sync automatically.
               </p>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 reveal reveal-delay-4">
-                <Link href={user ? '/library' : '/signup'} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto btn-shine">
-                    <PixelIcon name="arrow-right" size={14} className="mr-2" />
-                    {user ? 'Go to Library' : 'Start Reading Free'}
+              {/* CTA Buttons - always inline */}
+              <div className="flex flex-row gap-3 reveal reveal-delay-4">
+                <Link href={user ? '/library' : '/signup'}>
+                  <Button size="md" className="btn-shine">
+                    <PixelIcon name="arrow-right" size={12} className="mr-2" />
+                    {user ? 'Library' : 'Get Started'}
                   </Button>
                 </Link>
                 {!user && (
-                  <Link href="/login" className="w-full sm:w-auto">
-                    <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                  <Link href="/login">
+                    <Button variant="secondary" size="md">
                       Sign In
                     </Button>
                   </Link>
