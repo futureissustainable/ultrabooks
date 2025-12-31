@@ -31,12 +31,6 @@ export function LibraryGrid() {
       book.author?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Get books sorted by most recently updated (currently reading)
-  const currentlyReading = [...books]
-    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-    .slice(0, 10);
-
-
   // Library-wide drag and drop handlers
   const validateFile = (file: File): boolean => {
     const acceptedTypes = ['.epub', '.pdf', '.mobi'];
@@ -224,11 +218,9 @@ export function LibraryGrid() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 stagger-children">
               {filteredBooks.map((book) => (
-                <div key={book.id} className="bg-[var(--bg-primary)]">
-                  <BookCard book={book} />
-                </div>
+                <BookCard key={book.id} book={book} />
               ))}
             </div>
           )}
@@ -236,16 +228,6 @@ export function LibraryGrid() {
       ) : viewMode === 'netflix' ? (
         // Netflix-style row view
         <div className="space-y-10">
-          {/* Currently Reading */}
-          {currentlyReading.length > 0 && (
-            <BookRow
-              title="Currently Reading"
-              subtitle="Continue where you left off"
-              books={currentlyReading}
-              onViewAll={() => setViewMode('grid')}
-            />
-          )}
-
           {/* Popular Classics */}
           <BookRow
             title="Popular Classics"
@@ -262,11 +244,9 @@ export function LibraryGrid() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)] stagger-children">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 stagger-children">
             {filteredBooks.map((book) => (
-              <div key={book.id} className="bg-[var(--bg-primary)]">
-                <BookCard book={book} />
-              </div>
+              <BookCard key={book.id} book={book} />
             ))}
           </div>
         </>
