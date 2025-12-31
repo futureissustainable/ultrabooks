@@ -48,7 +48,7 @@ export function ReaderToolbar({
             className="flex items-center gap-2 px-3 py-1.5 fs-p-lg text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
           >
             <PixelIcon name="chevron-left" size={14} />
-            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide hidden sm:inline">
+            <span className="font-ui fs-p-sm uppercase tracking-wide hidden sm:inline">
               Library
             </span>
           </Link>
@@ -58,7 +58,7 @@ export function ReaderToolbar({
             aria-label="Table of contents"
           >
             <PixelIcon name="menu" size={14} />
-            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide hidden sm:inline">
+            <span className="font-ui fs-p-sm uppercase tracking-wide hidden sm:inline">
               Contents
             </span>
           </button>
@@ -66,10 +66,10 @@ export function ReaderToolbar({
 
         {/* Center - Title and Progress */}
         <div className="hidden sm:flex items-center gap-4">
-          <span className="font-[family-name:var(--font-display)] fs-p-lg uppercase tracking-tight truncate max-w-[300px]">
+          <span className="font-display fs-p-lg uppercase tracking-tight truncate max-w-[300px]">
             {title}
           </span>
-          <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
+          <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
             {currentPage !== undefined && totalPages !== undefined && (
               <>{currentPage}/{totalPages} &middot; </>
             )}
@@ -91,7 +91,7 @@ export function ReaderToolbar({
             aria-label="View streak"
           >
             <PixelIcon name="fire" size={14} />
-            <span className="font-[family-name:var(--font-mono)] fs-p-sm tabular-nums">
+            <span className="font-mono fs-p-sm tabular-nums">
               {currentStreak}
             </span>
           </button>

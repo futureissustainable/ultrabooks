@@ -24,10 +24,10 @@ export function BookReader({ book }: BookReaderProps) {
             <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
               <PixelIcon name="alert" size={24} className="text-[var(--text-secondary)]" />
             </div>
-            <p className="font-[family-name:var(--font-ui)] fs-p-lg uppercase tracking-wide mb-1">
+            <p className="font-ui fs-p-lg uppercase tracking-wide mb-1">
               Unsupported Format
             </p>
-            <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)]">
+            <p className="font-mono fs-p-sm text-[var(--text-secondary)]">
               {book.file_type?.toUpperCase() || 'UNKNOWN'}
             </p>
           </div>

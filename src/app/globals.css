@@ -150,6 +150,11 @@
   --color-foreground: var(--text-primary);
   --font-sans: var(--font-ui);
   --font-mono: var(--font-mono);
+
+  /* Custom font families for Tailwind - use with font-display, font-ui, etc. */
+  --font-display: var(--font-mondwest), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-ui: var(--font-neuebit), 'SF Mono', Monaco, 'Courier New', monospace;
+  --font-reading: 'Georgia', 'Times New Roman', serif;
 }
 
 /* ============================================
@@ -287,9 +292,9 @@
     outline-offset: 0;
   }
 
-  /* Disable all rounded corners globally */
-  * {
-    border-radius: 0 !important;
+  /* Brutalist: Sharp corners by default (without !important for flexibility) */
+  *, *::before, *::after {
+    border-radius: 0;
   }
 }
 

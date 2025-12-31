@@ -56,7 +56,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             )}
           />
         </div>
-        <span className="font-[family-name:var(--font-mono)] fs-p-lg tabular-nums">
+        <span className="font-mono fs-p-lg tabular-nums">
           {currentStreak}
         </span>
       </button>
@@ -75,10 +75,10 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
             <PixelIcon name="trophy" size={14} />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-[family-name:var(--font-mono)] text-lg tabular-nums leading-none">
+            <span className="font-mono text-lg tabular-nums leading-none">
               {currentStreak}
             </span>
-            <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+            <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
               Day Streak
             </span>
           </div>
@@ -95,10 +95,10 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
       {/* Today's Progress */}
       <div className="px-3 py-2">
         <div className="flex items-center justify-between mb-1">
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             Today&apos;s Goal
           </p>
-          <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
+          <p className="font-mono fs-p-sm text-[var(--text-tertiary)]">
             {progress} / {goal.target} {goal.type === 'pages' ? 'pages' : 'min'}
           </p>
         </div>
@@ -115,7 +115,7 @@ export function StreakDisplay({ variant = 'compact', className }: StreakDisplayP
           {/* Percentage text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span className={clsx(
-              'font-[family-name:var(--font-mono)] fs-p-sm uppercase tracking-wide',
+              'font-mono fs-p-sm uppercase tracking-wide',
               progressPercent > 50 ? 'text-[var(--bg-primary)]' : 'text-[var(--text-secondary)]'
             )}>
               {Math.round(progressPercent)}%

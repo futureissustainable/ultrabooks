@@ -18,7 +18,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           // Base styles - Brutalist
           'inline-flex items-center justify-center',
-          'font-[family-name:var(--font-ui)]',
+          'font-ui',
           'uppercase tracking-[0.05em]',
           'border border-[var(--border-primary)]',
           'transition-all duration-[50ms]',

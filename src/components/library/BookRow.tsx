@@ -79,11 +79,11 @@ export function BookRow({
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl md:text-2xl uppercase tracking-tight">
+          <h2 className="font-display text-xl md:text-2xl uppercase tracking-tight">
             {title}
           </h2>
           {subtitle && (
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-0.5">
+            <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-0.5">
               {subtitle}
             </p>
           )}
@@ -95,7 +95,7 @@ export function BookRow({
           {onViewAll && (
             <button
               onClick={onViewAll}
-              className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5"
+              className="font-ui fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1.5"
             >
               View All
               <PixelIcon name="chevron-right" size={12} />
@@ -175,7 +175,7 @@ export function BookRow({
         </div>
       ) : (
         <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)] p-8 text-center">
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
             {emptyMessage}
           </p>
         </div>
@@ -204,7 +204,7 @@ function BookCover({ book }: { book: Book }) {
             <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
               <PixelIcon name="book" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] px-2 py-0.5 border border-[var(--border-primary)]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] px-2 py-0.5 border border-[var(--border-primary)]">
               {book.file_type}
             </span>
           </div>
@@ -217,13 +217,13 @@ function BookCover({ book }: { book: Book }) {
       {/* Info */}
       <div className="pt-3 pb-1">
         <h3
-          className="font-[family-name:var(--font-ui)] text-sm font-medium truncate leading-tight"
+          className="font-ui text-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
         {book.author && (
-          <p className="font-[family-name:var(--font-ui)] text-xs text-[var(--text-secondary)] truncate mt-0.5">
+          <p className="font-ui text-xs text-[var(--text-secondary)] truncate mt-0.5">
             {book.author}
           </p>
         )}
@@ -250,7 +250,7 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
             <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
               <PixelIcon name="book-open" size={24} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-widest text-[var(--text-tertiary)]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)]">
               Classic
             </span>
           </div>
@@ -263,12 +263,12 @@ function ClassicBookCover({ book }: { book: ClassicBook }) {
       {/* Info */}
       <div className="pt-3 pb-1">
         <h3
-          className="font-[family-name:var(--font-ui)] text-sm font-medium truncate leading-tight"
+          className="font-ui text-sm font-medium truncate leading-tight"
           title={book.title}
         >
           {book.title}
         </h3>
-        <p className="font-[family-name:var(--font-ui)] text-xs text-[var(--text-secondary)] truncate mt-0.5">
+        <p className="font-ui text-xs text-[var(--text-secondary)] truncate mt-0.5">
           {book.author}
         </p>
       </div>

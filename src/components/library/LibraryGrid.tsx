@@ -126,7 +126,7 @@ export function LibraryGrid() {
       <div className="flex items-center justify-center py-32">
         <div className="flex flex-col items-center gap-6">
           <Spinner size="lg" />
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             Loading library...
           </p>
         </div>
@@ -145,7 +145,7 @@ export function LibraryGrid() {
       {isUploading && (
         <div className="fixed bottom-4 right-4 z-50 flex items-center gap-3 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
           <Spinner size="sm" />
-          <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">
+          <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
             Uploading...
           </span>
         </div>
@@ -154,7 +154,7 @@ export function LibraryGrid() {
       {/* Drag Error Toast */}
       {dragError && (
         <div className="fixed bottom-4 right-4 z-50 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--text-primary)]">
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">
             {dragError}
           </p>
         </div>
@@ -166,11 +166,11 @@ export function LibraryGrid() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleSelectAll}
-              className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               {selectedBooks.size === books.length ? 'Deselect All' : 'Select All'}
             </button>
-            <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
+            <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
               {selectedBooks.size} selected
             </span>
           </div>
@@ -204,7 +204,7 @@ export function LibraryGrid() {
             placeholder="SEARCH BOOKS..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-100 border-0 input-focus"
+            className="w-full pl-10 pr-4 py-3 font-ui fs-p-sm uppercase tracking-[0.02em] bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:bg-[var(--bg-tertiary)] transition-all duration-100 border-0 input-focus"
           />
         </div>
         {/* View Toggle */}
@@ -238,7 +238,7 @@ export function LibraryGrid() {
         {books.length > 0 && !isSelectionMode && (
           <button
             onClick={() => setIsSelectionMode(true)}
-            className="px-4 py-3 flex items-center justify-center gap-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] border-b sm:border-b-0 sm:border-r border-[var(--border-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-100 focus-ring"
+            className="px-4 py-3 flex items-center justify-center gap-2 font-ui fs-p-sm uppercase tracking-[0.02em] border-b sm:border-b-0 sm:border-r border-[var(--border-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-100 focus-ring"
           >
             <PixelIcon name="check" size={14} />
             Select
@@ -253,7 +253,7 @@ export function LibraryGrid() {
       {/* Error State */}
       {error && (
         <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)] mb-6">
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
+          <p className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">{error}</p>
         </div>
       )}
 
@@ -264,8 +264,8 @@ export function LibraryGrid() {
             <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
               <PixelIcon name="library" size={32} className="text-[var(--text-tertiary)]" />
             </div>
-            <h2 className="font-[family-name:var(--font-display)] fs-h-lg uppercase mb-3">No Books Yet</h2>
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto px-4">
+            <h2 className="font-display fs-h-lg uppercase mb-3">No Books Yet</h2>
+            <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] mb-8 max-w-sm mx-auto px-4">
               Upload your first EPUB, PDF, or MOBI file. Or browse our collection of free classics below.
             </p>
             <Button onClick={() => setIsUploadOpen(true)}>
@@ -285,7 +285,7 @@ export function LibraryGrid() {
         // Search Results
         <>
           <div className="mb-4">
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
               {filteredBooks.length} {filteredBooks.length === 1 ? 'result' : 'results'} for &ldquo;{searchQuery}&rdquo;
             </p>
           </div>
@@ -295,8 +295,8 @@ export function LibraryGrid() {
               <div className="w-16 h-16 mx-auto mb-6 border border-[var(--border-primary)] flex items-center justify-center">
                 <PixelIcon name="search" size={32} className="text-[var(--text-tertiary)]" />
               </div>
-              <h2 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-3">No Results</h2>
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <h2 className="font-display fs-h-sm uppercase mb-3">No Results</h2>
+              <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 No books match your search
               </p>
             </div>
@@ -336,7 +336,7 @@ export function LibraryGrid() {
         // Grid view
         <>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+            <h2 className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
               All Books ({books.length})
             </h2>
           </div>

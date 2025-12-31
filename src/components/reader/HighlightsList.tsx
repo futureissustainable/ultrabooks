@@ -73,10 +73,10 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
           <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
             <PixelIcon name="highlight" size={20} className="text-[var(--text-tertiary)]" />
           </div>
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             No highlights yet
           </p>
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-2">
+          <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-2">
             Select text while reading to highlight it
           </p>
         </div>
@@ -93,7 +93,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
               >
                 <p
                   className={clsx(
-                    'font-[family-name:var(--font-ui)] fs-p-sm px-1 inline leading-relaxed',
+                    'font-ui fs-p-sm px-1 inline leading-relaxed',
                     getHighlightStyle(highlight.color)
                   )}
                 >
@@ -103,7 +103,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
 
               {/* Monochrome intensity picker */}
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+                <span className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                   Intensity:
                 </span>
                 <div className="flex items-center gap-[1px] bg-[var(--border-primary)]">
@@ -112,7 +112,7 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
                       key={style.name}
                       onClick={() => updateHighlightColor(highlight.id, style.name)}
                       className={clsx(
-                        'w-6 h-6 flex items-center justify-center fs-p-sm font-[family-name:var(--font-mono)] transition-colors',
+                        'w-6 h-6 flex items-center justify-center fs-p-sm font-mono transition-colors',
                         style.class,
                         highlight.color === style.name
                           ? 'ring-1 ring-[var(--text-primary)] ring-offset-1'
@@ -165,12 +165,12 @@ export function HighlightsList({ onNavigate }: HighlightsListProps) {
                   </div>
                 </div>
               ) : highlight.note ? (
-                <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
+                <p className="font-ui fs-p-sm text-[var(--text-secondary)] border-l-2 border-[var(--border-primary)] pl-2 mt-2">
                   {highlight.note}
                 </p>
               ) : null}
 
-              <p className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)] mt-2 uppercase">
+              <p className="font-mono fs-p-sm text-[var(--text-tertiary)] mt-2 uppercase">
                 {formatDate(highlight.created_at)}
               </p>
             </li>

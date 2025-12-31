@@ -40,7 +40,7 @@ export function ReaderSettings() {
       <div className="space-y-6">
         {/* Theme Section */}
         <section>
-          <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
+          <h3 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
             <PixelIcon name="moon" size={12} />
             Theme
           </h3>
@@ -63,9 +63,9 @@ export function ReaderSettings() {
                     color: READER_THEME_COLORS[theme].text
                   }}
                 >
-                  <span className="fs-p-sm font-[family-name:var(--font-reading)]">Aa</span>
+                  <span className="fs-p-sm font-reading">Aa</span>
                 </div>
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide block text-center">
+                <span className="font-ui fs-p-sm uppercase tracking-wide block text-center">
                   {theme}
                 </span>
                 {settings.theme === theme && (
@@ -78,14 +78,14 @@ export function ReaderSettings() {
 
         {/* Typography Section */}
         <section className="border-t border-[var(--border-primary)] pt-6">
-          <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
+          <h3 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
             <PixelIcon name="font" size={12} />
             Typography
           </h3>
 
           {/* Font Family */}
           <div className="mb-4">
-            <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2 block">
+            <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2 block">
               Font Family
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -106,7 +106,7 @@ export function ReaderSettings() {
                   >
                     {font.label}
                   </span>
-                  <span className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] uppercase">
+                  <span className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase">
                     {font.style}
                   </span>
                   {settings.fontFamily === font.value && (
@@ -120,10 +120,10 @@ export function ReaderSettings() {
           {/* Font Size */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+              <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                 Font Size
               </label>
-              <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)] tabular-nums">
+              <span className="font-mono fs-p-sm text-[var(--text-secondary)] tabular-nums">
                 {settings.fontSize}px
               </span>
             </div>
@@ -160,10 +160,10 @@ export function ReaderSettings() {
           {/* Line Height */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+              <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                 Line Height
               </label>
-              <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)] tabular-nums">
+              <span className="font-mono fs-p-sm text-[var(--text-secondary)] tabular-nums">
                 {settings.lineHeight.toFixed(1)}
               </span>
             </div>
@@ -173,7 +173,7 @@ export function ReaderSettings() {
                   key={height}
                   onClick={() => handleChange('lineHeight', height)}
                   className={clsx(
-                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    'flex-1 py-2 border transition-all duration-100 font-mono fs-p-sm',
                     settings.lineHeight === height
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
@@ -187,7 +187,7 @@ export function ReaderSettings() {
 
           {/* Text Alignment */}
           <div>
-            <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2 block">
+            <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-2 block">
               Text Alignment
             </label>
             <div className="flex gap-2">
@@ -201,7 +201,7 @@ export function ReaderSettings() {
                 )}
               >
                 <PixelIcon name="align-left" size={14} />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase">Left</span>
+                <span className="font-ui fs-p-sm uppercase">Left</span>
               </button>
               <button
                 onClick={() => handleChange('textAlign', 'justify')}
@@ -213,7 +213,7 @@ export function ReaderSettings() {
                 )}
               >
                 <PixelIcon name="align-justify" size={14} />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase">Justify</span>
+                <span className="font-ui fs-p-sm uppercase">Justify</span>
               </button>
             </div>
           </div>
@@ -221,7 +221,7 @@ export function ReaderSettings() {
 
         {/* Layout Section */}
         <section className="border-t border-[var(--border-primary)] pt-6">
-          <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
+          <h3 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
             <PixelIcon name="layout" size={12} />
             Layout
           </h3>
@@ -229,10 +229,10 @@ export function ReaderSettings() {
           {/* Page Width */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+              <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                 Page Width
               </label>
-              <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)] tabular-nums">
+              <span className="font-mono fs-p-sm text-[var(--text-secondary)] tabular-nums">
                 {Math.round(settings.contentWidth)}%
               </span>
             </div>
@@ -242,7 +242,7 @@ export function ReaderSettings() {
                   key={width}
                   onClick={() => handleChange('contentWidth', width)}
                   className={clsx(
-                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    'flex-1 py-2 border transition-all duration-100 font-mono fs-p-sm',
                     Math.round(settings.contentWidth) === width
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
@@ -252,7 +252,7 @@ export function ReaderSettings() {
                 </button>
               ))}
             </div>
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)] mt-2">
+            <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-2">
               Tip: Drag the edges of the reading area to adjust width
             </p>
           </div>
@@ -260,10 +260,10 @@ export function ReaderSettings() {
           {/* Margins */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+              <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
                 Margins
               </label>
-              <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-secondary)] tabular-nums">
+              <span className="font-mono fs-p-sm text-[var(--text-secondary)] tabular-nums">
                 {settings.margins}px
               </span>
             </div>
@@ -273,7 +273,7 @@ export function ReaderSettings() {
                   key={margin}
                   onClick={() => handleChange('margins', margin)}
                   className={clsx(
-                    'flex-1 py-2 border transition-all duration-100 font-[family-name:var(--font-mono)] fs-p-sm',
+                    'flex-1 py-2 border transition-all duration-100 font-mono fs-p-sm',
                     settings.margins === margin
                       ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
                       : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
@@ -288,7 +288,7 @@ export function ReaderSettings() {
 
         {/* Preview Section */}
         <section className="border-t border-[var(--border-primary)] pt-6">
-          <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
+          <h3 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3 flex items-center gap-2">
             <PixelIcon name="book-open" size={12} />
             Preview
           </h3>
@@ -321,7 +321,7 @@ export function ReaderSettings() {
               updateSettings(DEFAULT_READER_SETTINGS);
               syncSettings();
             }}
-            className="w-full py-2 border border-[var(--border-primary)] font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors"
+            className="w-full py-2 border border-[var(--border-primary)] font-ui fs-p-sm uppercase tracking-wide text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors"
           >
             Reset to Defaults
           </button>
