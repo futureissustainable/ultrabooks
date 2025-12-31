@@ -17,6 +17,26 @@ interface CopyBookParams {
   };
 }
 
+interface UploadQuota {
+  daily_uploads: number;
+  total_uploads: number;
+  daily_remaining: number;
+  total_remaining: number;
+  daily_limit: number;
+  total_limit: number;
+}
+
+interface BulkUploadResult {
+  successful: Book[];
+  failed: { file: File; error: string }[];
+}
+
+interface UploadProgress {
+  current: number;
+  total: number;
+  currentFile: string;
+}
+
 interface BookState {
   books: Book[];
   currentBook: Book | null;
@@ -27,9 +47,14 @@ interface BookState {
   error: string | null;
   hasFetched: boolean; // Track if we've attempted to fetch library
   hasFetchedBook: boolean; // Track if we've attempted to fetch current book
+  quota: UploadQuota | null;
+  uploadProgress: UploadProgress | null;
   fetchBooks: () => Promise<void>;
   fetchBook: (id: string) => Promise<void>;
+  fetchQuota: () => Promise<void>;
+  checkQuota: (count: number) => Promise<{ allowed: boolean; error?: string }>;
   uploadBook: (file: File) => Promise<{ book: Book | null; error: string | null }>;
+  uploadBooks: (files: File[]) => Promise<BulkUploadResult>;
   deleteBook: (id: string) => Promise<void>;
   updateBook: (id: string, data: Partial<Book>) => Promise<void>;
   clearCurrentBook: () => void;
@@ -46,6 +71,8 @@ export const useBookStore = create<BookState>((set, get) => ({
   error: null,
   hasFetched: false,
   hasFetchedBook: false,
+  quota: null,
+  uploadProgress: null,
 
   fetchBooks: async () => {
     // Prevent duplicate fetches - but allow retry if we're stuck
@@ -109,6 +136,48 @@ export const useBookStore = create<BookState>((set, get) => ({
     }
   },
 
+  fetchQuota: async () => {
+    const supabase = createClient();
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase.rpc('get_upload_quota', {
+        p_user_id: user.id
+      });
+
+      if (!error && data) {
+        set({ quota: data as UploadQuota });
+      }
+    } catch (err) {
+      console.error('fetchQuota error:', err);
+    }
+  },
+
+  checkQuota: async (count: number) => {
+    const supabase = createClient();
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { allowed: false, error: 'Not authenticated' };
+      }
+
+      const { data, error } = await supabase.rpc('check_upload_quota', {
+        p_user_id: user.id,
+        p_upload_count: count
+      });
+
+      if (error) {
+        return { allowed: false, error: error.message };
+      }
+
+      const result = data as { allowed: boolean; error?: string };
+      return { allowed: result.allowed, error: result.error };
+    } catch (err) {
+      return { allowed: false, error: 'Failed to check quota' };
+    }
+  },
+
   uploadBook: async (file: File) => {
     const supabase = createClient();
     set({ isUploading: true, error: null });
@@ -118,6 +187,13 @@ export const useBookStore = create<BookState>((set, get) => ({
       if (!user) {
         set({ isUploading: false, error: 'Not authenticated' });
         return { book: null, error: 'Not authenticated' };
+      }
+
+      // Check upload quota
+      const quotaCheck = await get().checkQuota(1);
+      if (!quotaCheck.allowed) {
+        set({ isUploading: false, error: quotaCheck.error || 'Upload limit reached' });
+        return { book: null, error: quotaCheck.error || 'Upload limit reached' };
       }
 
       // Determine file type
@@ -209,6 +285,15 @@ export const useBookStore = create<BookState>((set, get) => ({
         return { book: null, error: insertError.message };
       }
 
+      // Increment upload count
+      await supabase.rpc('increment_upload_count', {
+        p_user_id: user.id,
+        p_count: 1
+      });
+
+      // Refresh quota
+      get().fetchQuota();
+
       set((state) => ({
         books: [book, ...state.books],
         isUploading: false,
@@ -218,6 +303,146 @@ export const useBookStore = create<BookState>((set, get) => ({
     } catch (err) {
       set({ isUploading: false, error: 'Upload failed' });
       return { book: null, error: 'Upload failed' };
+    }
+  },
+
+  uploadBooks: async (files: File[]) => {
+    const supabase = createClient();
+    const successful: Book[] = [];
+    const failed: { file: File; error: string }[] = [];
+
+    set({ isUploading: true, error: null, uploadProgress: { current: 0, total: files.length, currentFile: '' } });
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        set({ isUploading: false, uploadProgress: null, error: 'Not authenticated' });
+        return { successful: [], failed: files.map(f => ({ file: f, error: 'Not authenticated' })) };
+      }
+
+      // Check quota for all files at once
+      const quotaCheck = await get().checkQuota(files.length);
+      if (!quotaCheck.allowed) {
+        set({ isUploading: false, uploadProgress: null, error: quotaCheck.error || 'Upload limit reached' });
+        return { successful: [], failed: files.map(f => ({ file: f, error: quotaCheck.error || 'Upload limit reached' })) };
+      }
+
+      // Process files sequentially to avoid overwhelming the server
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        set({ uploadProgress: { current: i + 1, total: files.length, currentFile: file.name } });
+
+        // Validate file type
+        const fileName = file.name.toLowerCase();
+        let fileType: 'epub' | 'pdf' | 'mobi';
+        if (fileName.endsWith('.epub')) {
+          fileType = 'epub';
+        } else if (fileName.endsWith('.pdf')) {
+          fileType = 'pdf';
+        } else if (fileName.endsWith('.mobi')) {
+          fileType = 'mobi';
+        } else {
+          failed.push({ file, error: 'Unsupported file type' });
+          continue;
+        }
+
+        // Validate file size (100MB max)
+        if (file.size > 100 * 1024 * 1024) {
+          failed.push({ file, error: 'File too large (max 100MB)' });
+          continue;
+        }
+
+        try {
+          // Upload file to storage
+          const fileId = generateFileId();
+          const filePath = `${user.id}/${fileId}.${fileType}`;
+          const { error: uploadError } = await supabase.storage
+            .from('books')
+            .upload(filePath, file);
+
+          if (uploadError) {
+            failed.push({ file, error: uploadError.message });
+            continue;
+          }
+
+          // Extract metadata
+          let title = file.name.replace(/\.(epub|pdf|mobi)$/i, '');
+          let author: string | undefined;
+          let coverUrl: string | undefined;
+
+          if (fileType === 'epub') {
+            try {
+              const metadata = await extractEpubMetadata(file);
+              if (metadata.title) title = metadata.title;
+              if (metadata.author) author = metadata.author;
+
+              const coverBlob = await extractEpubCover(file);
+              if (coverBlob) {
+                const coverExt = coverBlob.type.split('/')[1] || 'jpg';
+                const coverId = generateFileId();
+                const coverPath = `${user.id}/${coverId}.${coverExt}`;
+
+                const { error: coverUploadError } = await supabase.storage
+                  .from('covers')
+                  .upload(coverPath, coverBlob, { contentType: coverBlob.type });
+
+                if (!coverUploadError) {
+                  coverUrl = coverPath;
+                }
+              }
+            } catch (epubError) {
+              // Continue without metadata
+            }
+          }
+
+          // Create book record
+          const { data: book, error: insertError } = await supabase
+            .from('books')
+            .insert({
+              user_id: user.id,
+              title,
+              author,
+              cover_url: coverUrl,
+              file_url: filePath,
+              file_type: fileType,
+              file_size: file.size,
+            })
+            .select()
+            .single();
+
+          if (insertError) {
+            failed.push({ file, error: insertError.message });
+            continue;
+          }
+
+          successful.push(book);
+        } catch (err) {
+          failed.push({ file, error: 'Upload failed' });
+        }
+      }
+
+      // Increment upload count for successful uploads
+      if (successful.length > 0) {
+        await supabase.rpc('increment_upload_count', {
+          p_user_id: user.id,
+          p_count: successful.length
+        });
+
+        // Refresh quota
+        get().fetchQuota();
+      }
+
+      // Update state with all successful books
+      set((state) => ({
+        books: [...successful, ...state.books],
+        isUploading: false,
+        uploadProgress: null,
+      }));
+
+      return { successful, failed };
+    } catch (err) {
+      set({ isUploading: false, uploadProgress: null, error: 'Bulk upload failed' });
+      return { successful, failed: [...failed, ...files.slice(successful.length + failed.length).map(f => ({ file: f, error: 'Upload failed' }))] };
     }
   },
 

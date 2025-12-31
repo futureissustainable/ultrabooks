@@ -13,7 +13,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 
 export function LibraryGrid() {
-  const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, isUploading } = useBookStore();
+  const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, uploadBooks, isUploading, uploadProgress, quota, fetchQuota } = useBookStore();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -61,11 +61,12 @@ export function LibraryGrid() {
   }, [books, selectedBooks]);
 
   useEffect(() => {
-    // Fetch books on mount if we haven't fetched yet
+    // Fetch books and quota on mount if we haven't fetched yet
     if (!hasFetched) {
       fetchBooks();
+      fetchQuota();
     }
-  }, [fetchBooks, hasFetched]);
+  }, [fetchBooks, fetchQuota, hasFetched]);
 
   const filteredBooks = books.filter(
     (book) =>
@@ -109,15 +110,28 @@ export function LibraryGrid() {
     setIsDragging(false);
     setDragError(null);
 
-    const file = e.dataTransfer.files[0];
-    if (file && validateFile(file)) {
-      const result = await uploadBook(file);
+    const files = Array.from(e.dataTransfer.files);
+    const validFiles = files.filter(file => validateFile(file));
+
+    if (validFiles.length === 0) {
+      return;
+    }
+
+    if (validFiles.length === 1) {
+      const result = await uploadBook(validFiles[0]);
       if (result.error) {
         setDragError(result.error);
         setTimeout(() => setDragError(null), 5000);
       }
+    } else {
+      const result = await uploadBooks(validFiles);
+      if (result.failed.length > 0) {
+        const message = `${result.successful.length} uploaded, ${result.failed.length} failed`;
+        setDragError(message);
+        setTimeout(() => setDragError(null), 5000);
+      }
     }
-  }, [uploadBook]);
+  }, [uploadBook, uploadBooks]);
 
   // Show loading only during initial fetch (before hasFetched becomes true)
   // This is now bulletproof: hasFetched is set immediately when fetch starts
@@ -143,11 +157,28 @@ export function LibraryGrid() {
     >
       {/* Upload Progress Indicator */}
       {isUploading && (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-3 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-primary)]">
-          <Spinner size="sm" />
-          <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
-            Uploading...
-          </span>
+        <div className="fixed bottom-4 right-4 z-50 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-primary)] min-w-[200px]">
+          <div className="flex items-center gap-3 mb-2">
+            <Spinner size="sm" />
+            <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
+              {uploadProgress
+                ? `Uploading ${uploadProgress.current}/${uploadProgress.total}`
+                : 'Uploading...'}
+            </span>
+          </div>
+          {uploadProgress && (
+            <>
+              <div className="h-1 bg-[var(--bg-tertiary)] mb-1">
+                <div
+                  className="h-full bg-[var(--text-primary)] transition-all duration-300"
+                  style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
+                />
+              </div>
+              <p className="font-mono fs-p-sm text-[var(--text-tertiary)] truncate">
+                {uploadProgress.currentFile}
+              </p>
+            </>
+          )}
         </div>
       )}
 
@@ -188,6 +219,15 @@ export function LibraryGrid() {
               Cancel
             </Button>
           </div>
+        </div>
+      )}
+
+      {/* Upload Quota Info */}
+      {quota && (quota.daily_remaining < 20 || quota.total_remaining < 1000) && (
+        <div className="flex justify-end mb-2">
+          <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+            Uploads: {quota.daily_remaining}/day | {quota.total_remaining.toLocaleString()} total remaining
+          </span>
         </div>
       )}
 
