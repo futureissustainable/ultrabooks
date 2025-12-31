@@ -51,7 +51,6 @@ export function EpubReader({ book }: EpubReaderProps) {
   const [sections, setSections] = useState<Section[]>([]);
   const [currentSection, setCurrentSection] = useState<string>('');
   const [progress, setProgress] = useState(0);
-  const [scrollPosition, setScrollPosition] = useState(0); // Actual scroll Y position
   const isRestoringProgress = useRef(false); // Flag to prevent saving while restoring
 
   // Width control state (from store for persistence)
@@ -422,7 +421,6 @@ export function EpubReader({ book }: EpubReaderProps) {
       const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
       setProgress(scrollPercent);
-      setScrollPosition(scrollTop);
 
       // Find current section
       let currentId = sections[0]?.id || '';
