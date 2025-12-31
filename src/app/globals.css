@@ -477,23 +477,23 @@
   z-index: 0;
   /* 3D perspective for the tilted grid */
   perspective: 1200px;
-  perspective-origin: center 40%;
+  perspective-origin: center center;
 }
 
 /* The entire grid is tilted in 3D like Netflix */
 .hero-books-grid {
   position: absolute;
-  /* Mobile: shift up to fill top gap (3D tilt pushes top away) */
-  top: 35%;
+  /* Simple approach: start above viewport, extend below */
+  top: -50%;
   left: -40%;
   right: -40%;
-  height: 250vh;
+  bottom: -50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  /* 3D rotation: tilted away and to the side - include centering transform */
-  transform: translateY(-50%) rotateX(25deg) rotateZ(-8deg);
+  /* 3D rotation: tilted away and to the side */
+  transform: rotateX(25deg) rotateZ(-8deg);
   transform-origin: center center;
   transform-style: preserve-3d;
 }
@@ -525,11 +525,11 @@
 
 @media (min-width: 768px) {
   .hero-books-grid {
-    /* Desktop: hero is shorter, use simpler positioning */
-    top: 50%;
+    /* Desktop: less extension needed */
+    top: -30%;
     left: -20%;
     right: -20%;
-    height: 200vh;
+    bottom: -30%;
     gap: 16px;
   }
 
