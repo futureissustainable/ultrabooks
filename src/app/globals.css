@@ -586,13 +586,13 @@
 @media (min-width: 768px) {
   .hero-gradient-overlay {
     background:
-      /* Left side solid to semi-transparent */
+      /* Left side solid to semi-transparent - 1.5x coverage */
       linear-gradient(to right,
         var(--bg-primary) 0%,
-        rgba(10, 10, 10, 0.92) 20%,
-        rgba(10, 10, 10, 0.75) 40%,
-        rgba(10, 10, 10, 0.4) 60%,
-        rgba(10, 10, 10, 0.2) 80%,
+        rgba(10, 10, 10, 0.95) 30%,
+        rgba(10, 10, 10, 0.85) 50%,
+        rgba(10, 10, 10, 0.6) 70%,
+        rgba(10, 10, 10, 0.3) 85%,
         transparent 100%
       ),
       /* Top edge fade */
@@ -612,14 +612,14 @@
 @media (min-width: 1280px) {
   .hero-gradient-overlay {
     background:
-      /* Left side strong, fades to show books on right */
+      /* Left side strong, fades to show books on right - 1.5x coverage */
       linear-gradient(to right,
         var(--bg-primary) 0%,
-        rgba(10, 10, 10, 0.9) 15%,
-        rgba(10, 10, 10, 0.7) 30%,
-        rgba(10, 10, 10, 0.35) 50%,
-        rgba(10, 10, 10, 0.15) 70%,
-        transparent 90%
+        rgba(10, 10, 10, 0.95) 22%,
+        rgba(10, 10, 10, 0.8) 45%,
+        rgba(10, 10, 10, 0.5) 65%,
+        rgba(10, 10, 10, 0.25) 82%,
+        transparent 100%
       ),
       /* Top edge */
       linear-gradient(to bottom,
