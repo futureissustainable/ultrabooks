@@ -65,13 +65,13 @@
      STANDARDIZED FONT SIZES (Psychology-Based)
      ============================================
      Scale ratios:
-     - 11→14 = 1.27x (minor third - musical harmony)
-     - 14→20 = 1.43x (perfect fourth - musical harmony)
+     - 12→15 = 1.25x (mobile-friendly base)
+     - 15→20 = 1.33x (perfect fourth - musical harmony)
      - 20→32 = 1.6x (golden ratio - universal harmony)
      - 32→52 = 1.625x (golden ratio - hero impact)
      ============================================ */
-  --fs-p-sm: 11px;  /* Paragraph Small: UI text, labels, buttons, metadata */
-  --fs-p-lg: 14px;  /* Paragraph Large: Body text, descriptions, readable content */
+  --fs-p-sm: 12px;  /* Paragraph Small: UI text, labels, buttons, metadata */
+  --fs-p-lg: 15px;  /* Paragraph Large: Body text, descriptions, readable content */
   --fs-h-sm: 20px;  /* Heading Small: Section titles, card headers, feature titles */
   --fs-h-lg: 32px;  /* Heading Large: Page titles, hero text, major headings */
   --fs-h-xl: 52px;  /* Heading XL: Hero headlines, maximum visual impact */
