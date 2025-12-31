@@ -8,8 +8,8 @@ import { getCoverUrl } from '@/lib/supabase/storage';
 import type { Book } from '@/lib/supabase/types';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
-interface ShareModalProps {
-  book: Book;
+interface ShareCollectionModalProps {
+  books: Book[];
   isOpen: boolean;
   onClose: () => void;
 }
@@ -21,28 +21,29 @@ const EXPIRY_OPTIONS = [
   { value: 24, label: '24 hours' },
 ] as const;
 
-export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
-  const { createShare, isCreating } = useShareStore();
+export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollectionModalProps) {
+  const { createCollectionShare, isCreating } = useShareStore();
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [expiresInHours, setExpiresInHours] = useState(24);
+  const [collectionTitle, setCollectionTitle] = useState('');
   const [options, setOptions] = useState({
     includeBookmarks: true,
     includeHighlights: true,
     includeNotes: false,
+    allowAddToLibrary: true,
   });
 
-  // Get cover URL (handles both legacy URLs and new paths)
-  const coverUrl = getCoverUrl(book.cover_url);
-
   const handleCreateShare = async () => {
-    const { shareCode, error } = await createShare(book.id, {
+    const bookIds = books.map(b => b.id);
+    const { shareCode, error } = await createCollectionShare(bookIds, {
       ...options,
       expiresInHours,
+      title: collectionTitle || undefined,
     });
 
     if (shareCode && !error) {
-      const link = `${window.location.origin}/share/${shareCode}`;
+      const link = `${window.location.origin}/share/collection/${shareCode}`;
       setShareLink(link);
     }
   };
@@ -58,39 +59,76 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
   const handleClose = () => {
     setShareLink(null);
     setCopied(false);
+    setCollectionTitle('');
     onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Share Book" size="md">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Share Collection" size="md">
       <div className="space-y-6">
         {!shareLink ? (
           <>
-            <div className="flex items-start gap-4 p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              {coverUrl ? (
-                <div className="relative w-14 h-20 flex-shrink-0 border border-[var(--border-primary)]">
-                  <Image
-                    src={coverUrl}
-                    alt={book.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-14 h-20 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] flex items-center justify-center">
-                  <PixelIcon name="book" size={20} className="text-[var(--text-tertiary)]" />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)] truncate">{book.title}</h3>
-                {book.author && (
-                  <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] mt-1">{book.author}</p>
+            {/* Books Preview */}
+            <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+              <div className="flex items-center gap-2 mb-3">
+                <PixelIcon name="library" size={16} className="text-[var(--text-secondary)]" />
+                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">
+                  {books.length} {books.length === 1 ? 'Book' : 'Books'} Selected
+                </span>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {books.slice(0, 6).map((book) => {
+                  const coverUrl = getCoverUrl(book.cover_url);
+                  return (
+                    <div
+                      key={book.id}
+                      className="flex-shrink-0 w-12 h-18 relative border border-[var(--border-primary)]"
+                      title={book.title}
+                    >
+                      {coverUrl ? (
+                        <Image
+                          src={coverUrl}
+                          alt={book.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-[var(--bg-tertiary)] flex items-center justify-center">
+                          <PixelIcon name="book" size={16} className="text-[var(--text-tertiary)]" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                {books.length > 6 && (
+                  <div className="flex-shrink-0 w-12 h-18 border border-[var(--border-primary)] bg-[var(--bg-tertiary)] flex items-center justify-center">
+                    <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-secondary)]">
+                      +{books.length - 6}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
 
+            {/* Collection Name */}
+            <div className="space-y-2">
+              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                Collection Name (Optional)
+              </label>
+              <input
+                type="text"
+                value={collectionTitle}
+                onChange={(e) => setCollectionTitle(e.target.value)}
+                placeholder="e.g., My Sci-Fi Favorites"
+                className="w-full px-3 py-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)] font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--text-secondary)] transition-colors"
+              />
+            </div>
+
+            {/* Share Options */}
             <div className="space-y-3">
-              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Include with share</h4>
+              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                Include with share
+              </h4>
 
               <div className="border border-[var(--border-primary)]">
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
@@ -115,7 +153,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3">
+                <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
                     <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Notes</p>
                     <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your personal notes</p>
@@ -125,12 +163,25 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
                     onChange={(checked) => setOptions({ ...options, includeNotes: checked })}
                   />
                 </div>
+
+                <div className="flex items-center justify-between p-3">
+                  <div>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Allow Add to Library</p>
+                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Recipients can copy books to their library</p>
+                  </div>
+                  <Toggle
+                    checked={options.allowAddToLibrary}
+                    onChange={(checked) => setOptions({ ...options, allowAddToLibrary: checked })}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Expiry Selection */}
             <div className="space-y-3">
-              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Link expires in</h4>
+              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                Link expires in
+              </h4>
               <div className="grid grid-cols-4 gap-2">
                 {EXPIRY_OPTIONS.map((option) => (
                   <button
@@ -153,7 +204,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
               <Button variant="secondary" fullWidth onClick={handleClose}>
                 Cancel
               </Button>
-              <Button fullWidth onClick={handleCreateShare} disabled={isCreating}>
+              <Button fullWidth onClick={handleCreateShare} disabled={isCreating || books.length === 0}>
                 {isCreating ? 'Creating...' : 'Create Link'}
               </Button>
             </div>
@@ -166,7 +217,7 @@ export function ShareModal({ book, isOpen, onClose }: ShareModalProps) {
               </div>
               <h3 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-2">Link Created</h3>
               <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
-                Anyone with this link can view your book
+                Anyone with this link can view your {books.length} {books.length === 1 ? 'book' : 'books'}
               </p>
             </div>
 

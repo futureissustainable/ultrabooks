@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 import { useReaderStore } from '@/lib/stores/reader-store';
 import { useStreakStore } from '@/lib/stores/streak-store';
+import { useSignedUrl } from '@/lib/hooks/useSignedUrl';
 import { READER_THEME_COLORS, READER_CONSTANTS, type ReaderTheme } from '@/lib/constants/reader-theme';
 import { ReaderToolbar } from './ReaderToolbar';
 import { ReaderSettings } from './ReaderSettings';
@@ -64,6 +65,9 @@ export function PdfReader({ book }: PdfReaderProps) {
     endReadingSession,
     checkAndUpdateStreak,
   } = useStreakStore();
+
+  // Get signed URL for the book file (handles both legacy URLs and new paths)
+  const { url: signedFileUrl, isLoading: isUrlLoading, error: urlError } = useSignedUrl(book.file_url);
 
   const progress = totalPages > 0 ? (currentPage / totalPages) * 100 : 0;
   const isCurrentPageBookmarked = bookmarks.some(
@@ -199,6 +203,15 @@ export function PdfReader({ book }: PdfReaderProps) {
   useEffect(() => {
     let mounted = true;
 
+    // Wait for signed URL to be ready
+    if (isUrlLoading || !signedFileUrl) {
+      if (urlError) {
+        setError(urlError);
+        setIsLoading(false);
+      }
+      return;
+    }
+
     const initReader = async () => {
       try {
         const pdfjsLib = await import('pdfjs-dist');
@@ -207,7 +220,8 @@ export function PdfReader({ book }: PdfReaderProps) {
         if (!mounted) return;
         setPdfLib(pdfjsLib);
 
-        const loadingTask = pdfjsLib.getDocument(book.file_url);
+        // Use signed URL for PDF loading
+        const loadingTask = pdfjsLib.getDocument(signedFileUrl);
         const pdf = await loadingTask.promise;
 
         if (!mounted) return;
@@ -265,7 +279,7 @@ export function PdfReader({ book }: PdfReaderProps) {
         (pdfDocRef.current as {destroy: () => void}).destroy();
       }
     };
-  }, [book.file_url, book.id]);
+  }, [signedFileUrl, isUrlLoading, urlError, book.id]);
 
   // Set up intersection observer for lazy loading and current page tracking
   useEffect(() => {

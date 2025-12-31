@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useShareStore } from '@/lib/stores/share-store';
+import { getCoverUrl } from '@/lib/supabase/storage';
 import { Card, Button, Spinner } from '@/components/ui';
 import type { SharedBook, Book, Bookmark, Highlight } from '@/lib/supabase/types';
 import { PixelIcon } from '@/components/icons/PixelIcon';
@@ -73,6 +74,29 @@ export default function SharePage() {
 
   const { book, bookmarks, highlights, share } = data;
 
+  // Get cover URL (handles both legacy URLs and new paths)
+  const coverUrl = getCoverUrl(book.cover_url);
+
+  // Calculate time remaining until expiry
+  const getExpiryText = () => {
+    if (!share.expires_at) return null;
+    const expiresAt = new Date(share.expires_at);
+    const now = new Date();
+    const diffMs = expiresAt.getTime() - now.getTime();
+
+    if (diffMs <= 0) return 'Expired';
+
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffHours > 0) {
+      return `Expires in ${diffHours}h ${diffMinutes}m`;
+    }
+    return `Expires in ${diffMinutes} minutes`;
+  };
+
+  const expiryText = getExpiryText();
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
@@ -98,10 +122,10 @@ export default function SharePage() {
           {/* Book Info */}
           <Card padding="lg" className="mb-8">
             <div className="flex flex-col md:flex-row gap-6">
-              {book.cover_url ? (
+              {coverUrl ? (
                 <div className="relative w-40 h-60 mx-auto md:mx-0 flex-shrink-0">
                   <Image
-                    src={book.cover_url}
+                    src={coverUrl}
                     alt={book.title}
                     fill
                     className="object-cover rounded-xl shadow-lg"
@@ -135,6 +159,12 @@ export default function SharePage() {
                 <p className="fs-p-lg text-[var(--text-tertiary)]">
                   This book was shared with you. Sign up to add it to your library and sync across devices.
                 </p>
+                {expiryText && (
+                  <p className="fs-p-sm text-[var(--text-tertiary)] mt-4 flex items-center gap-2">
+                    <PixelIcon name="clock" size={14} />
+                    {expiryText}
+                  </p>
+                )}
               </div>
             </div>
           </Card>

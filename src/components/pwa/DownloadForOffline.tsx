@@ -1,12 +1,13 @@
 'use client';
 
 import { useOfflineStore } from '@/lib/stores/offline-store';
+import { getFileUrl } from '@/lib/supabase/storage';
 import { Button, Spinner } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 
 interface DownloadForOfflineProps {
   bookId: string;
-  fileUrl: string;
+  fileUrl: string;  // Can be legacy full URL or new path
   variant?: 'button' | 'icon';
   className?: string;
 }
@@ -30,7 +31,11 @@ export function DownloadForOffline({
     if (isCached) {
       removeCachedBook(bookId);
     } else if (!isCaching) {
-      await cacheBook(bookId, fileUrl);
+      // Generate a signed URL for downloading (longer expiry for caching)
+      const signedUrl = await getFileUrl(fileUrl, 3600); // 1 hour expiry
+      if (signedUrl) {
+        await cacheBook(bookId, signedUrl);
+      }
     }
   };
 
