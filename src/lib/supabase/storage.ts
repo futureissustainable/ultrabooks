@@ -104,7 +104,7 @@ export function extractPathFromLegacyUrl(url: string): string | null {
 
 /**
  * Get a usable URL for a file, handling both legacy URLs and new paths
- * - For legacy public URLs: returns as-is (still works until bucket goes private)
+ * - For legacy public URLs: tries signed URL first, falls back to original
  * - For new paths: generates a signed URL
  */
 export async function getFileUrl(
@@ -113,11 +113,15 @@ export async function getFileUrl(
 ): Promise<string | null> {
   if (!filePathOrUrl) return null;
 
-  // If it's a legacy full URL, extract the path first
+  // If it's a legacy full URL, try signed URL but fallback to original
   if (isLegacyUrl(filePathOrUrl)) {
     const path = extractPathFromLegacyUrl(filePathOrUrl);
     if (!path) return filePathOrUrl; // Fallback to original URL
-    return getSignedUrl(path, 'books', expiresIn);
+
+    // Try signed URL first
+    const signedUrl = await getSignedUrl(path, 'books', expiresIn);
+    // If signing fails (e.g., public bucket), fallback to original legacy URL
+    return signedUrl || filePathOrUrl;
   }
 
   // It's already a path, generate signed URL

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getFileUrl, isLegacyUrl } from '@/lib/supabase/storage';
+import { getFileUrl } from '@/lib/supabase/storage';
 
 interface UseSignedUrlOptions {
   /** Expiry time in seconds (default: 900 = 15 minutes) */
@@ -45,26 +45,18 @@ export function useSignedUrl(
     setError(null);
 
     try {
-      // If it's a legacy full URL, it might still work (public bucket)
-      // But we still try to get a signed URL for consistency
+      // Get a usable URL (signed or fallback to legacy public)
       const signedUrl = await getFileUrl(filePathOrUrl, expiresIn);
 
       if (signedUrl) {
         setUrl(signedUrl);
-      } else if (isLegacyUrl(filePathOrUrl)) {
-        // Fallback to legacy URL if signed URL generation fails
-        setUrl(filePathOrUrl);
       } else {
-        throw new Error('Failed to generate file URL');
+        // No URL could be generated
+        setError('Failed to generate file URL');
       }
     } catch (err) {
       console.error('Error generating signed URL:', err);
       setError(err instanceof Error ? err.message : 'Failed to generate URL');
-
-      // Try legacy URL as last resort
-      if (filePathOrUrl && isLegacyUrl(filePathOrUrl)) {
-        setUrl(filePathOrUrl);
-      }
     } finally {
       setIsLoading(false);
     }
