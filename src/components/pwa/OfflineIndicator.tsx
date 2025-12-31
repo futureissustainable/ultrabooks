@@ -41,7 +41,7 @@ export function OfflineIndicator() {
         size={16}
         className={isOnline ? 'text-[var(--text-secondary)]' : 'text-[var(--text-primary)]'}
       />
-      <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">
+      <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
         {isOnline ? 'Back online' : 'You are offline'}
       </span>
       {!isOnline && (

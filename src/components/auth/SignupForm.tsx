@@ -16,7 +16,6 @@ export function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Redirect logged-in users to library
   useEffect(() => {
     if (user) {
       router.push('/library');
@@ -47,31 +46,39 @@ export function SignupForm() {
 
   if (success) {
     return (
-      <div className="w-full max-w-md border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+      <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[var(--border-primary)]">
+        <div className="px-6 py-5 border-b border-[var(--border-primary)] bg-[var(--bg-tertiary)]">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-[var(--text-primary)] flex items-center justify-center">
+            <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
               <PixelIcon name="check" size={20} className="text-[var(--bg-primary)]" />
             </div>
             <div>
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
+              <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-1">
                 Almost done
               </p>
-              <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Check Email</h1>
+              <h1 className="font-display text-[24px] uppercase leading-none">Check Email</h1>
             </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6">
-          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
-            We&apos;ve sent you a confirmation email. Please check your inbox and click the
-            link to verify your account.
-          </p>
+          <div className="p-4 bg-[var(--bg-primary)] border border-[var(--border-primary)] mb-6">
+            <div className="flex items-start gap-3">
+              <PixelIcon name="email" size={16} className="text-[var(--text-secondary)] flex-shrink-0 mt-0.5" />
+              <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed">
+                We&apos;ve sent you a confirmation email. Please check your inbox and click the
+                link to verify your account.
+              </p>
+            </div>
+          </div>
 
           <Link href="/login">
-            <Button fullWidth>Go to Login</Button>
+            <Button fullWidth className="btn-shine">
+              <PixelIcon name="arrow-right" size={14} className="mr-2" />
+              Continue to Login
+            </Button>
           </Link>
         </div>
       </div>
@@ -79,27 +86,27 @@ export function SignupForm() {
   }
 
   return (
-    <div className="w-full max-w-md border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+    <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-[var(--border-primary)]">
+      <div className="px-6 py-5 border-b border-[var(--border-primary)] bg-[var(--bg-tertiary)]">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-[var(--text-primary)] flex items-center justify-center">
-            <PixelIcon name="plus" size={20} className="text-[var(--bg-primary)]" />
+          <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
+            <PixelIcon name="user-plus" size={20} className="text-[var(--bg-primary)]" />
           </div>
           <div>
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
-              Get started
+            <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-1">
+              Get started free
             </p>
-            <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Sign Up</h1>
+            <h1 className="font-display text-[24px] uppercase leading-none">Create Account</h1>
           </div>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Form */}
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input
-            label="Email"
+            label="Email Address"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -123,29 +130,58 @@ export function SignupForm() {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm your password"
+            placeholder="••••••••"
             required
             fullWidth
           />
 
           {error && (
-            <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-primary)]">
-              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-primary)]">{error}</p>
+            <div className="p-4 border-2 border-[var(--text-primary)] bg-[var(--bg-primary)] flex items-start gap-3">
+              <PixelIcon name="alert-circle" size={16} className="text-[var(--text-primary)] flex-shrink-0 mt-0.5" />
+              <p className="font-ui fs-p-sm text-[var(--text-primary)] uppercase tracking-[0.05em]">{error}</p>
             </div>
           )}
 
-          <Button type="submit" fullWidth disabled={isLoading}>
+          <Button type="submit" fullWidth disabled={isLoading} className="btn-shine">
+            <PixelIcon name="arrow-right" size={14} className="mr-2" />
             {isLoading ? 'Creating account...' : 'Create Account'}
           </Button>
         </form>
 
+        {/* Features */}
         <div className="mt-6 pt-6 border-t border-[var(--border-primary)]">
-          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-center text-[var(--text-secondary)]">
-            Have an account?{' '}
-            <Link href="/login" className="text-[var(--text-primary)] hover:underline">
-              Sign in
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="flex items-center gap-2">
+              <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+              <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">Free forever</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+              <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">Cloud sync</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+              <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">All formats</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+              <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">No ads</span>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center">
+            <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.1em]">
+              Already have an account?
+            </p>
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 mt-3 font-ui fs-p-lg text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] px-4 py-2 border border-[var(--border-primary)] hover:border-[var(--text-primary)] transition-all"
+            >
+              <PixelIcon name="log-in" size={14} />
+              Sign In
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

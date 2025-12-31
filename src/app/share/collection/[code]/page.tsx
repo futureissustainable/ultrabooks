@@ -320,11 +320,11 @@ export default function CollectionSharePage() {
                   </div>
 
                   <div className="p-3">
-                    <h3 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] truncate" title={book.title}>
+                    <h3 className="font-ui fs-p-sm uppercase tracking-[0.02em] truncate" title={book.title}>
                       {book.title}
                     </h3>
                     {book.author && (
-                      <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-secondary)] truncate">
+                      <p className="font-ui fs-p-sm text-[var(--text-secondary)] truncate">
                         {book.author}
                       </p>
                     )}

@@ -72,7 +72,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
             <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
               <div className="flex items-center gap-2 mb-3">
                 <PixelIcon name="library" size={16} className="text-[var(--text-secondary)]" />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">
+                <span className="font-ui fs-p-sm uppercase tracking-[0.02em]">
                   {books.length} {books.length === 1 ? 'Book' : 'Books'} Selected
                 </span>
               </div>
@@ -102,7 +102,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
                 })}
                 {books.length > 6 && (
                   <div className="flex-shrink-0 w-12 h-18 border border-[var(--border-primary)] bg-[var(--bg-tertiary)] flex items-center justify-center">
-                    <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-secondary)]">
+                    <span className="font-mono text-xs text-[var(--text-secondary)]">
                       +{books.length - 6}
                     </span>
                   </div>
@@ -112,7 +112,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
 
             {/* Collection Name */}
             <div className="space-y-2">
-              <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 Collection Name (Optional)
               </label>
               <input
@@ -120,21 +120,21 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
                 value={collectionTitle}
                 onChange={(e) => setCollectionTitle(e.target.value)}
                 placeholder="e.g., My Sci-Fi Favorites"
-                className="w-full px-3 py-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)] font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--text-secondary)] transition-colors"
+                className="w-full px-3 py-3 border border-[var(--border-primary)] bg-[var(--bg-secondary)] font-ui fs-p-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--text-secondary)] transition-colors"
               />
             </div>
 
             {/* Share Options */}
             <div className="space-y-3">
-              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <h4 className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 Include with share
               </h4>
 
               <div className="border border-[var(--border-primary)]">
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Bookmarks</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your saved bookmarks</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.02em]">Bookmarks</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">Share your saved bookmarks</p>
                   </div>
                   <Toggle
                     checked={options.includeBookmarks}
@@ -144,8 +144,8 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
 
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Highlights</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your highlighted passages</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.02em]">Highlights</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">Share your highlighted passages</p>
                   </div>
                   <Toggle
                     checked={options.includeHighlights}
@@ -155,8 +155,8 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
 
                 <div className="flex items-center justify-between p-3 border-b border-[var(--border-primary)]">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Notes</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Share your personal notes</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.02em]">Notes</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">Share your personal notes</p>
                   </div>
                   <Toggle
                     checked={options.includeNotes}
@@ -166,8 +166,8 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
 
                 <div className="flex items-center justify-between p-3">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em]">Allow Add to Library</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm text-[var(--text-tertiary)]">Recipients can copy books to their library</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.02em]">Allow Add to Library</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">Recipients can copy books to their library</p>
                   </div>
                   <Toggle
                     checked={options.allowAddToLibrary}
@@ -179,7 +179,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
 
             {/* Expiry Selection */}
             <div className="space-y-3">
-              <h4 className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <h4 className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 Link expires in
               </h4>
               <div className="grid grid-cols-4 gap-2">
@@ -194,7 +194,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
                         : 'border-[var(--border-primary)] hover:border-[var(--text-secondary)]'
                     }`}
                   >
-                    <span className="font-[family-name:var(--font-mono)] fs-p-sm">{option.label}</span>
+                    <span className="font-mono fs-p-sm">{option.label}</span>
                   </button>
                 ))}
               </div>
@@ -215,8 +215,8 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
               <div className="w-12 h-12 border border-[var(--text-primary)] bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-4">
                 <PixelIcon name="check-circle" size={24} className="text-[var(--bg-primary)]" />
               </div>
-              <h3 className="font-[family-name:var(--font-display)] fs-h-sm uppercase mb-2">Link Created</h3>
-              <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <h3 className="font-display fs-h-sm uppercase mb-2">Link Created</h3>
+              <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
                 Anyone with this link can view your {books.length} {books.length === 1 ? 'book' : 'books'}
               </p>
             </div>
@@ -226,7 +226,7 @@ export function ShareCollectionModal({ books, isOpen, onClose }: ShareCollection
                 type="text"
                 readOnly
                 value={shareLink}
-                className="flex-1 px-3 py-3 bg-transparent font-[family-name:var(--font-mono)] fs-p-sm outline-none truncate"
+                className="flex-1 px-3 py-3 bg-transparent font-mono fs-p-sm outline-none truncate"
               />
               <Button size="sm" onClick={handleCopyLink} className="m-1">
                 {copied ? 'Copied' : 'Copy'}

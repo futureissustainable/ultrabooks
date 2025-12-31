@@ -14,7 +14,6 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect logged-in users to library
   useEffect(() => {
     if (user) {
       router.push('/library');
@@ -34,27 +33,27 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
+    <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-[var(--border-primary)]">
+      <div className="px-6 py-5 border-b border-[var(--border-primary)] bg-[var(--bg-tertiary)]">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-[var(--text-primary)] flex items-center justify-center">
-            <PixelIcon name="user" size={20} className="text-[var(--bg-primary)]" />
+          <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
+            <PixelIcon name="log-in" size={20} className="text-[var(--bg-primary)]" />
           </div>
           <div>
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-wide text-[var(--text-secondary)]">
+            <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-1">
               Welcome back
             </p>
-            <h1 className="font-[family-name:var(--font-display)] fs-h-sm uppercase">Login</h1>
+            <h1 className="font-display text-[24px] uppercase leading-none">Sign In</h1>
           </div>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Form */}
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input
-            label="Email"
+            label="Email Address"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -68,29 +67,36 @@ export function LoginForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            placeholder="••••••••"
             required
             fullWidth
           />
 
           {error && (
-            <div className="p-3 border border-[var(--text-primary)] bg-[var(--bg-primary)]">
-              <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-primary)]">{error}</p>
+            <div className="p-4 border-2 border-[var(--text-primary)] bg-[var(--bg-primary)] flex items-start gap-3">
+              <PixelIcon name="alert-circle" size={16} className="text-[var(--text-primary)] flex-shrink-0 mt-0.5" />
+              <p className="font-ui fs-p-sm text-[var(--text-primary)] uppercase tracking-[0.05em]">{error}</p>
             </div>
           )}
 
-          <Button type="submit" fullWidth disabled={isLoading}>
+          <Button type="submit" fullWidth disabled={isLoading} className="btn-shine">
+            <PixelIcon name="arrow-right" size={14} className="mr-2" />
             {isLoading ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-[var(--border-primary)]">
-          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-center text-[var(--text-secondary)]">
-            No account?{' '}
-            <Link href="/signup" className="text-[var(--text-primary)] hover:underline">
-              Sign up
-            </Link>
+        {/* Footer */}
+        <div className="mt-6 pt-6 border-t border-[var(--border-primary)] text-center">
+          <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.1em]">
+            Don&apos;t have an account?
           </p>
+          <Link
+            href="/signup"
+            className="inline-flex items-center gap-2 mt-3 font-ui fs-p-lg text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] px-4 py-2 border border-[var(--border-primary)] hover:border-[var(--text-primary)] transition-all"
+          >
+            <PixelIcon name="user-plus" size={14} />
+            Create Account
+          </Link>
         </div>
       </div>
     </div>

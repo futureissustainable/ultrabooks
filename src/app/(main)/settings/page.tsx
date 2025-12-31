@@ -123,7 +123,7 @@ export default function SettingsPage() {
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 3000);
     } catch {
-      // Export failed - file download was not initiated
+      // Export failed
     } finally {
       setIsExporting(false);
     }
@@ -148,30 +148,42 @@ export default function SettingsPage() {
       <Header />
 
       <main className="flex-1">
-        <div className="container-narrow py-10 md:py-16">
-          <div className="mb-10 pb-6 border-b border-[var(--border-primary)]">
-            <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)] mb-3">
-              Preferences
-            </p>
-            <h1 className="font-[family-name:var(--font-display)] fs-h-lg uppercase">Settings</h1>
+        <div className="container-narrow py-10 md:py-14">
+          {/* Page Header */}
+          <div className="mb-8 md:mb-10 pb-6 border-b border-[var(--border-primary)]">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center flex-shrink-0">
+                <PixelIcon name="settings" size={24} className="text-[var(--bg-primary)]" />
+              </div>
+              <div>
+                <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)] mb-2">
+                  Preferences
+                </p>
+                <h1 className="font-display text-[28px] md:text-[36px] uppercase leading-[0.9]">
+                  Settings
+                </h1>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-6">
             {/* Account Settings */}
             <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-                <PixelIcon name="user" size={16} className="text-[var(--text-secondary)]" />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <div className="flex items-center gap-3 px-5 py-4 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center">
+                  <PixelIcon name="user" size={14} className="text-[var(--text-secondary)]" />
+                </div>
+                <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)]">
                   Account
                 </span>
               </div>
 
               <div className="p-6 space-y-5">
                 <div>
-                  <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] block mb-2">
+                  <label className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] block mb-2">
                     Email
                   </label>
-                  <p className="font-[family-name:var(--font-mono)] fs-p-lg">{user?.email}</p>
+                  <p className="font-mono fs-p-lg text-[var(--text-primary)]">{user?.email}</p>
                 </div>
 
                 <Input
@@ -184,10 +196,11 @@ export default function SettingsPage() {
 
                 <div className="flex items-center gap-3">
                   <Button onClick={handleProfileSave} disabled={isSaving} size="sm">
-                    {isSaving ? 'Saving...' : 'Save'}
+                    {isSaving ? 'Saving...' : 'Save Changes'}
                   </Button>
                   {saveSuccess && (
-                    <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)]">
+                    <span className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)] flex items-center gap-2">
+                      <PixelIcon name="check" size={12} />
                       Saved
                     </span>
                   )}
@@ -197,9 +210,11 @@ export default function SettingsPage() {
 
             {/* Appearance */}
             <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-                <PixelIcon name="sun" size={16} className="text-[var(--text-secondary)]" />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <div className="flex items-center gap-3 px-5 py-4 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center">
+                  <PixelIcon name="sun" size={14} className="text-[var(--text-secondary)]" />
+                </div>
+                <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)]">
                   Appearance
                 </span>
               </div>
@@ -207,8 +222,8 @@ export default function SettingsPage() {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Dark Mode</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
+                    <p className="font-ui fs-p-lg mb-1">Dark Mode</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
                       Toggle between light and dark themes
                     </p>
                   </div>
@@ -223,9 +238,11 @@ export default function SettingsPage() {
             {/* Notifications */}
             {notificationsSupported && (
               <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-                <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-                  <PixelIcon name="bell" size={16} className="text-[var(--text-secondary)]" />
-                  <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+                <div className="flex items-center gap-3 px-5 py-4 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                  <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center">
+                    <PixelIcon name="bell" size={14} className="text-[var(--text-secondary)]" />
+                  </div>
+                  <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)]">
                     Notifications
                   </span>
                 </div>
@@ -233,13 +250,11 @@ export default function SettingsPage() {
                 <div className="p-6 space-y-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">
-                        Enable Notifications
-                      </p>
-                      <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
+                      <p className="font-ui fs-p-lg mb-1">Enable Notifications</p>
+                      <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
                         {permission === 'denied'
-                          ? 'Notifications blocked in browser settings'
-                          : 'Get reminders to keep your reading streak'}
+                          ? 'Notifications blocked in browser'
+                          : 'Get reminders to keep your streak'}
                       </p>
                     </div>
                     <Toggle
@@ -251,12 +266,11 @@ export default function SettingsPage() {
 
                   {notificationsEnabled && permission === 'granted' && (
                     <>
+                      <div className="h-px bg-[var(--border-primary)]" />
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">
-                            Daily Reminder
-                          </p>
-                          <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
+                          <p className="font-ui fs-p-lg mb-1">Daily Reminder</p>
+                          <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
                             Remind me to read if I haven&apos;t today
                           </p>
                         </div>
@@ -268,21 +282,17 @@ export default function SettingsPage() {
 
                       {dailyReminder && (
                         <div>
-                          <label className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] block mb-2">
+                          <label className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] block mb-2">
                             Reminder Time
                           </label>
                           <input
                             type="time"
                             value={reminderTime}
                             onChange={(e) => setReminderTime(e.target.value)}
-                            className="w-full max-w-[200px] px-4 py-3 font-[family-name:var(--font-mono)] fs-p-lg bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-primary)] focus:outline-none focus:border-[var(--text-primary)]"
+                            className="w-full max-w-[180px] px-4 py-3 font-mono fs-p-lg bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
                           />
                         </div>
                       )}
-
-                      <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
-                        Maximum 1 notification per day
-                      </p>
                     </>
                   )}
                 </div>
@@ -291,9 +301,11 @@ export default function SettingsPage() {
 
             {/* Reader Settings */}
             <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-                <PixelIcon name="book" size={16} className="text-[var(--text-secondary)]" />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <div className="flex items-center gap-3 px-5 py-4 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center">
+                  <PixelIcon name="book" size={14} className="text-[var(--text-secondary)]" />
+                </div>
+                <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)]">
                   Reader
                 </span>
               </div>
@@ -348,84 +360,99 @@ export default function SettingsPage() {
                   fullWidth
                 />
 
-                <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
-                  Settings sync across all devices
-                </p>
+                <div className="flex items-center gap-2 pt-2">
+                  <PixelIcon name="refresh" size={12} className="text-[var(--text-tertiary)]" />
+                  <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+                    Settings sync across all devices
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Data & Export */}
             <div className="border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-              <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-                <PixelIcon name="download" size={16} className="text-[var(--text-secondary)]" />
-                <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+              <div className="flex items-center gap-3 px-5 py-4 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                <div className="w-8 h-8 border border-[var(--border-primary)] flex items-center justify-center">
+                  <PixelIcon name="download" size={14} className="text-[var(--text-secondary)]" />
+                </div>
+                <span className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-secondary)]">
                   Data
                 </span>
               </div>
 
               <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
-                  <div>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Cloud Sync</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
-                      Data syncs automatically
-                    </p>
+                {/* Stats Grid */}
+                <div className="grid grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-display text-[24px] md:text-[28px] mb-1">{books.length}</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Books</p>
                   </div>
-                  <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)] px-2 py-1 border border-[var(--text-primary)]">
-                    Active
-                  </span>
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-display text-[24px] md:text-[28px] mb-1">-</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Bookmarks</p>
+                  </div>
+                  <div className="p-4 bg-[var(--bg-primary)] text-center">
+                    <p className="font-display text-[24px] md:text-[28px] mb-1">-</p>
+                    <p className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)]">Highlights</p>
+                  </div>
                 </div>
 
-                <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
-                  <div className="flex items-center justify-between mb-3">
+                {/* Cloud Sync */}
+                <div className="flex items-center justify-between p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+                  <div className="flex items-center gap-3">
+                    <PixelIcon name="cloud" size={16} className="text-[var(--text-secondary)]" />
                     <div>
-                      <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Export Data</p>
-                      <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
-                        Download all your data as JSON
+                      <p className="font-ui fs-p-lg">Cloud Sync</p>
+                      <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
+                        Data syncs automatically
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Button variant="secondary" size="sm" onClick={handleExportData} disabled={isExporting}>
-                      {isExporting ? 'Exporting...' : 'Export'}
-                    </Button>
-                    {exportSuccess && (
-                      <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)] flex items-center gap-1">
-                        <PixelIcon name="check" size={12} />
-                        Downloaded
-                      </span>
-                    )}
-                  </div>
+                  <span className="font-mono fs-p-sm px-3 py-1.5 bg-[var(--text-primary)] text-[var(--bg-primary)]">
+                    ACTIVE
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-[1px] bg-[var(--border-primary)] border border-[var(--border-primary)]">
-                  <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] fs-h-sm">{books.length}</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Books</p>
-                  </div>
-                  <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] fs-h-sm">-</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Bookmarks</p>
-                  </div>
-                  <div className="p-4 bg-[var(--bg-primary)] text-center">
-                    <p className="font-[family-name:var(--font-display)] fs-h-sm">-</p>
-                    <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">Highlights</p>
+                {/* Export */}
+                <div className="p-4 border border-[var(--border-primary)] bg-[var(--bg-primary)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-ui fs-p-lg mb-1">Export Data</p>
+                      <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
+                        Download all your data as JSON
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {exportSuccess && (
+                        <span className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-primary)] flex items-center gap-1">
+                          <PixelIcon name="check" size={12} />
+                          Done
+                        </span>
+                      )}
+                      <Button variant="secondary" size="sm" onClick={handleExportData} disabled={isExporting}>
+                        <PixelIcon name="download" size={12} className="mr-2" />
+                        {isExporting ? 'Exporting...' : 'Export'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Sign Out */}
-            <div className="border border-[var(--text-primary)] bg-[var(--bg-secondary)]">
+            <div className="border-2 border-[var(--text-primary)] bg-[var(--bg-secondary)]">
               <div className="p-6 flex items-center justify-between">
-                <div>
-                  <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] mb-1">Sign Out</p>
-                  <p className="font-[family-name:var(--font-ui)] fs-p-lg text-[var(--text-secondary)]">
-                    You can sign back in anytime
-                  </p>
+                <div className="flex items-center gap-3">
+                  <PixelIcon name="log-out" size={18} className="text-[var(--text-secondary)]" />
+                  <div>
+                    <p className="font-ui fs-p-lg">Sign Out</p>
+                    <p className="font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.05em]">
+                      You can sign back in anytime
+                    </p>
+                  </div>
                 </div>
                 <Button variant="danger" size="sm" onClick={handleSignOut}>
-                  Exit
+                  Sign Out
                 </Button>
               </div>
             </div>

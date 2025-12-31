@@ -38,7 +38,7 @@ export function Toggle({ checked, onChange, label, disabled, className }: Toggle
         />
       </button>
       {label && (
-        <span className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">
+        <span className="font-ui fs-p-sm uppercase tracking-[0.02em] text-[var(--text-primary)]">
           {label}
         </span>
       )}

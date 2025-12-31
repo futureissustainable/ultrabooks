@@ -39,87 +39,66 @@ export function Header() {
     router.push('/');
   };
 
+  const navItems = [
+    { href: '/library', label: 'Library', icon: 'library' as const },
+    { href: '/clubs', label: 'Clubs', icon: 'users' as const },
+    { href: '/settings', label: 'Settings', icon: 'settings' as const },
+  ];
+
   return (
     <>
-      <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
+      <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)] sticky top-0 z-50">
         <div className="container-page flex items-center justify-between h-14">
-          {/* Logo - always links to main page */}
+          {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 group"
           >
-            <div className="w-7 h-7 bg-[var(--text-primary)] flex items-center justify-center">
+            <div className="w-8 h-8 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-105 transition-transform">
               <PixelIcon name="book" size={16} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-[family-name:var(--font-display)] fs-h-sm tracking-tight uppercase">
+            <span className="font-display fs-h-sm tracking-tight uppercase hidden sm:inline">
               Ultrabooks
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
-            {user && (
-              <>
-                <Link
-                  href="/library"
-                  className={clsx(
-                    'px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] transition-colors',
-                    pathname === '/library'
-                      ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                      : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
-                  )}
-                >
-                  Library
-                </Link>
-                <Link
-                  href="/clubs"
-                  className={clsx(
-                    'px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] transition-colors',
-                    pathname === '/clubs'
-                      ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                      : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
-                  )}
-                >
-                  Clubs
-                </Link>
-                <Link
-                  href="/settings"
-                  className={clsx(
-                    'px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] transition-colors',
-                    pathname === '/settings'
-                      ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                      : 'text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]'
-                  )}
-                >
-                  Settings
-                </Link>
-              </>
-            )}
+          <nav className="hidden md:flex items-center">
+            {user && navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={clsx(
+                  'px-4 py-2 font-ui fs-p-sm uppercase tracking-[0.05em] transition-all duration-100 border-b-2',
+                  pathname === item.href
+                    ? 'bg-[var(--bg-tertiary)] text-[var(--text-primary)] border-[var(--text-primary)]'
+                    : 'text-[var(--text-secondary)] border-transparent hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1">
             <button
               onClick={toggleTheme}
-              className="p-2 text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-100 border border-transparent hover:border-[var(--text-primary)]"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? (
-                <PixelIcon name="sun" size={18} />
-              ) : (
-                <PixelIcon name="moon" size={18} />
-              )}
+              <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
             </button>
 
             {user ? (
               <button
                 onClick={handleSignOut}
-                className="px-4 py-2 font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+                className="px-4 py-2 font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-100"
               >
                 Sign Out
               </button>
             ) : (
-              <>
+              <div className="flex items-center gap-2 ml-2">
                 <Link href="/login">
                   <Button variant="ghost" size="sm">
                     Login
@@ -130,14 +109,14 @@ export function Header() {
                     Sign Up
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden p-2 text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors"
+            className="md:hidden w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-100"
             aria-label="Open menu"
           >
             <PixelIcon name="menu" size={20} />
@@ -154,39 +133,42 @@ export function Header() {
       {/* Mobile Menu */}
       <div className={clsx('mobile-menu', mobileMenuOpen && 'open')}>
         <div className="mobile-menu-header">
-          <span className="font-[family-name:var(--font-display)] fs-h-sm tracking-tight uppercase">
-            Menu
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-[var(--text-primary)] flex items-center justify-center">
+              <PixelIcon name="book" size={14} className="text-[var(--bg-primary)]" />
+            </div>
+            <span className="font-display fs-h-sm tracking-tight uppercase">
+              Menu
+            </span>
+          </div>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="p-2 text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
+            className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
             aria-label="Close menu"
           >
-            <PixelIcon name="close" size={16} />
+            <PixelIcon name="close" size={14} />
           </button>
         </div>
 
         <nav className="mobile-menu-nav">
           {user ? (
             <>
-              <Link href="/library" className="mobile-menu-item">
-                <span className="flex items-center gap-3">
-                  <PixelIcon name="library" size={16} />
-                  Library
-                </span>
-              </Link>
-              <Link href="/clubs" className="mobile-menu-item">
-                <span className="flex items-center gap-3">
-                  <PixelIcon name="users" size={16} />
-                  Book Clubs
-                </span>
-              </Link>
-              <Link href="/settings" className="mobile-menu-item">
-                <span className="flex items-center gap-3">
-                  <PixelIcon name="settings" size={16} />
-                  Settings
-                </span>
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={clsx(
+                    'mobile-menu-item',
+                    pathname === item.href && 'bg-[var(--bg-tertiary)]'
+                  )}
+                >
+                  <span className="flex items-center gap-3">
+                    <PixelIcon name={item.icon} size={16} />
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+              <div className="h-px bg-[var(--border-primary)] my-2" />
               <button
                 onClick={toggleTheme}
                 className="mobile-menu-item text-left w-full"
@@ -217,6 +199,7 @@ export function Header() {
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </button>
+              <div className="h-px bg-[var(--border-primary)] my-2" />
               <Link href="/login" className="mobile-menu-item">
                 <span className="flex items-center gap-3">
                   <PixelIcon name="log-in" size={16} />

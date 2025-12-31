@@ -36,7 +36,7 @@ function TocItemComponent({
       <button
         onClick={() => onNavigate(item.href)}
         className={clsx(
-          'w-full text-left py-2 px-3 font-[family-name:var(--font-ui)] fs-p-sm transition-colors',
+          'w-full text-left py-2 px-3 font-ui fs-p-sm transition-colors',
           'hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)]',
           isActive && 'bg-[var(--text-primary)] text-[var(--bg-primary)]',
         )}
@@ -44,7 +44,7 @@ function TocItemComponent({
       >
         <span className="flex items-center gap-2">
           {level > 0 && (
-            <span className="font-[family-name:var(--font-mono)] fs-p-sm text-[var(--text-tertiary)]">
+            <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
               {'└'}
             </span>
           )}
@@ -90,7 +90,7 @@ export function TableOfContents({ items, currentHref, onNavigate }: TableOfConte
           <div className="w-12 h-12 border border-[var(--border-primary)] flex items-center justify-center mx-auto mb-4">
             <PixelIcon name="book" size={20} className="text-[var(--text-tertiary)]" />
           </div>
-          <p className="font-[family-name:var(--font-ui)] fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <p className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
             No contents available
           </p>
         </div>
