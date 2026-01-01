@@ -15,7 +15,7 @@ export function Footer() {
               <PixelIcon name="book" size={12} className="text-[var(--bg-primary)]" />
             </div>
             <span className="font-display fs-p-lg uppercase tracking-tight">
-              ULTRABOOKS
+              MEMOROS
             </span>
             <span className="hidden sm:inline text-[var(--border-primary)]">•</span>
             <span className="hidden sm:inline font-ui fs-p-sm text-[var(--text-tertiary)] uppercase tracking-[0.1em]">

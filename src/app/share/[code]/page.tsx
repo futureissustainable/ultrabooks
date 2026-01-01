@@ -104,7 +104,7 @@ export default function SharePage() {
         <div className="container-page py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="fs-h-sm font-semibold text-[var(--text-primary)]">
-              ULTRABOOKS
+              MEMOROS
             </Link>
             <div className="flex items-center gap-3">
               <span className="fs-p-lg text-[var(--text-tertiary)]">Shared book</span>

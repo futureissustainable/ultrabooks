@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           </div>
 
           <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-6">
-            ULTRABOOKS needs Supabase to store your books, reading progress, and sync data across devices.
+            MEMOROS needs Supabase to store your books, reading progress, and sync data across devices.
           </p>
 
           <div className="space-y-4 mb-6">
