@@ -1,6 +1,6 @@
-const CACHE_NAME = 'ultrabooks-v1';
-const STATIC_CACHE_NAME = 'ultrabooks-static-v1';
-const BOOK_CACHE_NAME = 'ultrabooks-books-v1';
+const CACHE_NAME = 'memoros-v1';
+const STATIC_CACHE_NAME = 'memoros-static-v1';
+const BOOK_CACHE_NAME = 'memoros-books-v1';
 
 // Static assets to cache on install
 const STATIC_ASSETS = [

@@ -235,7 +235,7 @@ export const useStreakStore = create<StreakState>()(
       dismissCelebration: () => set({ showCelebration: false }),
     }),
     {
-      name: 'ultrabooks-streak-data',
+      name: 'memoros-streak-data',
       partialize: (state) => ({
         goal: state.goal,
         currentStreak: state.currentStreak,

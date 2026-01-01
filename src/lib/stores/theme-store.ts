@@ -59,7 +59,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: 'ultrabooks-theme',
+      name: 'memoros-theme',
       partialize: (state) => ({ theme: state.theme }),
     }
   )

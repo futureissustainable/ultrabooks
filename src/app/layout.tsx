@@ -20,7 +20,7 @@ const neueBit = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Ultrabooks',
+  title: 'Memoros',
   description: 'A brutalist ebook reader for EPUB, PDF, and MOBI files. Sync your reading progress, bookmarks, and highlights across all devices.',
   keywords: ['ebook', 'reader', 'epub', 'pdf', 'mobi', 'reading', 'books'],
   manifest: '/manifest.json',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Ultrabooks',
+    title: 'Memoros',
   },
   formatDetection: {
     telephone: false,

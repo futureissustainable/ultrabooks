@@ -82,7 +82,7 @@ export const useNotificationStore = create<NotificationState>()(
                 options: {
                   icon: '/icons/icon-192.png',
                   badge: '/icons/icon-192.png',
-                  tag: 'ultrabooks-notification',
+                  tag: 'memoros-notification',
                   renotify: true,
                   ...options,
                 },
@@ -120,12 +120,12 @@ export const useNotificationStore = create<NotificationState>()(
         // Store the timeout so it can be cancelled if settings change
         if (typeof window !== 'undefined') {
           // Clear any existing timeout
-          if ((window as unknown as { __ultrabooksReminderTimeout?: NodeJS.Timeout }).__ultrabooksReminderTimeout) {
-            clearTimeout((window as unknown as { __ultrabooksReminderTimeout?: NodeJS.Timeout }).__ultrabooksReminderTimeout);
+          if ((window as unknown as { __memorosReminderTimeout?: NodeJS.Timeout }).__memorosReminderTimeout) {
+            clearTimeout((window as unknown as { __memorosReminderTimeout?: NodeJS.Timeout }).__memorosReminderTimeout);
           }
 
           // Set new timeout (max setTimeout is ~24.8 days, so this is fine for daily)
-          (window as unknown as { __ultrabooksReminderTimeout: NodeJS.Timeout }).__ultrabooksReminderTimeout = setTimeout(() => {
+          (window as unknown as { __memorosReminderTimeout: NodeJS.Timeout }).__memorosReminderTimeout = setTimeout(() => {
             // The actual reminder check will be done when this fires
             // For now, we just re-schedule
             get().scheduleGoalReminder();
@@ -168,7 +168,7 @@ export const useNotificationStore = create<NotificationState>()(
       },
     }),
     {
-      name: 'ultrabooks-notifications',
+      name: 'memoros-notifications',
       partialize: (state) => ({
         enabled: state.enabled,
         dailyReminder: state.dailyReminder,

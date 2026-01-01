@@ -442,7 +442,7 @@ export const useReaderStore = create<ReaderState>()(
       setHighlightsOpen: (open) => set({ isHighlightsOpen: open }),
     }),
     {
-      name: 'ultrabooks-reader-settings',
+      name: 'memoros-reader-settings',
       partialize: (state) => ({
         settings: state.settings,
         settingsMetadata: state.settingsMetadata,

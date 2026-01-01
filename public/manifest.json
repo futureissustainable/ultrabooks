@@ -1,6 +1,6 @@
 {
-  "name": "Ultrabooks",
-  "short_name": "Ultrabooks",
+  "name": "Memoros",
+  "short_name": "Memoros",
   "description": "A brutalist ebook reader for EPUB, PDF, and MOBI files",
   "start_url": "/",
   "display": "standalone",

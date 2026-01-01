@@ -23,7 +23,7 @@ interface OfflineState {
 }
 
 // IndexedDB wrapper for offline data
-const DB_NAME = 'ultrabooks-offline';
+const DB_NAME = 'memoros-offline';
 const DB_VERSION = 1;
 const BOOKS_STORE = 'cached-books';
 const PROGRESS_STORE = 'reading-progress';
