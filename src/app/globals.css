@@ -62,17 +62,11 @@
   --font-reading: var(--font-albert), 'Georgia', 'Times New Roman', serif;
 
   /* ============================================
-     STANDARDIZED FONT SIZES (Psychology-Based)
-     ============================================
-     Scale ratios:
-     - 12→15 = 1.25x (mobile-friendly base)
-     - 15→20 = 1.33x (perfect fourth - musical harmony)
-     - 20→32 = 1.6x (golden ratio - universal harmony)
-     - 32→52 = 1.625x (golden ratio - hero impact)
+     STANDARDIZED FONT SIZES
      ============================================ */
-  --fs-p-sm: 12px;  /* Paragraph Small: UI text, labels, buttons, metadata */
-  --fs-p-lg: 15px;  /* Paragraph Large: Body text, descriptions, readable content */
-  --fs-h-sm: 20px;  /* Heading Small: Section titles, card headers, feature titles */
+  --fs-p-sm: 14px;  /* Paragraph Small: UI text, labels, buttons, metadata */
+  --fs-p-lg: 16px;  /* Paragraph Large: Body text, descriptions, readable content */
+  --fs-h-sm: 24px;  /* Heading Small: Section titles, card headers, feature titles */
   --fs-h-lg: 32px;  /* Heading Large: Page titles, hero text, major headings */
   --fs-h-xl: 52px;  /* Heading XL: Hero headlines, maximum visual impact */
 
@@ -217,7 +211,7 @@
     line-height: 0.95;
   }
 
-  /* Secondary Headings - use --fs-h-sm (20px) */
+  /* Secondary Headings - use --fs-h-sm (24px) */
   h3, h4, h5, h6 {
     font-size: var(--fs-h-sm);
     font-family: var(--font-body);
@@ -2136,9 +2130,9 @@
      STANDARDIZED FONT SIZE UTILITIES
      Use ONLY these 5 sizes across the entire site
      ============================================ */
-  .fs-p-sm { font-size: var(--fs-p-sm) !important; } /* 11px - UI text, labels, buttons */
-  .fs-p-lg { font-size: var(--fs-p-lg) !important; } /* 14px - Body text, descriptions */
-  .fs-h-sm { font-size: var(--fs-h-sm) !important; } /* 20px - Section headings */
+  .fs-p-sm { font-size: var(--fs-p-sm) !important; } /* 14px - UI text, labels, buttons */
+  .fs-p-lg { font-size: var(--fs-p-lg) !important; } /* 16px - Body text, descriptions */
+  .fs-h-sm { font-size: var(--fs-h-sm) !important; } /* 24px - Section headings */
   .fs-h-lg { font-size: var(--fs-h-lg) !important; } /* 32px - Page headings */
   .fs-h-xl { font-size: var(--fs-h-xl) !important; } /* 52px - Hero headlines */
 }
