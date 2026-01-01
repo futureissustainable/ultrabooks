@@ -6,7 +6,7 @@
    ============================================ */
 
 /* Fonts loaded via Next.js localFont in layout.tsx
-   CSS Variables: --font-mondwest, --font-neuebit */
+   CSS Variables: --font-mondwest (display), --font-albert (body/paragraphs), --font-neuebit (UI) */
 
 /* ============================================
    DESIGN TOKENS - MONOCHROME BRUTALIST
@@ -56,10 +56,11 @@
 
   /* Typography - Brutalist Stack */
   --font-display: var(--font-mondwest), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: var(--font-albert), 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-ui: var(--font-neuebit), 'SF Mono', Monaco, 'Courier New', monospace;
   --font-mono: 'SF Mono', Monaco, 'Consolas', 'Liberation Mono', 'Courier New', monospace;
   --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-reading: 'Georgia', 'Times New Roman', serif;
+  --font-reading: var(--font-albert), 'Georgia', 'Times New Roman', serif;
 
   /* ============================================
      STANDARDIZED FONT SIZES (Psychology-Based)
@@ -148,13 +149,14 @@
 @theme inline {
   --color-background: var(--bg-primary);
   --color-foreground: var(--text-primary);
-  --font-sans: var(--font-ui);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-mono);
 
-  /* Custom font families for Tailwind - use with font-display, font-ui, etc. */
+  /* Custom font families for Tailwind - use with font-display, font-ui, font-body, etc. */
   --font-display: var(--font-mondwest), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: var(--font-albert), 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-ui: var(--font-neuebit), 'SF Mono', Monaco, 'Courier New', monospace;
-  --font-reading: 'Georgia', 'Times New Roman', serif;
+  --font-reading: var(--font-albert), 'Georgia', 'Times New Roman', serif;
 }
 
 /* ============================================
@@ -220,14 +222,14 @@
   /* Secondary Headings - use --fs-h-sm (20px) */
   h3, h4, h5, h6 {
     font-size: var(--fs-h-sm);
-    font-family: var(--font-ui);
+    font-family: var(--font-body);
   }
 
   p {
     font-size: var(--fs-p-lg);
     line-height: 1.6;
     color: var(--text-secondary);
-    font-family: var(--font-ui);
+    font-family: var(--font-body);
   }
 
   /* Labels & UI Text */
@@ -305,6 +307,10 @@
   /* Fonts */
   .font-display {
     font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
   }
 
   .font-ui {
@@ -2110,7 +2116,7 @@
   }
 
   .text-body {
-    font-family: var(--font-ui);
+    font-family: var(--font-body);
     font-size: var(--fs-p-lg);
     line-height: 1.6;
     color: var(--text-primary);

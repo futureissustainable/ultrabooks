@@ -19,6 +19,12 @@ const neueBit = localFont({
   display: 'swap',
 });
 
+const albertSans = localFont({
+  src: '../../public/fonts/AlbertSans-VariableFont_wght.ttf',
+  variable: '--font-albert',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'MEMOROS',
   description: 'A brutalist ebook reader for EPUB, PDF, and MOBI files. Sync your reading progress, bookmarks, and highlights across all devices.',
@@ -58,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${mondwest.variable} ${neueBit.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${mondwest.variable} ${neueBit.variable} ${albertSans.variable}`}>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
