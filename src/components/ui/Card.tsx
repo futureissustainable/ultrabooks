@@ -21,7 +21,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
           // Variant styles
           {
             '': variant === 'default',
-            'shadow-[4px_4px_0_rgba(0,0,0,0.3)]': variant === 'elevated',
+            'shadow-[4px_4px_0_var(--black)]': variant === 'elevated',
             'border-[var(--border-subtle)]': variant === 'outlined',
           },
           // Padding styles

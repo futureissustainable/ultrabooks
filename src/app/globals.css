@@ -1499,7 +1499,7 @@
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 8px 8px 0 var(--black);
   }
 
   .modal-header {
@@ -1899,7 +1899,7 @@
     position: absolute;
     background: var(--bg-window);
     border: var(--border-width) solid var(--border-primary);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 0 var(--black);
     z-index: 1000;
   }
 
@@ -2681,13 +2681,13 @@ select {
 
 .card-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 0 var(--gray-900);
+  box-shadow: 0 6px 0 var(--black);
   border-color: var(--border-strong);
 }
 
 .card-lift:active {
   transform: translateY(-1px);
-  box-shadow: 0 2px 0 var(--gray-900);
+  box-shadow: 0 2px 0 var(--black);
 }
 
 /* Premium Link Underline */
@@ -2782,18 +2782,14 @@ select {
   );
 }
 
-/* Book Cover Shadow */
+/* Book Cover Shadow - Hard brutalist offset */
 .book-shadow {
-  box-shadow:
-    2px 2px 0 var(--gray-800),
-    4px 4px 0 var(--gray-900);
+  box-shadow: 4px 4px 0 var(--black);
   transition: box-shadow var(--duration-fast) var(--ease-sharp);
 }
 
 .book-shadow:hover {
-  box-shadow:
-    3px 3px 0 var(--gray-700),
-    6px 6px 0 var(--gray-800);
+  box-shadow: 6px 6px 0 var(--black);
 }
 
 /* Interactive Icon */

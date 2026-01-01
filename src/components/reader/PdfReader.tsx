@@ -507,7 +507,7 @@ export function PdfReader({ book }: PdfReaderProps) {
               >
                 <canvas
                   ref={(canvas) => setCanvasRef(page.pageNum, canvas)}
-                  className="shadow-lg max-w-full"
+                  className="shadow-[4px_4px_0_var(--black)] max-w-full"
                 />
                 {!page.isRendered && (
                   <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)]">

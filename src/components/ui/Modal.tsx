@@ -48,7 +48,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         className={clsx(
           'relative z-10 bg-[var(--bg-window)]',
           'border border-[var(--border-primary)]',
-          'shadow-[8px_8px_0_rgba(0,0,0,0.5)]',
+          'shadow-[8px_8px_0_var(--black)]',
           'max-h-[90vh] overflow-hidden flex flex-col',
           'animate-scale-in',
           {

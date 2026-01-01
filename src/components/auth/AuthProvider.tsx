@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   if (!supabaseReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] p-4">
-        <div className="max-w-lg w-full border-2 border-[var(--border-primary)] p-6 shadow-[8px_8px_0_var(--border-primary)]">
+        <div className="max-w-lg w-full border-2 border-[var(--border-primary)] p-6 shadow-[8px_8px_0_var(--black)]">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-[var(--color-accent)] flex items-center justify-center">
               <PixelIcon name="settings" size={28} className="text-white" />
