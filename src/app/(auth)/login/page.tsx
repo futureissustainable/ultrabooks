@@ -6,7 +6,7 @@ import { PixelIcon } from '@/components/icons/PixelIcon';
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
-      <Header />
+      <Header variant="landing" />
       <main className="flex-1 flex items-center justify-center px-4 py-12 md:py-20">
         <div className="w-full max-w-md">
           {/* Brand mark */}
