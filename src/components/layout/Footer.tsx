@@ -16,7 +16,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 bg-[var(--text-primary)] flex items-center justify-center">
+              <div className="w-7 h-7 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center">
                 <PixelIcon name="book" size={14} className="text-[var(--bg-primary)]" />
               </div>
               <span className="font-display fs-h-sm uppercase tracking-tight">

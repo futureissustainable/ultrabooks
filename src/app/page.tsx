@@ -87,7 +87,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               {/* Loss Aversion: Never lose progress */}
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="sync" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
@@ -100,7 +100,7 @@ export default function HomePage() {
 
               {/* Autonomy: Complete control */}
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="font" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
@@ -113,7 +113,7 @@ export default function HomePage() {
 
               {/* Social Proof & Belonging */}
               <div className="text-center group">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="users" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
@@ -183,7 +183,7 @@ export default function HomePage() {
         <section className="bg-[var(--bg-secondary)]">
           <div className="container-page section-spacing-lg">
             <div className="max-w-2xl mx-auto text-center">
-              <div className="w-20 h-20 bg-[var(--text-primary)] flex items-center justify-center mx-auto mb-8">
+              <div className="w-20 h-20 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center mx-auto mb-8">
                 <PixelIcon name="book" size={36} className="text-[var(--bg-primary)]" />
               </div>
 
