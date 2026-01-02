@@ -36,19 +36,19 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-5 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal - OS Window Style */}
+      {/* Modal - Clean & Minimal */}
       <div
         className={clsx(
-          'relative z-10 bg-[var(--bg-window)]',
-          'border border-[var(--border-primary)]',
-          'shadow-[8px_8px_0_var(--black)]',
+          'relative z-10 bg-[var(--bg-primary)]',
+          'rounded-2xl',
+          'shadow-[0_16px_48px_rgba(0,0,0,0.4)]',
           'max-h-[90vh] overflow-hidden flex flex-col',
           'animate-scale-in',
           {
@@ -59,24 +59,26 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
           }
         )}
       >
-        {/* Window Titlebar */}
+        {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-3 py-2 bg-[var(--bg-titlebar)] border-b border-[var(--border-primary)]">
-            <span className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-secondary)]">
+          <div className="flex items-center justify-between px-6 pt-6 pb-2">
+            <span className="text-base font-medium text-[var(--text-primary)]">
               {title}
             </span>
             <button
               onClick={onClose}
-              className="w-5 h-5 flex items-center justify-center bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-all duration-[50ms] font-mono fs-p-sm"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[var(--text-tertiary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all"
               aria-label="Close modal"
             >
-              x
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M1 1l12 12M13 1L1 13" />
+              </svg>
             </button>
           </div>
         )}
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto px-6 pb-6 pt-4">
           {children}
         </div>
       </div>

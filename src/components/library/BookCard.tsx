@@ -44,7 +44,7 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
   };
 
   const coverContent = (
-    <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden border-b border-[var(--border-primary)]">
+    <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden rounded-t-xl">
       {coverUrl ? (
         <Image
           src={coverUrl}
@@ -54,32 +54,32 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
         />
       ) : (
         <div className="flex flex-col items-center gap-3 p-6">
-          <div className="w-12 h-12 bg-[var(--text-primary)] flex items-center justify-center">
-            <PixelIcon name="book" size={24} className="text-[var(--bg-primary)]" />
+          <div className="w-12 h-12 bg-[var(--bg-secondary)] rounded-xl flex items-center justify-center">
+            <PixelIcon name="book" size={24} className="text-[var(--text-tertiary)]" />
           </div>
-          <span className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] border border-[var(--border-primary)] px-2 py-1">
-            {book.file_type}
+          <span className="text-xs text-[var(--text-muted)] bg-[var(--bg-secondary)] px-2 py-1 rounded">
+            {book.file_type.toUpperCase()}
           </span>
         </div>
       )}
 
       {/* Selection indicator */}
       {isSelectionMode && (
-        <div className="absolute top-2 right-2">
-          <div className={`w-5 h-5 border-2 flex items-center justify-center transition-all ${
+        <div className="absolute top-3 right-3">
+          <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all shadow-md ${
             isSelected
-              ? 'bg-[var(--text-primary)] border-[var(--text-primary)]'
-              : 'bg-[var(--bg-primary)]/80 border-[var(--text-tertiary)]'
+              ? 'bg-[var(--text-primary)]'
+              : 'bg-[var(--bg-primary)]/90'
           }`}>
-            {isSelected && <PixelIcon name="check" size={12} className="text-[var(--bg-primary)]" />}
+            {isSelected && <PixelIcon name="check" size={14} className="text-[var(--bg-primary)]" />}
           </div>
         </div>
       )}
 
       {/* Hover Overlay - only when not in selection mode */}
       {!isSelectionMode && (
-        <div className="absolute inset-0 bg-[var(--bg-primary)]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center backdrop-blur-sm">
-          <span className="font-ui fs-p-sm uppercase tracking-[0.05em] px-4 py-2 bg-[var(--text-primary)] text-[var(--bg-primary)]">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-sm">
+          <span className="text-sm font-medium px-5 py-2.5 bg-white text-black rounded-lg">
             Read
           </span>
         </div>
@@ -89,7 +89,7 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
 
   return (
     <>
-      <Card variant="default" padding="none" className={`group relative overflow-hidden card-lift focus-ring ${isSelectionMode ? 'cursor-pointer' : ''}`}>
+      <Card variant="default" padding="none" className={`group relative overflow-hidden rounded-xl card-lift ${isSelectionMode ? 'cursor-pointer' : ''}`}>
         {isSelectionMode ? (
           <div onClick={handleClick}>
             {coverContent}
@@ -101,40 +101,40 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
         )}
 
         {/* Book Info */}
-        <div className="p-3">
-          <h3 className="font-ui fs-p-sm uppercase tracking-[0.02em] truncate mb-1" title={book.title}>
+        <div className="p-4">
+          <h3 className="text-sm font-medium truncate mb-0.5" title={book.title}>
             {book.title}
           </h3>
           {book.author && (
-            <p className="font-ui fs-p-sm text-[var(--text-secondary)] truncate mb-3">
+            <p className="text-sm text-[var(--text-secondary)] truncate mb-3">
               {book.author}
             </p>
           )}
           <div className="flex items-center justify-between">
-            <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+            <span className="text-xs text-[var(--text-muted)]">
               {formatFileSize(book.file_size)}
             </span>
             {!isSelectionMode && (
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center gap-1">
                 <DownloadForOffline
                   bookId={book.id}
                   fileUrl={book.file_url}
                   variant="icon"
-                  className="!p-1.5 !min-w-0 !min-h-0 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="!p-1.5 !min-w-0 !min-h-0 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                 />
                 <button
                   onClick={() => setShowShareModal(true)}
-                  className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="p-1.5 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Share book"
                 >
-                  <PixelIcon name="share" size={12} />
+                  <PixelIcon name="share" size={14} />
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="p-1.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="p-1.5 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Delete book"
                 >
-                  <PixelIcon name="trash" size={12} />
+                  <PixelIcon name="trash" size={14} />
                 </button>
               </div>
             )}

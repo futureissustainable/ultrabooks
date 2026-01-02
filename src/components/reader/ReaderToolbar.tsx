@@ -24,60 +24,57 @@ export function ReaderToolbar({
   } = useReaderStore();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm border-b border-[var(--border-subtle)]">
-      <div className="flex items-center justify-between px-3 h-11">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm">
+      <div className="flex items-center justify-between px-4 h-14">
         {/* Left - Back */}
         <Link
           href="/library"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
           aria-label="Back to library"
         >
-          <PixelIcon name="chevron-left" size={14} />
-          <span className="font-ui fs-p-sm uppercase tracking-wide hidden sm:inline">
-            Back
-          </span>
+          <PixelIcon name="chevron-left" size={20} />
         </Link>
 
         {/* Center - Title (minimal) */}
-        <span className="font-ui fs-p-sm text-[var(--text-tertiary)] truncate max-w-[200px] hidden sm:block">
+        <span className="text-sm text-[var(--text-tertiary)] truncate max-w-[200px] hidden sm:block">
           {title}
         </span>
 
         {/* Right - Actions */}
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
           <button
             onClick={onBookmark}
             className={clsx(
-              'p-2 transition-colors rounded-sm',
+              'w-10 h-10 flex items-center justify-center rounded-xl transition-all',
               isBookmarked
-                ? 'text-[var(--text-primary)]'
-                : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
+                : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
             )}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
-            <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={16} />
+            <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={18} />
           </button>
           <button
             onClick={() => setHighlightsOpen(true)}
-            className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-sm"
+            className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="View highlights"
           >
-            <PixelIcon name="highlight" size={16} />
+            <PixelIcon name="highlight" size={18} />
           </button>
           <button
             onClick={() => setSettingsOpen(true)}
-            className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-sm"
+            className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Settings"
           >
-            <PixelIcon name="settings" size={16} />
+            <PixelIcon name="settings" size={18} />
           </button>
         </div>
       </div>
 
       {/* Progress Bar - subtle */}
-      <div className="h-[1px] bg-[var(--bg-tertiary)]">
+      <div className="h-0.5 bg-[var(--bg-tertiary)]">
         <div
-          className="h-full bg-[var(--text-tertiary)] transition-all duration-300"
+          className="h-full bg-[var(--text-primary)] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>

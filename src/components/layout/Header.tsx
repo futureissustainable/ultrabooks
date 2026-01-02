@@ -58,15 +58,15 @@ export function Header({ variant = 'app' }: HeaderProps) {
   if (user && variant === 'app') {
     return (
       <>
-        <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)] sticky top-0 z-50">
-          <div className="container-page flex items-center justify-between h-14">
+        <header className="bg-[var(--bg-primary)] sticky top-0 z-50">
+          <div className="container-page flex items-center justify-between h-16">
             {/* Left - Current Book Cover */}
             {recentBook ? (
               <Link
                 href={`/reader/${recentBook.id}`}
-                className="relative -mb-4 group"
+                className="relative -mb-3 group"
               >
-                <div className="w-10 h-14 border-2 border-[var(--text-primary)] bg-[var(--bg-tertiary)] overflow-hidden shadow-md transition-transform group-hover:scale-105">
+                <div className="w-9 h-[52px] rounded-md bg-[var(--bg-tertiary)] overflow-hidden shadow-lg transition-transform group-hover:scale-105">
                   {recentBookCover ? (
                     <Image
                       src={recentBookCover}
@@ -82,17 +82,17 @@ export function Header({ variant = 'app' }: HeaderProps) {
                 </div>
               </Link>
             ) : (
-              <div className="w-10" />
+              <div className="w-9" />
             )}
 
             {/* Center - Library */}
             <Link
               href="/library"
               className={clsx(
-                'w-10 h-10 flex items-center justify-center transition-colors',
+                'w-10 h-10 flex items-center justify-center rounded-xl transition-all',
                 pathname === '/library'
-                  ? 'text-[var(--text-primary)]'
-                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                  ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
+                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
               )}
               aria-label="Library"
             >
@@ -102,7 +102,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
             {/* Right - Menu */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="w-10 h-10 flex items-center justify-center text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Menu"
             >
               <PixelIcon name="menu" size={20} />
@@ -116,18 +116,18 @@ export function Header({ variant = 'app' }: HeaderProps) {
           onClick={() => setMobileMenuOpen(false)}
         />
 
-        {/* Menu Panel */}
+        {/* Menu Panel - Clean & Minimal */}
         <div className={clsx('mobile-menu', mobileMenuOpen && 'open')}>
           <div className="mobile-menu-header">
-            <span className="font-display fs-h-sm tracking-tight uppercase">
+            <span className="text-lg font-medium text-[var(--text-primary)]">
               Menu
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Close menu"
             >
-              <PixelIcon name="close" size={16} />
+              <PixelIcon name="close" size={18} />
             </button>
           </div>
 
@@ -138,31 +138,36 @@ export function Header({ variant = 'app' }: HeaderProps) {
                 href={item.href}
                 className={clsx(
                   'mobile-menu-item',
-                  pathname === item.href && 'bg-[var(--bg-tertiary)]'
+                  pathname === item.href && 'bg-[var(--bg-secondary)] text-[var(--text-primary)]'
                 )}
               >
-                <span className="flex items-center gap-3">
-                  <PixelIcon name={item.icon} size={16} />
+                <span className="flex items-center gap-4">
+                  <PixelIcon name={item.icon} size={20} />
                   {item.label}
                 </span>
               </Link>
             ))}
-            <div className="h-px bg-[var(--border-primary)] my-2" />
+
+            <div className="my-4" />
+
             <button
               onClick={toggleTheme}
               className="mobile-menu-item text-left w-full"
             >
-              <span className="flex items-center gap-3">
-                <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+              <span className="flex items-center gap-4">
+                <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={20} />
                 {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
               </span>
             </button>
+
+            <div className="flex-1" />
+
             <button
               onClick={handleSignOut}
-              className="mobile-menu-item text-left w-full"
+              className="mobile-menu-item text-left w-full mt-auto text-[var(--text-tertiary)]"
             >
-              <span className="flex items-center gap-3">
-                <PixelIcon name="log-out" size={16} />
+              <span className="flex items-center gap-4">
+                <PixelIcon name="log-out" size={20} />
                 Sign Out
               </span>
             </button>
@@ -172,32 +177,32 @@ export function Header({ variant = 'app' }: HeaderProps) {
     );
   }
 
-  // Logged-out header - original style
+  // Logged-out header - clean style
   return (
     <>
-      <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)] sticky top-0 z-50">
-        <div className="container-page flex items-center justify-between h-14">
+      <header className="bg-[var(--bg-primary)] sticky top-0 z-50">
+        <div className="container-page flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-3 group"
           >
-            <div className="w-8 h-8 bg-[var(--text-primary)] flex items-center justify-center group-hover:scale-105 transition-transform">
-              <PixelIcon name="book" size={16} className="text-[var(--bg-primary)]" />
+            <div className="w-9 h-9 bg-[var(--text-primary)] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+              <PixelIcon name="book" size={18} className="text-[var(--bg-primary)]" />
             </div>
-            <span className="font-display fs-h-sm tracking-tight uppercase hidden sm:inline">
+            <span className="font-display text-xl tracking-tight uppercase hidden sm:inline">
               MEMOROS
             </span>
           </Link>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-100 border border-transparent hover:border-[var(--text-primary)]"
+              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Toggle theme"
             >
-              <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+              <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
             </button>
             <div className="flex items-center gap-2 ml-2">
               <Link href="/login">
@@ -216,7 +221,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden w-10 h-10 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-100"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Open menu"
           >
             <PixelIcon name="menu" size={20} />
@@ -230,23 +235,18 @@ export function Header({ variant = 'app' }: HeaderProps) {
         onClick={() => setMobileMenuOpen(false)}
       />
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Clean */}
       <div className={clsx('mobile-menu', mobileMenuOpen && 'open')}>
         <div className="mobile-menu-header">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-[var(--text-primary)] flex items-center justify-center">
-              <PixelIcon name="book" size={14} className="text-[var(--bg-primary)]" />
-            </div>
-            <span className="font-display fs-h-sm tracking-tight uppercase">
-              Menu
-            </span>
-          </div>
+          <span className="text-lg font-medium text-[var(--text-primary)]">
+            Menu
+          </span>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors border border-[var(--border-primary)]"
+            className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Close menu"
           >
-            <PixelIcon name="close" size={14} />
+            <PixelIcon name="close" size={18} />
           </button>
         </div>
 
@@ -255,21 +255,23 @@ export function Header({ variant = 'app' }: HeaderProps) {
             onClick={toggleTheme}
             className="mobile-menu-item text-left w-full"
           >
-            <span className="flex items-center gap-3">
-              <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+            <span className="flex items-center gap-4">
+              <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={20} />
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </span>
           </button>
-          <div className="h-px bg-[var(--border-primary)] my-2" />
+
+          <div className="my-4" />
+
           <Link href="/login" className="mobile-menu-item">
-            <span className="flex items-center gap-3">
-              <PixelIcon name="log-in" size={16} />
+            <span className="flex items-center gap-4">
+              <PixelIcon name="log-in" size={20} />
               Login
             </span>
           </Link>
           <Link href="/signup" className="mobile-menu-item">
-            <span className="flex items-center gap-3">
-              <PixelIcon name="user-plus" size={16} />
+            <span className="flex items-center gap-4">
+              <PixelIcon name="user-plus" size={20} />
               Sign Up
             </span>
           </Link>
