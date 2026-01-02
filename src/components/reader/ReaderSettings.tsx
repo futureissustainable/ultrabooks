@@ -26,34 +26,34 @@ export function ReaderSettings() {
       title="Settings"
       size="sm"
     >
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Theme */}
         <div>
-          <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-3 block">
+          <label className="text-sm text-[var(--text-secondary)] mb-4 block">
             Theme
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-3">
             {(['light', 'dark', 'sepia'] as const).map((theme) => (
               <button
                 key={theme}
                 onClick={() => handleChange('theme', theme)}
                 className={clsx(
-                  'relative p-3 border transition-all duration-100',
+                  'relative p-3 rounded-xl transition-all',
                   settings.theme === theme
-                    ? 'border-[var(--text-primary)]'
-                    : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
+                    ? 'ring-2 ring-[var(--text-primary)] bg-[var(--bg-secondary)]'
+                    : 'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]'
                 )}
               >
                 <div
-                  className="w-full h-6 mb-2 flex items-center justify-center"
+                  className="w-full h-8 mb-2 flex items-center justify-center rounded-lg"
                   style={{
                     backgroundColor: READER_THEME_COLORS[theme].bg,
                     color: READER_THEME_COLORS[theme].text
                   }}
                 >
-                  <span className="fs-p-sm">Aa</span>
+                  <span className="text-sm font-medium">Aa</span>
                 </div>
-                <span className="font-ui fs-p-sm uppercase block text-center capitalize">
+                <span className="text-xs text-center block capitalize">
                   {theme}
                 </span>
               </button>
@@ -63,30 +63,30 @@ export function ReaderSettings() {
 
         {/* Font Size */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)]">
+          <div className="flex items-center justify-between mb-4">
+            <label className="text-sm text-[var(--text-secondary)]">
               Text Size
             </label>
-            <span className="font-mono fs-p-sm text-[var(--text-secondary)]">
+            <span className="text-sm text-[var(--text-muted)] tabular-nums">
               {settings.fontSize}px
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => handleChange('fontSize', Math.max(12, settings.fontSize - 2))}
-              className="w-10 h-10 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors font-mono fs-h-sm"
+              className="w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
             >
               −
             </button>
-            <div className="flex-1 h-2 bg-[var(--bg-tertiary)] relative">
+            <div className="flex-1 h-1.5 bg-[var(--bg-tertiary)] rounded-full relative">
               <div
-                className="h-full bg-[var(--text-primary)] transition-all"
+                className="h-full bg-[var(--text-primary)] rounded-full transition-all"
                 style={{ width: `${((settings.fontSize - 12) / 20) * 100}%` }}
               />
             </div>
             <button
               onClick={() => handleChange('fontSize', Math.min(32, settings.fontSize + 2))}
-              className="w-10 h-10 flex items-center justify-center border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors font-mono fs-h-sm"
+              className="w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
             >
               +
             </button>
@@ -95,7 +95,7 @@ export function ReaderSettings() {
 
         {/* Line Spacing */}
         <div>
-          <label className="font-ui fs-p-sm uppercase tracking-[0.05em] text-[var(--text-tertiary)] mb-3 block">
+          <label className="text-sm text-[var(--text-secondary)] mb-4 block">
             Line Spacing
           </label>
           <div className="flex gap-2">
@@ -108,10 +108,10 @@ export function ReaderSettings() {
                 key={option.value}
                 onClick={() => handleChange('lineHeight', option.value)}
                 className={clsx(
-                  'flex-1 py-2 border transition-all duration-100 font-ui fs-p-sm uppercase',
+                  'flex-1 py-2.5 rounded-xl transition-all text-sm',
                   settings.lineHeight === option.value
-                    ? 'border-[var(--text-primary)] bg-[var(--text-primary)] text-[var(--bg-primary)]'
-                    : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'
+                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                    : 'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]'
                 )}
               >
                 {option.label}
