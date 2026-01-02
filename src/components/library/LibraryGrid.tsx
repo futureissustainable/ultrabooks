@@ -271,13 +271,14 @@ export function LibraryGrid() {
         <>
           {/* Toolbar for All view */}
           <div className="flex items-center justify-between gap-4 mb-6">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleBackToHome}
-              className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <PixelIcon name="chevron-left" size={14} />
-              <span className="font-ui fs-p-sm">Back</span>
-            </button>
+              Back
+            </Button>
 
             <div className="flex-1 max-w-md relative">
               <PixelIcon
@@ -297,13 +298,14 @@ export function LibraryGrid() {
             <div className="flex items-center gap-2">
               {isSelectionMode ? (
                 <>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={handleSelectAll}
-                    className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   >
                     {selectedBooks.size === filteredBooks.length ? 'None' : 'All'}
-                  </button>
-                  <span className="font-mono fs-p-sm text-[var(--text-tertiary)]">
+                  </Button>
+                  <span className="font-mono fs-p-sm text-[var(--text-tertiary)] px-2 py-1">
                     {selectedBooks.size}
                   </span>
                   <Button
@@ -313,29 +315,33 @@ export function LibraryGrid() {
                   >
                     Share
                   </Button>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={handleExitSelection}
-                    className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    aria-label="Exit selection"
                   >
                     <PixelIcon name="close" size={14} />
-                  </button>
+                  </Button>
                 </>
               ) : (
                 <>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setIsSelectionMode(true)}
-                    className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                     aria-label="Select books"
                   >
                     <PixelIcon name="check" size={14} />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setIsUploadOpen(true)}
-                    className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                     aria-label="Upload book"
                   >
                     <PixelIcon name="upload" size={14} />
-                  </button>
+                  </Button>
                 </>
               )}
             </div>
