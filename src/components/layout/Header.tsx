@@ -13,7 +13,11 @@ import { Button } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
 import { clsx } from 'clsx';
 
-export function Header() {
+interface HeaderProps {
+  variant?: 'landing' | 'app';
+}
+
+export function Header({ variant = 'app' }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, signOut } = useAuthStore();
@@ -50,12 +54,12 @@ export function Header() {
     { href: '/settings', label: 'Settings', icon: 'settings' as const },
   ];
 
-  // Logged-in header - minimal with 3 icons
-  if (user) {
+  // Logged-in header - minimal with 3 icons (only for app variant)
+  if (user && variant === 'app') {
     return (
       <>
         <header className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)] sticky top-0 z-50">
-          <div className="container-page flex items-center justify-between h-12">
+          <div className="container-page flex items-center justify-between h-14">
             {/* Left - Current Book Cover */}
             {recentBook ? (
               <Link

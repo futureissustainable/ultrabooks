@@ -14,7 +14,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
-      <Header />
+      <Header variant="landing" />
 
       <main className="flex-1">
         {/* ============================================
