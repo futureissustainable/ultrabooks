@@ -236,9 +236,64 @@ export const useBookStore = create<BookState>((set, get) => ({
       const duplicate = existingBooks.find(
         (book) => book.title.toLowerCase().trim() === normalizedTitle
       );
+
+      // If duplicate found, replace the cover instead of skipping
       if (duplicate) {
+        // Only replace cover for EPUBs (other formats don't have embedded covers)
+        if (fileType === 'epub') {
+          try {
+            const coverBlob = await extractEpubCover(file);
+            if (coverBlob) {
+              // Delete old cover from storage if it exists
+              if (duplicate.cover_url) {
+                const oldCoverPath = isLegacyUrl(duplicate.cover_url)
+                  ? extractPathFromLegacyUrl(duplicate.cover_url)
+                  : duplicate.cover_url;
+                if (oldCoverPath) {
+                  await supabase.storage.from('covers').remove([oldCoverPath]);
+                }
+              }
+
+              // Upload new cover
+              const coverExt = coverBlob.type.split('/')[1] || 'jpg';
+              const coverId = generateFileId();
+              const coverPath = `${user.id}/${coverId}.${coverExt}`;
+
+              const { error: coverUploadError } = await supabase.storage
+                .from('covers')
+                .upload(coverPath, coverBlob, {
+                  contentType: coverBlob.type,
+                });
+
+              if (!coverUploadError) {
+                // Update book record with new cover
+                const { data: updatedBook, error: updateError } = await supabase
+                  .from('books')
+                  .update({ cover_url: coverPath, updated_at: new Date().toISOString() })
+                  .eq('id', duplicate.id)
+                  .select()
+                  .single();
+
+                if (!updateError && updatedBook) {
+                  // Update local state
+                  set((state) => ({
+                    books: state.books.map((b) =>
+                      b.id === duplicate.id ? updatedBook : b
+                    ),
+                    isUploading: false,
+                  }));
+                  return { book: updatedBook, error: null };
+                }
+              }
+            }
+          } catch (coverError) {
+            console.error('Error replacing cover:', coverError);
+          }
+        }
+
+        // If cover replacement failed or not an EPUB, return the existing book unchanged
         set({ isUploading: false });
-        return { book: null, error: `"${title}" is already in your library` };
+        return { book: duplicate, error: null };
       }
 
       // Upload file to storage with UUID path (unguessable)
@@ -339,13 +394,15 @@ export const useBookStore = create<BookState>((set, get) => ({
         return { successful: [], failed: files.map(f => ({ file: f, error: quotaCheck.error || 'Upload limit reached' })) };
       }
 
-      // Get existing book titles for duplicate detection
+      // Get existing books for duplicate detection and cover replacement
       const existingBooks = get().books;
-      const existingTitles = new Set(
-        existingBooks.map((book) => book.title.toLowerCase().trim())
+      const existingBooksByTitle = new Map<string, Book>(
+        existingBooks.map((book) => [book.title.toLowerCase().trim(), book])
       );
       // Track titles we're adding in this batch to avoid duplicates within the batch
       const batchTitles = new Set<string>();
+      // Track books that were updated (cover replaced)
+      const updated: Book[] = [];
 
       // Process files sequentially to avoid overwhelming the server
       for (let i = 0; i < files.length; i++) {
@@ -400,8 +457,69 @@ export const useBookStore = create<BookState>((set, get) => ({
 
         // Check for duplicate
         const normalizedTitle = title.toLowerCase().trim();
-        if (existingTitles.has(normalizedTitle) || batchTitles.has(normalizedTitle)) {
-          failed.push({ file, error: `"${title}" is already in your library` });
+
+        // Check for duplicate within the current batch
+        if (batchTitles.has(normalizedTitle)) {
+          failed.push({ file, error: `"${title}" appears multiple times in this upload` });
+          continue;
+        }
+
+        // Check for existing book in library - if found, replace cover instead of skipping
+        const existingBook = existingBooksByTitle.get(normalizedTitle);
+        if (existingBook) {
+          // Only replace cover for EPUBs (other formats don't have embedded covers)
+          if (fileType === 'epub') {
+            try {
+              const coverPromise = Promise.race([
+                extractEpubCover(file),
+                new Promise<Blob | null>((resolve) =>
+                  setTimeout(() => resolve(null), 10000)
+                )
+              ]);
+
+              const coverBlob = await coverPromise;
+              if (coverBlob) {
+                // Delete old cover from storage if it exists
+                if (existingBook.cover_url) {
+                  const oldCoverPath = isLegacyUrl(existingBook.cover_url)
+                    ? extractPathFromLegacyUrl(existingBook.cover_url)
+                    : existingBook.cover_url;
+                  if (oldCoverPath) {
+                    await supabase.storage.from('covers').remove([oldCoverPath]);
+                  }
+                }
+
+                // Upload new cover
+                const coverExt = coverBlob.type.split('/')[1] || 'jpg';
+                const coverId = generateFileId();
+                const coverPath = `${user.id}/${coverId}.${coverExt}`;
+
+                const { error: coverUploadError } = await supabase.storage
+                  .from('covers')
+                  .upload(coverPath, coverBlob, { contentType: coverBlob.type });
+
+                if (!coverUploadError) {
+                  // Update book record with new cover
+                  const { data: updatedBook, error: updateError } = await supabase
+                    .from('books')
+                    .update({ cover_url: coverPath, updated_at: new Date().toISOString() })
+                    .eq('id', existingBook.id)
+                    .select()
+                    .single();
+
+                  if (!updateError && updatedBook) {
+                    updated.push(updatedBook);
+                    // Update the map so subsequent lookups see the updated book
+                    existingBooksByTitle.set(normalizedTitle, updatedBook);
+                  }
+                }
+              }
+            } catch (coverErr) {
+              console.warn(`Cover replacement failed for ${file.name}:`, coverErr);
+            }
+          }
+          // Mark this title as processed (even if cover replacement failed/skipped)
+          batchTitles.add(normalizedTitle);
           continue;
         }
 
@@ -486,12 +604,22 @@ export const useBookStore = create<BookState>((set, get) => ({
         get().fetchQuota();
       }
 
-      // Update state with all successful books
-      set((state) => ({
-        books: [...successful, ...state.books],
-        isUploading: false,
-        uploadProgress: null,
-      }));
+      // Update state with all successful books and updated covers
+      set((state) => {
+        // Create a map of updated books for quick lookup
+        const updatedBooksMap = new Map(updated.map(b => [b.id, b]));
+
+        // Update existing books with new covers, then prepend new books
+        const updatedExistingBooks = state.books.map(book =>
+          updatedBooksMap.has(book.id) ? updatedBooksMap.get(book.id)! : book
+        );
+
+        return {
+          books: [...successful, ...updatedExistingBooks],
+          isUploading: false,
+          uploadProgress: null,
+        };
+      });
 
       return { successful, failed };
     } catch (err) {
