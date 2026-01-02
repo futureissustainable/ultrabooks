@@ -19,7 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Base styles - Clean & Minimal
           'inline-flex items-center justify-center',
           'font-medium',
-          'rounded-lg',
+          'rounded-[5px]',
           'transition-all duration-150',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)]',
           'disabled:opacity-50 disabled:cursor-not-allowed',

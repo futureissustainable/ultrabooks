@@ -16,7 +16,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={clsx(
           'bg-[var(--bg-secondary)]',
-          'rounded-xl',
+          'rounded-[5px]',
           'transition-all duration-150',
           // Variant styles
           {

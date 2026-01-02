@@ -38,14 +38,14 @@ export function ReaderSettings() {
                 key={theme}
                 onClick={() => handleChange('theme', theme)}
                 className={clsx(
-                  'relative p-3 rounded-xl transition-all',
+                  'relative p-3 rounded-[5px] transition-all',
                   settings.theme === theme
                     ? 'ring-2 ring-[var(--text-primary)] bg-[var(--bg-secondary)]'
                     : 'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]'
                 )}
               >
                 <div
-                  className="w-full h-8 mb-2 flex items-center justify-center rounded-lg"
+                  className="w-full h-8 mb-2 flex items-center justify-center rounded-[5px]"
                   style={{
                     backgroundColor: READER_THEME_COLORS[theme].bg,
                     color: READER_THEME_COLORS[theme].text
@@ -74,7 +74,7 @@ export function ReaderSettings() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => handleChange('fontSize', Math.max(12, settings.fontSize - 2))}
-              className="w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
+              className="w-11 h-11 flex items-center justify-center rounded-[5px] bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
             >
               −
             </button>
@@ -86,7 +86,7 @@ export function ReaderSettings() {
             </div>
             <button
               onClick={() => handleChange('fontSize', Math.min(32, settings.fontSize + 2))}
-              className="w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
+              className="w-11 h-11 flex items-center justify-center rounded-[5px] bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors text-lg"
             >
               +
             </button>
@@ -108,7 +108,7 @@ export function ReaderSettings() {
                 key={option.value}
                 onClick={() => handleChange('lineHeight', option.value)}
                 className={clsx(
-                  'flex-1 py-2.5 rounded-xl transition-all text-sm',
+                  'flex-1 py-2.5 rounded-[5px] transition-all text-sm',
                   settings.lineHeight === option.value
                     ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                     : 'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]'

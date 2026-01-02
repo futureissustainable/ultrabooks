@@ -54,59 +54,52 @@ export function Header({ variant = 'app' }: HeaderProps) {
     { href: '/settings', label: 'Settings', icon: 'settings' as const },
   ];
 
-  // Logged-in header - minimal with 3 icons (only for app variant)
+  // Logged-in header - clean and balanced
   if (user && variant === 'app') {
     return (
       <>
         <header className="bg-[var(--bg-primary)] sticky top-0 z-50">
           <div className="container-page flex items-center justify-between h-16">
-            {/* Left - Current Book Cover */}
-            {recentBook ? (
-              <Link
-                href={`/reader/${recentBook.id}`}
-                className="relative -mb-3 group"
-              >
-                <div className="w-9 h-[52px] rounded-md bg-[var(--bg-tertiary)] overflow-hidden shadow-lg transition-transform group-hover:scale-105">
-                  {recentBookCover ? (
-                    <Image
-                      src={recentBookCover}
-                      alt={recentBook.title}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <PixelIcon name="book" size={16} className="text-[var(--text-tertiary)]" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ) : (
-              <div className="w-9" />
-            )}
-
-            {/* Center - Library */}
+            {/* Left - Logo/Brand */}
             <Link
               href="/library"
-              className={clsx(
-                'w-10 h-10 flex items-center justify-center rounded-xl transition-all',
-                pathname === '/library'
-                  ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
-                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
-              )}
-              aria-label="Library"
+              className="flex items-center gap-3 group"
             >
-              <PixelIcon name="library" size={20} />
+              <div className="w-9 h-9 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-105 transition-transform">
+                <PixelIcon name="book" size={18} className="text-[var(--bg-primary)]" />
+              </div>
+              <span className="font-display text-xl tracking-tight uppercase hidden sm:inline">
+                MEMOROS
+              </span>
             </Link>
 
-            {/* Right - Menu */}
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-              aria-label="Menu"
-            >
-              <PixelIcon name="menu" size={20} />
-            </button>
+            {/* Right - Actions */}
+            <div className="flex items-center gap-1">
+              {/* Continue Reading - show recent book if available */}
+              {recentBook && (
+                <Link
+                  href={`/reader/${recentBook.id}`}
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                >
+                  <span className="text-sm">Continue</span>
+                  <PixelIcon name="arrow-right" size={14} />
+                </Link>
+              )}
+              <button
+                onClick={toggleTheme}
+                className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                aria-label="Toggle theme"
+              >
+                <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
+              </button>
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                aria-label="Menu"
+              >
+                <PixelIcon name="menu" size={20} />
+              </button>
+            </div>
           </div>
         </header>
 
@@ -124,7 +117,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Close menu"
             >
               <PixelIcon name="close" size={18} />
@@ -187,7 +180,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
             href="/"
             className="flex items-center gap-3 group"
           >
-            <div className="w-9 h-9 bg-[var(--text-primary)] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-105 transition-transform">
               <PixelIcon name="book" size={18} className="text-[var(--bg-primary)]" />
             </div>
             <span className="font-display text-xl tracking-tight uppercase hidden sm:inline">
@@ -199,7 +192,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           <div className="hidden md:flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Toggle theme"
             >
               <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
@@ -221,7 +214,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Open menu"
           >
             <PixelIcon name="menu" size={20} />
@@ -243,7 +236,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           </span>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Close menu"
           >
             <PixelIcon name="close" size={18} />

@@ -47,7 +47,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
       <div
         className={clsx(
           'relative z-10 bg-[var(--bg-primary)]',
-          'rounded-2xl',
+          'rounded-[5px]',
           'shadow-[0_16px_48px_rgba(0,0,0,0.4)]',
           'max-h-[90vh] overflow-hidden flex flex-col',
           'animate-scale-in',
@@ -67,7 +67,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
             </span>
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-[var(--text-tertiary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all"
+              className="w-8 h-8 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all"
               aria-label="Close modal"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

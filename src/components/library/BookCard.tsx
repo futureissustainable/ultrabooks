@@ -44,7 +44,7 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
   };
 
   const coverContent = (
-    <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden rounded-t-xl">
+    <div className="aspect-[2/3] bg-[var(--bg-tertiary)] flex items-center justify-center relative overflow-hidden rounded-t-[5px]">
       {coverUrl ? (
         <Image
           src={coverUrl}
@@ -54,10 +54,10 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
         />
       ) : (
         <div className="flex flex-col items-center gap-3 p-6">
-          <div className="w-12 h-12 bg-[var(--bg-secondary)] rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-[var(--bg-secondary)] rounded-[5px] flex items-center justify-center">
             <PixelIcon name="book" size={24} className="text-[var(--text-tertiary)]" />
           </div>
-          <span className="text-xs text-[var(--text-muted)] bg-[var(--bg-secondary)] px-2 py-1 rounded">
+          <span className="text-xs text-[var(--text-muted)] bg-[var(--bg-secondary)] px-2 py-1 rounded-[5px]">
             {book.file_type.toUpperCase()}
           </span>
         </div>
@@ -79,7 +79,7 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
       {/* Hover Overlay - only when not in selection mode */}
       {!isSelectionMode && (
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-sm">
-          <span className="text-sm font-medium px-5 py-2.5 bg-white text-black rounded-lg">
+          <span className="text-sm font-medium px-5 py-2.5 bg-white text-black rounded-[5px]">
             Read
           </span>
         </div>
@@ -89,7 +89,7 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
 
   return (
     <>
-      <Card variant="default" padding="none" className={`group relative overflow-hidden rounded-xl card-lift ${isSelectionMode ? 'cursor-pointer' : ''}`}>
+      <Card variant="default" padding="none" className={`group relative overflow-hidden rounded-[5px] card-lift ${isSelectionMode ? 'cursor-pointer' : ''}`}>
         {isSelectionMode ? (
           <div onClick={handleClick}>
             {coverContent}
@@ -120,18 +120,18 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
                   bookId={book.id}
                   fileUrl={book.file_url}
                   variant="icon"
-                  className="!p-1.5 !min-w-0 !min-h-0 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="!p-1.5 !min-w-0 !min-h-0 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                 />
                 <button
                   onClick={() => setShowShareModal(true)}
-                  className="p-1.5 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="p-1.5 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Share book"
                 >
                   <PixelIcon name="share" size={14} />
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="p-1.5 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="p-1.5 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Delete book"
                 >
                   <PixelIcon name="trash" size={14} />

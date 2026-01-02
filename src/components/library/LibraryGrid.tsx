@@ -163,7 +163,7 @@ export function LibraryGrid() {
     >
       {/* Upload Progress */}
       {isUploading && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-xl shadow-lg min-w-[220px]">
+        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg min-w-[220px]">
           <div className="flex items-center gap-3 mb-3">
             <Spinner size="sm" />
             <span className="text-sm">
@@ -185,13 +185,13 @@ export function LibraryGrid() {
 
       {/* Error Toast */}
       {dragError && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-xl shadow-lg">
+        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg">
           <p className="text-sm">{dragError}</p>
         </div>
       )}
 
       {error && (
-        <div className="p-5 bg-[var(--bg-secondary)] rounded-xl mb-6">
+        <div className="p-5 bg-[var(--bg-secondary)] rounded-[5px] mb-6">
           <p className="text-sm">{error}</p>
         </div>
       )}
@@ -199,8 +199,8 @@ export function LibraryGrid() {
       {/* Content */}
       {books.length === 0 ? (
         <>
-          <div className="text-center py-20 md:py-28 bg-[var(--bg-secondary)] rounded-2xl mb-10">
-            <div className="w-16 h-16 mx-auto mb-6 bg-[var(--bg-tertiary)] rounded-2xl flex items-center justify-center">
+          <div className="text-center py-20 md:py-28 bg-[var(--bg-secondary)] rounded-[5px] mb-10">
+            <div className="w-16 h-16 mx-auto mb-6 bg-[var(--bg-tertiary)] rounded-[5px] flex items-center justify-center">
               <PixelIcon name="library" size={28} className="text-[var(--text-tertiary)]" />
             </div>
             <h2 className="text-2xl font-medium mb-2">No Books Yet</h2>
@@ -273,7 +273,7 @@ export function LibraryGrid() {
           <div className="flex items-center gap-3 mb-8">
             <button
               onClick={handleBackToHome}
-              className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Back"
             >
               <PixelIcon name="chevron-left" size={20} />
@@ -290,7 +290,7 @@ export function LibraryGrid() {
                 placeholder="Search books..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]"
+                className="w-full pl-11 pr-4 py-2.5 text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]"
               />
             </div>
 
@@ -315,7 +315,7 @@ export function LibraryGrid() {
                   </Button>
                   <button
                     onClick={handleExitSelection}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                     aria-label="Exit selection"
                   >
                     <PixelIcon name="close" size={18} />
@@ -325,14 +325,14 @@ export function LibraryGrid() {
                 <>
                   <button
                     onClick={() => setIsSelectionMode(true)}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                     aria-label="Select books"
                   >
                     <PixelIcon name="check" size={18} />
                   </button>
                   <button
                     onClick={() => setIsUploadOpen(true)}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                     aria-label="Upload book"
                   >
                     <PixelIcon name="upload" size={18} />
@@ -351,7 +351,7 @@ export function LibraryGrid() {
 
           {/* Grid */}
           {filteredBooks.length === 0 && searchQuery ? (
-            <div className="text-center py-16 bg-[var(--bg-secondary)] rounded-2xl">
+            <div className="text-center py-16 bg-[var(--bg-secondary)] rounded-[5px]">
               <p className="text-[var(--text-secondary)]">No books found</p>
             </div>
           ) : (
