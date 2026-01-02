@@ -163,7 +163,7 @@ export function LibraryGrid() {
     >
       {/* Upload Progress */}
       {isUploading && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg min-w-[220px]">
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-50 px-4 py-3 sm:px-5 sm:py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg sm:max-w-[280px]">
           <div className="flex items-center gap-3 mb-3">
             <Spinner size="sm" />
             <span className="text-sm">
@@ -185,13 +185,13 @@ export function LibraryGrid() {
 
       {/* Error Toast */}
       {dragError && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg">
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-50 px-4 py-3 sm:px-5 sm:py-4 bg-[var(--bg-secondary)] rounded-[5px] shadow-lg sm:max-w-[280px]">
           <p className="text-sm">{dragError}</p>
         </div>
       )}
 
       {error && (
-        <div className="p-5 bg-[var(--bg-secondary)] rounded-[5px] mb-6">
+        <div className="p-4 sm:p-5 bg-[var(--bg-secondary)] rounded-[5px] mb-6">
           <p className="text-sm">{error}</p>
         </div>
       )}
@@ -269,77 +269,86 @@ export function LibraryGrid() {
       ) : (
         // All books view - Grid with selection
         <>
-          {/* Toolbar for All view - Clean & Minimal */}
-          <div className="flex items-center gap-3 mb-8">
-            <button
-              onClick={handleBackToHome}
-              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-              aria-label="Back"
-            >
-              <PixelIcon name="chevron-left" size={20} />
-            </button>
+          {/* Toolbar for All view - Mobile-first */}
+          <div className="flex flex-col gap-3 mb-6 sm:mb-8">
+            {/* Top row: back, search, actions */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={handleBackToHome}
+                className="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                aria-label="Back"
+              >
+                <PixelIcon name="chevron-left" size={20} />
+              </button>
 
-            <div className="flex-1 max-w-md relative">
-              <PixelIcon
-                name="search"
-                size={16}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
-              />
-              <input
-                type="text"
-                placeholder="Search books..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]"
-              />
-            </div>
+              <div className="flex-1 relative">
+                <PixelIcon
+                  name="search"
+                  size={16}
+                  className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 sm:pl-11 pr-3 sm:pr-4 py-2.5 text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[var(--border-focus)]"
+                />
+              </div>
 
-            <div className="flex items-center gap-2 ml-auto">
-              {isSelectionMode ? (
-                <>
-                  <button
-                    onClick={handleSelectAll}
-                    className="px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-                  >
-                    {selectedBooks.size === filteredBooks.length ? 'None' : 'All'}
-                  </button>
-                  <span className="text-sm text-[var(--text-muted)] tabular-nums">
-                    {selectedBooks.size} selected
-                  </span>
-                  <Button
-                    size="sm"
-                    onClick={() => setShowShareModal(true)}
-                    disabled={selectedBooks.size === 0}
-                  >
-                    Share
-                  </Button>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                {isSelectionMode ? (
                   <button
                     onClick={handleExitSelection}
-                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                    className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                     aria-label="Exit selection"
                   >
                     <PixelIcon name="close" size={18} />
                   </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setIsSelectionMode(true)}
-                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-                    aria-label="Select books"
-                  >
-                    <PixelIcon name="check" size={18} />
-                  </button>
-                  <button
-                    onClick={() => setIsUploadOpen(true)}
-                    className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-                    aria-label="Upload book"
-                  >
-                    <PixelIcon name="upload" size={18} />
-                  </button>
-                </>
-              )}
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setIsSelectionMode(true)}
+                      className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                      aria-label="Select books"
+                    >
+                      <PixelIcon name="check" size={18} />
+                    </button>
+                    <button
+                      onClick={() => setIsUploadOpen(true)}
+                      className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                      aria-label="Upload book"
+                    >
+                      <PixelIcon name="upload" size={18} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
+
+            {/* Selection mode bar */}
+            {isSelectionMode && (
+              <div className="flex items-center justify-between gap-2 px-1">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleSelectAll}
+                    className="px-3 py-2 min-h-[44px] text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  >
+                    {selectedBooks.size === filteredBooks.length ? 'Deselect All' : 'Select All'}
+                  </button>
+                  <span className="text-sm text-[var(--text-muted)] tabular-nums">
+                    {selectedBooks.size} selected
+                  </span>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setShowShareModal(true)}
+                  disabled={selectedBooks.size === 0}
+                >
+                  Share
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Search results message */}
@@ -355,7 +364,7 @@ export function LibraryGrid() {
               <p className="text-[var(--text-secondary)]">No books found</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
               {sortedBooks.map((book) => (
                 <BookCard
                   key={book.id}

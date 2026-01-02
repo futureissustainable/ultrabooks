@@ -101,12 +101,12 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
         )}
 
         {/* Book Info */}
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <h3 className="text-sm font-medium truncate mb-0.5" title={book.title}>
             {book.title}
           </h3>
           {book.author && (
-            <p className="text-sm text-[var(--text-secondary)] truncate mb-3">
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] truncate mb-2 sm:mb-3">
               {book.author}
             </p>
           )}
@@ -115,26 +115,26 @@ export function BookCard({ book, isSelectionMode, isSelected, onSelect }: BookCa
               {formatFileSize(book.file_size)}
             </span>
             {!isSelectionMode && (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center -mr-1">
                 <DownloadForOffline
                   bookId={book.id}
                   fileUrl={book.file_url}
                   variant="icon"
-                  className="!p-1.5 !min-w-0 !min-h-0 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="!p-2.5 !min-w-[44px] !min-h-[44px] rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                 />
                 <button
                   onClick={() => setShowShareModal(true)}
-                  className="p-1.5 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Share book"
                 >
-                  <PixelIcon name="share" size={14} />
+                  <PixelIcon name="share" size={16} />
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="p-1.5 rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
                   aria-label="Delete book"
                 >
-                  <PixelIcon name="trash" size={14} />
+                  <PixelIcon name="trash" size={16} />
                 </button>
               </div>
             )}

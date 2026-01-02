@@ -75,26 +75,9 @@ export function Header({ variant = 'app' }: HeaderProps) {
 
             {/* Right - Actions */}
             <div className="flex items-center gap-1">
-              {/* Continue Reading - show recent book if available */}
-              {recentBook && (
-                <Link
-                  href={`/reader/${recentBook.id}`}
-                  className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-                >
-                  <span className="text-sm">Continue</span>
-                  <PixelIcon name="arrow-right" size={14} />
-                </Link>
-              )}
-              <button
-                onClick={toggleTheme}
-                className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
-                aria-label="Toggle theme"
-              >
-                <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
-              </button>
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+                className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                 aria-label="Menu"
               >
                 <PixelIcon name="menu" size={20} />
@@ -117,7 +100,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+              className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Close menu"
             >
               <PixelIcon name="close" size={18} />
@@ -192,7 +175,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           <div className="hidden md:flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+              className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
               aria-label="Toggle theme"
             >
               <PixelIcon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
@@ -214,7 +197,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="md:hidden w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Open menu"
           >
             <PixelIcon name="menu" size={20} />
@@ -236,7 +219,7 @@ export function Header({ variant = 'app' }: HeaderProps) {
           </span>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Close menu"
           >
             <PixelIcon name="close" size={18} />

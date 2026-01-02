@@ -25,11 +25,11 @@ export function ReaderToolbar({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm">
-      <div className="flex items-center justify-between px-4 h-14">
+      <div className="flex items-center justify-between px-3 sm:px-4 h-14">
         {/* Left - Back */}
         <Link
           href="/library"
-          className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+          className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
           aria-label="Back to library"
         >
           <PixelIcon name="chevron-left" size={20} />
@@ -41,11 +41,11 @@ export function ReaderToolbar({
         </span>
 
         {/* Right - Actions */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <button
             onClick={onBookmark}
             className={clsx(
-              'w-10 h-10 flex items-center justify-center rounded-[5px] transition-all',
+              'w-11 h-11 flex items-center justify-center rounded-[5px] transition-all',
               isBookmarked
                 ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
                 : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
@@ -56,14 +56,14 @@ export function ReaderToolbar({
           </button>
           <button
             onClick={() => setHighlightsOpen(true)}
-            className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="View highlights"
           >
             <PixelIcon name="highlight" size={18} />
           </button>
           <button
             onClick={() => setSettingsOpen(true)}
-            className="w-10 h-10 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"
             aria-label="Settings"
           >
             <PixelIcon name="settings" size={18} />

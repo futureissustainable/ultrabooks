@@ -103,24 +103,24 @@ export function BookRow({
               </button>
             )}
 
-            {/* Scroll Buttons */}
+            {/* Scroll Buttons - hidden on mobile, visible on desktop */}
             {hasBooks && (
-              <div className="flex gap-1">
+              <div className="hidden sm:flex gap-1">
                 <button
                   onClick={() => scroll('left')}
                   disabled={!canScrollLeft}
-                  className="w-9 h-9 flex items-center justify-center border border-[var(--border-primary)] bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-[var(--bg-secondary)] disabled:hover:text-[var(--text-primary)] disabled:hover:border-[var(--border-primary)]"
+                  className="w-11 h-11 flex items-center justify-center rounded-[5px] bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-[var(--bg-secondary)] disabled:hover:text-[var(--text-primary)]"
                   aria-label="Scroll left"
                 >
-                  <PixelIcon name="chevron-left" size={14} />
+                  <PixelIcon name="chevron-left" size={16} />
                 </button>
                 <button
                   onClick={() => scroll('right')}
                   disabled={!canScrollRight}
-                  className="w-9 h-9 flex items-center justify-center border border-[var(--border-primary)] bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] hover:border-[var(--text-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-[var(--bg-secondary)] disabled:hover:text-[var(--text-primary)] disabled:hover:border-[var(--border-primary)]"
+                  className="w-11 h-11 flex items-center justify-center rounded-[5px] bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-colors disabled:opacity-30 disabled:hover:bg-[var(--bg-secondary)] disabled:hover:text-[var(--text-primary)]"
                   aria-label="Scroll right"
                 >
-                  <PixelIcon name="chevron-right" size={14} />
+                  <PixelIcon name="chevron-right" size={16} />
                 </button>
               </div>
             )}

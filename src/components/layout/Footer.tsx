@@ -10,9 +10,9 @@ export function Footer() {
 
   return (
     <footer className="border-t border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-      <div className="container-page py-8 md:py-10">
+      <div className="container-page py-6 sm:py-8 md:py-10">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
@@ -30,14 +30,14 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-3">
+            <h4 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-2">
               Product
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-0">
               <li>
                 <Link
                   href={user ? '/library' : '/signup'}
-                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors py-2 block"
                 >
                   {user ? 'Library' : 'Get Started'}
                 </Link>
@@ -45,13 +45,13 @@ export function Footer() {
               <li>
                 <Link
                   href="/clubs"
-                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors py-2 block"
                 >
                   Book Clubs
                 </Link>
               </li>
               <li>
-                <span className="font-ui fs-p-sm text-[var(--text-tertiary)] flex items-center gap-1">
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)] flex items-center gap-1 py-2">
                   Mobile App
                   <span className="text-[10px] px-1 py-0.5 bg-[var(--bg-tertiary)] border border-[var(--border-primary)] uppercase">Soon</span>
                 </span>
@@ -61,14 +61,14 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-3">
+            <h4 className="font-ui fs-p-sm uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-2">
               Support
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-0">
               <li>
                 <Link
                   href="/help"
-                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors py-2 block"
                 >
                   Help Center
                 </Link>
@@ -76,7 +76,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:hello@memoros.app"
-                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors py-2 block"
                 >
                   Contact
                 </a>
@@ -84,7 +84,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/keyboard-shortcuts"
-                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
+                  className="font-ui fs-p-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1 py-2"
                 >
                   <PixelIcon name="keyboard" size={12} />
                   Shortcuts
@@ -115,23 +115,23 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-4 sm:pt-6 border-t border-[var(--border-primary)] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           {/* Copyright */}
           <p className="font-mono fs-p-sm text-[var(--text-muted)] order-2 sm:order-1">
             © {currentYear} Memoros
           </p>
 
           {/* Legal Links */}
-          <div className="flex items-center gap-4 order-1 sm:order-2">
+          <div className="flex items-center gap-1 order-1 sm:order-2">
             <Link
               href="/privacy"
-              className="font-ui fs-p-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+              className="font-ui fs-p-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors px-3 py-2"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="font-ui fs-p-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+              className="font-ui fs-p-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors px-3 py-2"
             >
               Terms
             </Link>
@@ -139,10 +139,10 @@ export function Footer() {
               href="https://github.com/memoros"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+              className="text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors p-2 flex items-center justify-center min-w-[44px] min-h-[44px]"
               aria-label="GitHub"
             >
-              <PixelIcon name="github" size={16} />
+              <PixelIcon name="github" size={18} />
             </a>
           </div>
         </div>
