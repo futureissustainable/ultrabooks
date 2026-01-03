@@ -8,8 +8,9 @@ import { PixelIcon } from '@/components/icons/PixelIcon';
 interface ReaderToolbarProps {
   title: string;
   progress: number;
-  onBookmark: () => void;
-  isBookmarked: boolean;
+  onBookmark?: () => void;
+  isBookmarked?: boolean;
+  hideBookmark?: boolean;
 }
 
 export function ReaderToolbar({
@@ -17,6 +18,7 @@ export function ReaderToolbar({
   progress,
   onBookmark,
   isBookmarked,
+  hideBookmark,
 }: ReaderToolbarProps) {
   const {
     setSettingsOpen,
@@ -42,18 +44,20 @@ export function ReaderToolbar({
 
         {/* Right - Actions */}
         <div className="flex items-center">
-          <button
-            onClick={onBookmark}
-            className={clsx(
-              'w-11 h-11 flex items-center justify-center rounded-[5px] transition-all',
-              isBookmarked
-                ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
-                : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
-            )}
-            aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
-          >
-            <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={18} />
-          </button>
+          {!hideBookmark && onBookmark && (
+            <button
+              onClick={onBookmark}
+              className={clsx(
+                'w-11 h-11 flex items-center justify-center rounded-[5px] transition-all',
+                isBookmarked
+                  ? 'text-[var(--text-primary)] bg-[var(--bg-secondary)]'
+                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+              )}
+              aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+            >
+              <PixelIcon name={isBookmarked ? 'bookmark-filled' : 'bookmark'} size={18} />
+            </button>
+          )}
           <button
             onClick={() => setHighlightsOpen(true)}
             className="w-11 h-11 flex items-center justify-center rounded-[5px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all"

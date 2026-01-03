@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useBookStore } from '@/lib/stores/book-store';
 import { useStreakStore } from '@/lib/stores/streak-store';
+import { useClassicBookStore } from '@/lib/stores/classic-book-store';
 import { BookCard } from './BookCard';
 import { BookUpload } from './BookUpload';
-import { BookRow } from './BookRow';
+import { BookRow, type ClassicBook } from './BookRow';
 import { ShareCollectionModal } from './ShareCollectionModal';
 import { StreakModal, StreakGoalModal } from '@/components/streak';
 import { Button, Spinner } from '@/components/ui';
@@ -15,8 +17,10 @@ import { clsx } from 'clsx';
 import type { Book } from '@/lib/supabase/types';
 
 export function LibraryGrid() {
+  const router = useRouter();
   const { books, fetchBooks, isLoading, hasFetched, error, uploadBook, uploadBooks, isUploading, uploadProgress, fetchQuota } = useBookStore();
   const { currentStreak, todayProgress, checkAndUpdateStreak, setStreakModalOpen } = useStreakStore();
+  const { fetchAndCacheClassic, isClassicLoading } = useClassicBookStore();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -144,6 +148,12 @@ export function LibraryGrid() {
     handleExitSelection();
   }, [handleExitSelection]);
 
+  // Handle classic book click - fetch, cache, and navigate to reader
+  const handleClassicClick = useCallback(async (book: ClassicBook) => {
+    // Navigate immediately - the reader page will handle loading
+    router.push(`/reader/classic/${book.id}`);
+  }, [router]);
+
   const isGoalMet = todayProgress.goalMet;
 
   if (isLoading && !hasFetched) {
@@ -217,6 +227,7 @@ export function LibraryGrid() {
             title="Popular Classics"
             subtitle="Free public domain books"
             classicBooks={classicBooks}
+            onClassicClick={handleClassicClick}
           />
         </>
       ) : viewMode === 'home' ? (
@@ -264,6 +275,7 @@ export function LibraryGrid() {
             title="Popular Classics"
             subtitle="Free public domain books"
             classicBooks={classicBooks}
+            onClassicClick={handleClassicClick}
           />
         </div>
       ) : (
