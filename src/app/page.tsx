@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui';
+import { Button, ScrollReveal } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { useAuthStore } from '@/lib/stores/auth-store';
@@ -74,19 +74,19 @@ export default function HomePage() {
         <section className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
           <div className="container-page section-spacing-lg">
             {/* Section Header */}
-            <div className="text-center mb-12 md:mb-16">
+            <ScrollReveal className="text-center mb-12 md:mb-16">
               <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)] mb-4">
                 Why readers love it
               </p>
               <h2 className="font-display fs-h-lg md:text-[40px] uppercase leading-[0.9]">
                 Reading Without Friction
               </h2>
-            </div>
+            </ScrollReveal>
 
             {/* Feature Cards - Psychological triggers */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               {/* Loss Aversion: Never lose progress */}
-              <div className="text-center group">
+              <ScrollReveal delay={0} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="sync" size={28} className="text-[var(--bg-primary)]" />
                 </div>
@@ -96,10 +96,10 @@ export default function HomePage() {
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
                   Switch devices mid-sentence. Your exact position, highlights, and notes are always there.
                 </p>
-              </div>
+              </ScrollReveal>
 
               {/* Autonomy: Complete control */}
-              <div className="text-center group">
+              <ScrollReveal delay={40} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="font" size={28} className="text-[var(--bg-primary)]" />
                 </div>
@@ -109,10 +109,10 @@ export default function HomePage() {
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
                   Fonts, sizes, colors, margins—every detail adjustable. No one reads the same way.
                 </p>
-              </div>
+              </ScrollReveal>
 
               {/* Social Proof & Belonging */}
-              <div className="text-center group">
+              <ScrollReveal delay={80} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="users" size={28} className="text-[var(--bg-primary)]" />
                 </div>
@@ -122,11 +122,11 @@ export default function HomePage() {
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
                   Book clubs, shared annotations, reading streaks. Books are better with others.
                 </p>
-              </div>
+              </ScrollReveal>
             </div>
 
             {/* Trust signals row */}
-            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 mt-12 md:mt-16 pt-8 border-t border-[var(--border-primary)]">
+            <ScrollReveal delay={120} className="flex flex-wrap justify-center items-center gap-6 md:gap-10 mt-12 md:mt-16 pt-8 border-t border-[var(--border-primary)]">
               <div className="flex items-center gap-2">
                 <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
                 <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Free forever</span>
@@ -143,7 +143,7 @@ export default function HomePage() {
                 <PixelIcon name="check" size={14} className="text-[var(--accent-primary)]" />
                 <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Works offline</span>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -152,7 +152,7 @@ export default function HomePage() {
             "No books yet? Start with the classics!"
             ============================================ */}
         <section className="bg-[var(--bg-primary)] border-b border-[var(--border-primary)] py-16 md:py-24">
-          <div className="text-center mb-8 md:mb-12">
+          <ScrollReveal className="text-center mb-8 md:mb-12">
             <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-3">
               No books yet?
             </p>
@@ -162,18 +162,20 @@ export default function HomePage() {
             <p className="font-ui fs-p-lg text-[var(--text-secondary)] mt-3 max-w-md mx-auto">
               Timeless literature, beautifully formatted. Free to download.
             </p>
-          </div>
+          </ScrollReveal>
 
-          <ClassicsCarousel />
+          <ScrollReveal delay={40}>
+            <ClassicsCarousel />
+          </ScrollReveal>
 
-          <div className="text-center mt-8">
+          <ScrollReveal delay={80} className="text-center mt-8">
             <Link href={user ? '/library' : '/signup'}>
               <Button variant="secondary" size="md">
                 <PixelIcon name="book-open" size={14} className="mr-2" />
                 Browse All Classics
               </Button>
             </Link>
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* ============================================
@@ -183,35 +185,43 @@ export default function HomePage() {
         <section className="bg-[var(--bg-secondary)]">
           <div className="container-page section-spacing-lg">
             <div className="max-w-2xl mx-auto text-center">
-              <div className="w-20 h-20 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center mx-auto mb-8">
-                <PixelIcon name="book" size={36} className="text-[var(--bg-primary)]" />
-              </div>
+              <ScrollReveal>
+                <div className="w-20 h-20 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center mx-auto mb-8">
+                  <PixelIcon name="book" size={36} className="text-[var(--bg-primary)]" />
+                </div>
+              </ScrollReveal>
 
-              <h2 className="font-display text-[32px] md:text-[44px] uppercase mb-5 leading-[0.9]">
-                {user ? 'Welcome Back' : 'Start Reading Today'}
-              </h2>
+              <ScrollReveal delay={40}>
+                <h2 className="font-display text-[32px] md:text-[44px] uppercase mb-5 leading-[0.9]">
+                  {user ? 'Welcome Back' : 'Start Reading Today'}
+                </h2>
+              </ScrollReveal>
 
-              <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 max-w-md mx-auto leading-relaxed">
-                {user
-                  ? 'Your library is waiting. Pick up where you left off.'
-                  : 'Join thousands of readers. Free forever, no credit card needed.'}
-              </p>
-
-              <Link href={user ? '/library' : '/signup'}>
-                <Button size="lg" className="btn-shine px-10">
-                  <PixelIcon name="arrow-right" size={14} className="mr-2" />
-                  {user ? 'Open Library' : 'Create Free Account'}
-                </Button>
-              </Link>
-
-              {!user && (
-                <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-6">
-                  Already have an account?{' '}
-                  <Link href="/login" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] underline transition-colors">
-                    Sign in
-                  </Link>
+              <ScrollReveal delay={80}>
+                <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 max-w-md mx-auto leading-relaxed">
+                  {user
+                    ? 'Your library is waiting. Pick up where you left off.'
+                    : 'Join thousands of readers. Free forever, no credit card needed.'}
                 </p>
-              )}
+              </ScrollReveal>
+
+              <ScrollReveal delay={120}>
+                <Link href={user ? '/library' : '/signup'}>
+                  <Button size="lg" className="btn-shine px-10">
+                    <PixelIcon name="arrow-right" size={14} className="mr-2" />
+                    {user ? 'Open Library' : 'Create Free Account'}
+                  </Button>
+                </Link>
+
+                {!user && (
+                  <p className="font-ui fs-p-sm text-[var(--text-tertiary)] mt-6">
+                    Already have an account?{' '}
+                    <Link href="/login" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] underline transition-colors">
+                      Sign in
+                    </Link>
+                  </p>
+                )}
+              </ScrollReveal>
             </div>
           </div>
         </section>
