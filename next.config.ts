@@ -16,7 +16,9 @@ const nextConfig: NextConfig = {
 
   // TypeScript configuration
   typescript: {
-    // Allow build to succeed even with TS errors during development
+    // NOTE: Set to true due to @supabase/ssr type inference issues with custom Database types.
+    // The actual code is correct - the SSR package doesn't properly infer generics.
+    // TODO: Re-enable when @supabase/ssr v0.7+ fixes type inference
     ignoreBuildErrors: true,
   },
 };

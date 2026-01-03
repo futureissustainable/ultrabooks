@@ -34,16 +34,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             // Secondary - Subtle background
             'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]':
               variant === 'secondary' && !disabled,
-            'bg-[var(--bg-secondary)] text-[var(--text-primary)]':
-              variant === 'secondary' && disabled,
             // Ghost - Transparent
             'bg-transparent text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]':
               variant === 'ghost',
             // Danger
             'bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-red-500 hover:text-white':
               variant === 'danger' && !disabled,
+            // Shared disabled state for secondary and danger
             'bg-[var(--bg-secondary)] text-[var(--text-primary)]':
-              variant === 'danger' && disabled,
+              (variant === 'secondary' || variant === 'danger') && disabled,
           },
           // Size styles
           {

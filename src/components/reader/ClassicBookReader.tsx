@@ -321,7 +321,7 @@ export function ClassicBookReader({ book, fileBlob }: ClassicBookReaderProps) {
         const totalSections = foliate.sections?.length || 0;
 
         for (let i = 0; i < totalSections; i++) {
-          const section = foliate.sections[i];
+          const section = foliate.sections?.[i];
           if (!section) continue;
 
           setLoadingStatus(`Loading chapter ${i + 1} of ${totalSections}...`);
@@ -344,8 +344,8 @@ export function ClassicBookReader({ book, fileBlob }: ClassicBookReaderProps) {
                     img.setAttribute('src', blobUrl);
                     img.setAttribute('data-original-src', src);
                   }
-                } catch (imgErr) {
-                  console.warn(`Failed to load image ${src}:`, imgErr);
+                } catch {
+                  // Image load failed, keep original src
                 }
               }
             }
@@ -357,8 +357,8 @@ export function ClassicBookReader({ book, fileBlob }: ClassicBookReaderProps) {
                 html,
               });
             }
-          } catch (err) {
-            console.warn(`Failed to load section ${i}:`, err);
+          } catch {
+            // Section load failed, skip it
           }
         }
 
@@ -418,7 +418,6 @@ export function ClassicBookReader({ book, fileBlob }: ClassicBookReaderProps) {
           }, READER_CONSTANTS.SCROLL_TIMEOUT);
         }
       } catch (err) {
-        console.error('Error loading book:', err);
         if (mounted) {
           setError(err instanceof Error ? err.message : 'Failed to load book');
           setIsLoading(false);

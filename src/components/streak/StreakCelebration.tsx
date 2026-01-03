@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import { useStreakStore } from '@/lib/stores/streak-store';
 import { PixelIcon } from '@/components/icons/PixelIcon';
@@ -9,6 +9,14 @@ export function StreakCelebration() {
   const { showCelebration, dismissCelebration, currentStreak, goal } = useStreakStore();
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+
+  const handleDismiss = useCallback(() => {
+    setIsExiting(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      dismissCelebration();
+    }, 300);
+  }, [dismissCelebration]);
 
   useEffect(() => {
     if (showCelebration) {
@@ -22,15 +30,7 @@ export function StreakCelebration() {
 
       return () => clearTimeout(timer);
     }
-  }, [showCelebration]);
-
-  const handleDismiss = () => {
-    setIsExiting(true);
-    setTimeout(() => {
-      setIsVisible(false);
-      dismissCelebration();
-    }, 300);
-  };
+  }, [showCelebration, handleDismiss]);
 
   if (!isVisible) return null;
 

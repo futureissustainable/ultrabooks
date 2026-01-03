@@ -80,6 +80,7 @@ CREATE TABLE user_settings (
   line_height REAL DEFAULT 1.8,
   margins INTEGER DEFAULT 40,
   text_align TEXT DEFAULT 'left' CHECK (text_align IN ('left', 'justify')),
+  content_width INTEGER DEFAULT 65 CHECK (content_width >= 30 AND content_width <= 95),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()) NOT NULL
 );

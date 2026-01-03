@@ -47,6 +47,7 @@ import {
   ArrowRight,
   Keyboard,
   GithubLogo,
+  MagnifyingGlass,
   type IconProps,
 } from '@phosphor-icons/react';
 import { ComponentType } from 'react';
@@ -98,7 +99,8 @@ type IconName =
   | 'cloud'
   | 'arrow-right'
   | 'keyboard'
-  | 'github';
+  | 'github'
+  | 'search';
 
 // Map our icon names to Phosphor components
 const iconMap: Record<IconName, ComponentType<IconProps>> = {
@@ -148,6 +150,7 @@ const iconMap: Record<IconName, ComponentType<IconProps>> = {
   'arrow-right': ArrowRight,
   'keyboard': Keyboard,
   'github': GithubLogo,
+  'search': MagnifyingGlass,
 };
 
 interface PixelIconProps {

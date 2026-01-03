@@ -8,8 +8,11 @@ interface ThemeState {
   resolvedTheme: 'light' | 'dark';
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  initializeTheme: () => void;
+  initializeTheme: () => (() => void) | void;
 }
+
+// Store the current media query listener for cleanup
+let mediaQueryCleanup: (() => void) | null = null;
 
 const getSystemTheme = (): 'light' | 'dark' => {
   if (typeof window === 'undefined') return 'light';
@@ -46,6 +49,12 @@ export const useThemeStore = create<ThemeState>()(
         applyTheme(resolved);
         set({ resolvedTheme: resolved });
 
+        // Clean up previous listener if exists
+        if (mediaQueryCleanup) {
+          mediaQueryCleanup();
+          mediaQueryCleanup = null;
+        }
+
         // Listen for system theme changes
         if (typeof window !== 'undefined' && theme === 'system') {
           const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -55,6 +64,14 @@ export const useThemeStore = create<ThemeState>()(
             set({ resolvedTheme: newResolved });
           };
           mediaQuery.addEventListener('change', handler);
+
+          // Store cleanup function
+          mediaQueryCleanup = () => {
+            mediaQuery.removeEventListener('change', handler);
+          };
+
+          // Return cleanup function for external use
+          return mediaQueryCleanup;
         }
       },
     }),

@@ -346,8 +346,7 @@ export function EpubReader({ book }: EpubReaderProps) {
       span.dataset.highlightColor = color;
       selection.range.surroundContents(span);
     } catch {
-      // If surroundContents fails (crosses element boundaries), use alternative approach
-      console.warn('Could not wrap selection, highlight saved but not visually applied');
+      // If surroundContents fails (crosses element boundaries), highlight saved but not visually applied
     }
 
     // Clear selection
@@ -507,7 +506,7 @@ export function EpubReader({ book }: EpubReaderProps) {
         const totalSections = foliate.sections?.length || 0;
 
         for (let i = 0; i < totalSections; i++) {
-          const section = foliate.sections[i];
+          const section = foliate.sections?.[i];
           if (!section) continue;
 
           setLoadingStatus(`Loading chapter ${i + 1} of ${totalSections}...`);
@@ -533,8 +532,7 @@ export function EpubReader({ book }: EpubReaderProps) {
                     img.setAttribute('src', blobUrl);
                     img.setAttribute('data-original-src', src);
                   }
-                } catch (imgErr) {
-                  console.warn(`Failed to load image ${src}:`, imgErr);
+                } catch {
                   // Keep the original src, it might still work
                 }
               }
@@ -548,8 +546,8 @@ export function EpubReader({ book }: EpubReaderProps) {
                 html,
               });
             }
-          } catch (err) {
-            console.warn(`Failed to load section ${i}:`, err);
+          } catch {
+            // Section load failed, skip it
           }
         }
 
@@ -624,7 +622,6 @@ export function EpubReader({ book }: EpubReaderProps) {
           }, READER_CONSTANTS.SCROLL_TIMEOUT);
         }
       } catch (err) {
-        console.error('Error loading book:', err);
         if (mounted) {
           setError(err instanceof Error ? err.message : 'Failed to load book');
           setIsLoading(false);

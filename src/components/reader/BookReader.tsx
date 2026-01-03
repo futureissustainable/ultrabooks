@@ -17,7 +17,9 @@ export function BookReader({ book }: BookReaderProps) {
       return <EpubReader book={book} />;
     case 'pdf':
       return <PdfReader book={book} />;
-    default:
+    default: {
+      // Defensive fallback for unexpected file types (shouldn't happen with proper DB constraints)
+      const fileType = book.file_type as string;
       return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
           <div className="text-center p-8 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
@@ -28,10 +30,11 @@ export function BookReader({ book }: BookReaderProps) {
               Unsupported Format
             </p>
             <p className="font-mono fs-p-sm text-[var(--text-secondary)]">
-              {book.file_type?.toUpperCase() || 'UNKNOWN'}
+              {fileType?.toUpperCase() || 'UNKNOWN'}
             </p>
           </div>
         </div>
       );
+    }
   }
 }

@@ -194,6 +194,7 @@ export interface Database {
           line_height: number;
           margins: number;
           text_align: 'left' | 'justify';
+          content_width: number;
           created_at: string;
           updated_at: string;
         };
@@ -206,6 +207,7 @@ export interface Database {
           line_height?: number;
           margins?: number;
           text_align?: 'left' | 'justify';
+          content_width?: number;
           created_at?: string;
           updated_at?: string;
         };
@@ -218,6 +220,7 @@ export interface Database {
           line_height?: number;
           margins?: number;
           text_align?: 'left' | 'justify';
+          content_width?: number;
           created_at?: string;
           updated_at?: string;
         };
@@ -271,7 +274,25 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_upload_quota: {
+        Args: { p_user_id: string };
+        Returns: {
+          daily_uploads: number;
+          total_uploads: number;
+          daily_remaining: number;
+          total_remaining: number;
+          daily_limit: number;
+          total_limit: number;
+        };
+      };
+      check_upload_quota: {
+        Args: { p_user_id: string };
+        Returns: boolean;
+      };
+      increment_upload_count: {
+        Args: { p_user_id: string };
+        Returns: void;
+      };
     };
     Enums: {
       [_ in never]: never;

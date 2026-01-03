@@ -25,11 +25,14 @@ interface PageState {
   height: number;
 }
 
+// Using pdfjs-dist types
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+
 export function PdfReader({ book }: PdfReaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pagesContainerRef = useRef<HTMLDivElement>(null);
   const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
-  const pdfDocRef = useRef<unknown>(null);
+  const pdfDocRef = useRef<PDFDocumentProxy | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const renderedPagesRef = useRef<Set<number>>(new Set());
   const renderVersionRef = useRef(0);
@@ -40,7 +43,7 @@ export function PdfReader({ book }: PdfReaderProps) {
   const [totalPages, setTotalPages] = useState(1);
   const [scale, setScale] = useState(1);
   const [pages, setPages] = useState<PageState[]>([]);
-  const [pdfLib, setPdfLib] = useState<unknown>(null);
+  const [pdfLib, setPdfLib] = useState<typeof import('pdfjs-dist') | null>(null);
 
   // Width control state (percentage of viewport)
   const [contentWidth, setContentWidth] = useState(65);
@@ -156,18 +159,18 @@ export function PdfReader({ book }: PdfReaderProps) {
     try {
       renderedPagesRef.current.add(pageNum);
 
-      const page = await (pdfDocRef.current as {getPage: (num: number) => Promise<unknown>}).getPage(pageNum);
+      const page = await pdfDocRef.current.getPage(pageNum);
       const context = canvas.getContext('2d');
       if (!context) return;
 
       // Calculate scale based on actual container width
       const containerEl = pagesContainerRef.current;
       const actualWidth = containerEl ? containerEl.clientWidth : (window.innerWidth * contentWidth / 100);
-      const viewport = (page as {getViewport: (opts: {scale: number}) => {width: number; height: number}}).getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: 1 });
       const calculatedScale = (actualWidth - 40) / viewport.width;
       const finalScale = calculatedScale * scale;
 
-      const scaledViewport = (page as {getViewport: (opts: {scale: number}) => {width: number; height: number}}).getViewport({ scale: finalScale });
+      const scaledViewport = page.getViewport({ scale: finalScale });
 
       // Set canvas dimensions
       canvas.width = scaledViewport.width;
@@ -184,7 +187,7 @@ export function PdfReader({ book }: PdfReaderProps) {
         context.filter = 'none';
       }
 
-      await (page as {render: (opts: {canvasContext: CanvasRenderingContext2D; viewport: unknown}) => {promise: Promise<void>}}).render({
+      await page.render({
         canvasContext: context,
         viewport: scaledViewport,
       }).promise;
@@ -193,8 +196,8 @@ export function PdfReader({ book }: PdfReaderProps) {
       setPages(prev => prev.map(p =>
         p.pageNum === pageNum ? { ...p, isRendered: true, height: scaledViewport.height } : p
       ));
-    } catch (err) {
-      console.error(`Error rendering page ${pageNum}:`, err);
+    } catch {
+      // Page rendering failed - allow retry
       renderedPagesRef.current.delete(pageNum);
     }
   }, [pdfLib, scale, settings.theme, contentWidth]);
@@ -262,8 +265,7 @@ export function PdfReader({ book }: PdfReaderProps) {
             }
           }, READER_CONSTANTS.SCROLL_TIMEOUT);
         }
-      } catch (err) {
-        console.error('Error loading PDF:', err);
+      } catch {
         if (mounted) {
           setError('Failed to load PDF. Please try again.');
           setIsLoading(false);
@@ -276,7 +278,7 @@ export function PdfReader({ book }: PdfReaderProps) {
     return () => {
       mounted = false;
       if (pdfDocRef.current) {
-        (pdfDocRef.current as {destroy: () => void}).destroy();
+        pdfDocRef.current.destroy();
       }
     };
   }, [signedFileUrl, isUrlLoading, urlError, book.id]);

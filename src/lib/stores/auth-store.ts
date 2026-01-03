@@ -1,7 +1,11 @@
 import { create } from 'zustand';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
-import type { Profile } from '@/lib/supabase/types';
+import type { Profile, Database } from '@/lib/supabase/types';
+
+type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
+type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+type UserSettingsInsert = Database['public']['Tables']['user_settings']['Insert'];
 
 interface AuthState {
   user: User | null;
@@ -62,8 +66,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           set({ user: null, profile: null });
         }
       });
-    } catch (err) {
-      console.error('Auth initialization failed:', err);
+    } catch {
       set({ isLoading: false, error: 'Failed to initialize auth' });
     }
   },
@@ -83,16 +86,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     if (data.user) {
-      // Create profile
-      await supabase.from('profiles').insert({
+      // Create profile - using type assertion due to @supabase/ssr type inference limitation
+      const profileData: ProfileInsert = {
         id: data.user.id,
         email: data.user.email!,
-      });
+      };
+      await (supabase.from('profiles') as unknown as { insert: (data: ProfileInsert) => Promise<unknown> }).insert(profileData);
 
       // Create default settings
-      await supabase.from('user_settings').insert({
+      const settingsData: UserSettingsInsert = {
         user_id: data.user.id,
-      });
+      };
+      await (supabase.from('user_settings') as unknown as { insert: (data: UserSettingsInsert) => Promise<unknown> }).insert(settingsData);
     }
 
     set({ isLoading: false });
@@ -129,10 +134,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     if (!user) return;
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ ...data, updated_at: new Date().toISOString() })
-      .eq('id', user.id);
+    // Using type assertion due to @supabase/ssr type inference limitation
+    const updateData: ProfileUpdate = { ...data, updated_at: new Date().toISOString() };
+    const updateFn = supabase.from('profiles').update as unknown as (data: ProfileUpdate) => { eq: (field: string, value: string) => Promise<{ error: unknown }> };
+    const { error } = await updateFn(updateData).eq('id', user.id);
 
     if (!error) {
       set((state) => ({

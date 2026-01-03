@@ -127,8 +127,8 @@ export const useReaderStore = create<ReaderState>()(
               content_width: settings.contentWidth,
               updated_at: settingsMetadata.updatedAt,
             });
-        } catch (error) {
-          console.warn('Failed to sync settings to server:', error);
+        } catch {
+          // Sync failed - settings are saved locally
         }
       },
 
@@ -215,9 +215,8 @@ export const useReaderStore = create<ReaderState>()(
               last_read_at: now,
               updated_at: now,
             });
-        } catch (error) {
-          // Silently fail - local progress is saved
-          console.warn('Failed to sync progress to server:', error);
+        } catch {
+          // Sync failed - local progress is saved
         }
       },
 
@@ -274,8 +273,7 @@ export const useReaderStore = create<ReaderState>()(
             current_page: localData.currentPage,
             progress_percentage: localData.progressPercentage,
           } as ReadingProgress : data;
-        } catch (error) {
-          console.warn('Failed to load progress from server:', error);
+        } catch {
           // Return local data on error
           return localData ? {
             current_location: localData.currentLocation,

@@ -51,7 +51,7 @@ export default function ReaderPage({ params }: ReaderPageProps) {
   }
 
   // If we've attempted to fetch but no book, redirect (already handled by error effect)
-  if (hasFetchedBook && !currentBook && !error) {
+  if (!currentBook) {
     router.push('/library');
     return null;
   }
