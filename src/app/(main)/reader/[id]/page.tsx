@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, use } from 'react';
+import { useEffect, use, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBookStore } from '@/lib/stores/book-store';
+import { useOnboardingStore } from '@/lib/stores/onboarding-store';
 import { BookReader } from '@/components/reader/BookReader';
 import { Spinner } from '@/components/ui';
 
@@ -14,6 +15,8 @@ export default function ReaderPage({ params }: ReaderPageProps) {
   const { id } = use(params);
   const router = useRouter();
   const { currentBook, fetchBook, isLoadingBook, hasFetchedBook, error } = useBookStore();
+  const { completeMilestone } = useOnboardingStore();
+  const hasTrackedReading = useRef(false);
 
   // Fetch book when id changes or when currentBook doesn't match
   useEffect(() => {
@@ -21,6 +24,14 @@ export default function ReaderPage({ params }: ReaderPageProps) {
       fetchBook(id);
     }
   }, [id, currentBook, fetchBook]);
+
+  // Track reading milestone when book is loaded
+  useEffect(() => {
+    if (currentBook && !hasTrackedReading.current) {
+      hasTrackedReading.current = true;
+      completeMilestone('start_reading');
+    }
+  }, [currentBook, completeMilestone]);
 
   // Clean up when leaving the page - use store directly to avoid dependency issues
   useEffect(() => {

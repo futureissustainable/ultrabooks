@@ -1,65 +1,109 @@
-'use client';
-
-import { useEffect, use } from 'react';
-import { useRouter } from 'next/navigation';
-import { useClassicBookStore } from '@/lib/stores/classic-book-store';
-import { ClassicBookReader } from '@/components/reader/ClassicBookReader';
-import { Spinner } from '@/components/ui';
+import type { Metadata } from 'next';
+import { classicBooks } from '@/lib/classics-data';
+import { SITE_URL, getBookSchema } from '@/lib/seo';
+import { ClassicReaderClient } from './ClassicReaderClient';
 
 interface ClassicReaderPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function ClassicReaderPage({ params }: ClassicReaderPageProps) {
-  const { id } = use(params);
-  const router = useRouter();
-  const {
-    currentClassic,
-    currentClassicBlob,
-    getClassicById,
-    fetchAndCacheClassic,
-    isClassicLoading,
-    clearCurrentClassic,
-  } = useClassicBookStore();
+// Generate static params for all classic books (SSG)
+export async function generateStaticParams() {
+  return classicBooks.map((book) => ({
+    id: book.id,
+  }));
+}
 
-  // Fetch classic book when id changes or when not loaded
-  useEffect(() => {
-    const loadClassic = async () => {
-      const book = getClassicById(id);
-      if (!book) {
-        router.push('/library');
-        return;
-      }
+// Generate dynamic metadata for each classic book
+export async function generateMetadata({ params }: ClassicReaderPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const book = classicBooks.find((b) => b.id === id);
 
-      // If we don't have the current classic or it's a different book
-      if (!currentClassic || currentClassic.id !== id || !currentClassicBlob) {
-        await fetchAndCacheClassic(book);
-      }
+  if (!book) {
+    return {
+      title: 'Book Not Found',
+      description: 'The requested classic book was not found.',
     };
-
-    loadClassic();
-  }, [id, currentClassic, currentClassicBlob, getClassicById, fetchAndCacheClassic, router]);
-
-  // Clean up when leaving the page
-  useEffect(() => {
-    return () => {
-      useClassicBookStore.getState().clearCurrentClassic();
-    };
-  }, []);
-
-  // Show loading if we're fetching or don't have the book yet
-  if (isClassicLoading(id) || !currentClassic || !currentClassicBlob) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="flex flex-col items-center gap-4 p-8 border border-[var(--border-primary)] bg-[var(--bg-secondary)]">
-          <Spinner size="lg" />
-          <p className="font-ui fs-p-sm uppercase tracking-wide">
-            Loading classic...
-          </p>
-        </div>
-      </div>
-    );
   }
 
-  return <ClassicBookReader book={currentClassic} fileBlob={currentClassicBlob} />;
+  const title = `Read ${book.title} by ${book.author} - Free Ebook`;
+  const description = `Read "${book.title}" by ${book.author} for free on MEMOROS. ${book.description} Enjoy this classic in our beautiful ebook reader with bookmarks, highlights, and cross-device sync.`;
+  const url = `${SITE_URL}/reader/classic/${book.id}`;
+  const imageUrl = book.cover_url.startsWith('http') ? book.cover_url : `${SITE_URL}${book.cover_url}`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      `read ${book.title} online`,
+      `${book.title} free ebook`,
+      `${book.author} books`,
+      `${book.title} epub`,
+      'free classic books',
+      'read classic literature',
+      'public domain books',
+      'free ebook reader',
+    ],
+    openGraph: {
+      type: 'book',
+      title,
+      description,
+      url,
+      images: [
+        {
+          url: imageUrl,
+          width: 400,
+          height: 600,
+          alt: `${book.title} by ${book.author} - Book Cover`,
+        },
+      ],
+      authors: [book.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: url,
+    },
+    other: {
+      'book:author': book.author,
+      'book:isbn': '',
+      'og:book:author': book.author,
+    },
+  };
+}
+
+// Generate JSON-LD for the book
+function BookStructuredData({ book }: { book: typeof classicBooks[0] }) {
+  const schema = getBookSchema({
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    description: book.description,
+    coverUrl: book.cover_url,
+  });
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(schema),
+      }}
+    />
+  );
+}
+
+export default async function ClassicReaderPage({ params }: ClassicReaderPageProps) {
+  const { id } = await params;
+  const book = classicBooks.find((b) => b.id === id);
+
+  return (
+    <>
+      {book && <BookStructuredData book={book} />}
+      <ClassicReaderClient id={id} />
+    </>
+  );
 }

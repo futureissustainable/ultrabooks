@@ -3,6 +3,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { LibraryGrid } from '@/components/library/LibraryGrid';
+import { WelcomeModal, OnboardingChecklist, SuccessCelebration } from '@/components/onboarding';
 
 export default function LibraryPage() {
   return (
@@ -16,6 +17,11 @@ export default function LibraryPage() {
       </main>
 
       <Footer />
+
+      {/* Onboarding components */}
+      <WelcomeModal />
+      <OnboardingChecklist />
+      <SuccessCelebration />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Button, Input } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { funnels } from '@/lib/analytics';
 
 export function LoginForm() {
   const router = useRouter();
@@ -24,10 +25,15 @@ export function LoginForm() {
     e.preventDefault();
     setError(null);
 
+    // Track login attempt
+    funnels.acquisition.loginStarted('email');
+
     const result = await signIn(email, password);
     if (result.error) {
       setError(result.error);
-    } else {
+      funnels.acquisition.loginFailed('email', result.error);
+    } else if (result.user) {
+      funnels.acquisition.loginCompleted(result.user.id, 'email');
       router.push('/library');
     }
   };

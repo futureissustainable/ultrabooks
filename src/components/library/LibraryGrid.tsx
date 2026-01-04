@@ -209,23 +209,81 @@ export function LibraryGrid() {
       {/* Content */}
       {books.length === 0 ? (
         <>
-          <div className="text-center py-20 md:py-28 bg-[var(--bg-secondary)] rounded-[5px] mb-10">
-            <div className="w-16 h-16 mx-auto mb-6 bg-[var(--bg-tertiary)] rounded-[5px] flex items-center justify-center">
-              <PixelIcon name="library" size={28} className="text-[var(--text-tertiary)]" />
+          {/* Enhanced empty state with psychology-driven copy */}
+          <div className="text-center py-16 md:py-24 bg-[var(--bg-secondary)] rounded-[5px] mb-10">
+            {/* Icon with gentle animation */}
+            <div className="w-20 h-20 mx-auto mb-8 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center animate-gentle-bounce">
+              <PixelIcon name="book" size={32} className="text-[var(--bg-primary)]" />
             </div>
-            <h2 className="text-2xl font-medium mb-2">No Books Yet</h2>
-            <p className="text-[var(--text-secondary)] mb-8 max-w-sm mx-auto px-4">
-              Upload your first EPUB, PDF, or MOBI file to get started
+
+            {/* Headline - Loss aversion framing */}
+            <h2 className="font-display text-[28px] md:text-[32px] uppercase tracking-tight mb-3">
+              Your Library Awaits
+            </h2>
+
+            {/* Subhead - Reduces anxiety, clear value prop */}
+            <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-8 max-w-md mx-auto px-4 leading-relaxed">
+              Upload your first book and never lose your reading progress again.
+              Your highlights and bookmarks sync everywhere.
             </p>
-            <Button onClick={() => setIsUploadOpen(true)}>
-              <PixelIcon name="upload" size={16} />
-              Upload Book
-            </Button>
+
+            {/* CTA - Primary action */}
+            <div className="flex flex-col items-center gap-4">
+              <Button onClick={() => setIsUploadOpen(true)} className="btn-shine">
+                <PixelIcon name="upload" size={16} className="mr-2" />
+                Upload Your First Book
+              </Button>
+
+              {/* Secondary option - Reduces decision paralysis */}
+              <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">
+                or start with a{' '}
+                <button
+                  onClick={() => {
+                    const firstClassic = classicBooks[0];
+                    if (firstClassic) handleClassicClick(firstClassic);
+                  }}
+                  className="text-[var(--text-secondary)] underline hover:text-[var(--text-primary)] transition-colors"
+                >
+                  free classic
+                </button>
+              </p>
+            </div>
+
+            {/* Trust signals - Social proof */}
+            <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 mt-10 pt-8 border-t border-[var(--border-primary)] mx-4 md:mx-12">
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">EPUB, PDF, MOBI</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">100MB max</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="check" size={12} className="text-[var(--text-secondary)]" />
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">Private & secure</span>
+              </div>
+            </div>
           </div>
 
+          {/* Classics section with improved copy */}
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 bg-[var(--bg-tertiary)] rounded-[5px] flex items-center justify-center">
+                <PixelIcon name="book-open" size={14} className="text-[var(--text-secondary)]" />
+              </div>
+              <div>
+                <h3 className="font-display fs-h-sm uppercase tracking-tight">
+                  Start Reading Now
+                </h3>
+                <p className="font-ui fs-p-sm text-[var(--text-tertiary)]">
+                  30+ free classics ready to read
+                </p>
+              </div>
+            </div>
+          </div>
           <BookRow
-            title="Popular Classics"
-            subtitle="Free public domain books"
+            title=""
             classicBooks={classicBooks}
             onClassicClick={handleClassicClick}
           />

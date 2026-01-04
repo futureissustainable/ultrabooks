@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Button, Input } from '@/components/ui';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { funnels } from '@/lib/analytics';
 
 export function SignupForm() {
   const router = useRouter();
@@ -26,6 +27,9 @@ export function SignupForm() {
     e.preventDefault();
     setError(null);
 
+    // Track signup attempt
+    funnels.acquisition.signupStarted('email');
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -39,7 +43,8 @@ export function SignupForm() {
     const result = await signUp(email, password);
     if (result.error) {
       setError(result.error);
-    } else {
+    } else if (result.user) {
+      funnels.acquisition.signupCompleted(result.user.id, 'email');
       setSuccess(true);
     }
   };

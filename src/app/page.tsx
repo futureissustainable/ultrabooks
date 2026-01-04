@@ -25,26 +25,26 @@ export default function HomePage() {
 
           <div className="container-page relative z-10 h-full flex items-center py-12 md:py-28 lg:py-36">
             <div className="max-w-2xl">
-              {/* Eyebrow */}
+              {/* Eyebrow - SEO optimized */}
               <div className="flex items-center gap-2 mb-5 md:mb-8 reveal reveal-delay-1">
                 <div className="w-7 h-7 md:w-8 md:h-8 bg-[var(--text-primary)] flex items-center justify-center">
                   <PixelIcon name="book" size={12} className="text-[var(--bg-primary)]" />
                 </div>
                 <p className="font-ui fs-p-sm uppercase tracking-[0.12em] text-[var(--text-secondary)]">
-                  Digital Book Reader
+                  Best Free Ebook Reader App
                 </p>
               </div>
 
-              {/* Headline */}
+              {/* Headline - Optimized for "book app" and "epub reading app" keywords */}
               <h1 className="font-display text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px] uppercase tracking-tight mb-5 md:mb-8 leading-[0.9] reveal reveal-delay-2">
-                <span className="gradient-text">Your Books,</span>
+                <span className="gradient-text">Read EPUB, PDF</span>
                 <br />
-                <span className="text-[var(--text-primary)]">Everywhere</span>
+                <span className="text-[var(--text-primary)]">& MOBI Books</span>
               </h1>
 
-              {/* Subheadline */}
+              {/* Subheadline - SEO optimized */}
               <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-8 md:mb-12 max-w-md leading-relaxed reveal reveal-delay-3">
-                Upload your books once. Read anywhere. Your progress, highlights, and notes sync automatically.
+                The best free ebook reader app. Upload your books once, read anywhere. Sync your reading progress, bookmarks, and highlights across all devices.
               </p>
 
               {/* CTA Buttons - always inline */}
@@ -73,54 +73,54 @@ export default function HomePage() {
             ============================================ */}
         <section className="bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
           <div className="container-page section-spacing-lg">
-            {/* Section Header */}
+            {/* Section Header - SEO optimized */}
             <ScrollReveal className="text-center mb-12 md:mb-16">
               <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-secondary)] mb-4">
-                Why readers love it
+                Why readers choose this book app
               </p>
               <h2 className="font-display fs-h-lg md:text-[40px] uppercase leading-[0.9]">
-                Reading Without Friction
+                The Best EPUB Reader Experience
               </h2>
             </ScrollReveal>
 
             {/* Feature Cards - Psychological triggers */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {/* Loss Aversion: Never lose progress */}
+              {/* Cross-device sync feature */}
               <ScrollReveal delay={0} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="sync" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
-                  Never Lose Your Place
+                  Sync Across All Devices
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
-                  Switch devices mid-sentence. Your exact position, highlights, and notes are always there.
+                  Read on your phone, tablet, or computer. Your reading progress, bookmarks, and highlights sync automatically.
                 </p>
               </ScrollReveal>
 
-              {/* Autonomy: Complete control */}
+              {/* Multi-format support */}
               <ScrollReveal delay={40} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="font" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
-                  Your Way, Always
+                  Read Any Ebook Format
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
-                  Fonts, sizes, colors, margins—every detail adjustable. No one reads the same way.
+                  Open EPUB, PDF, and MOBI files. Customize fonts, sizes, themes, and margins for your perfect reading experience.
                 </p>
               </ScrollReveal>
 
-              {/* Social Proof & Belonging */}
+              {/* Free classic books */}
               <ScrollReveal delay={80} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 bg-[var(--text-primary)] rounded-[5px] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <PixelIcon name="users" size={28} className="text-[var(--bg-primary)]" />
                 </div>
                 <h3 className="font-display fs-h-sm uppercase tracking-tight mb-3">
-                  Read Together
+                  Free Classic Books
                 </h3>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] leading-relaxed max-w-xs mx-auto">
-                  Book clubs, shared annotations, reading streaks. Books are better with others.
+                  Access 30+ classic books for free. Dostoevsky, Tolstoy, Kafka, Austen, and more—beautifully formatted.
                 </p>
               </ScrollReveal>
             </div>
@@ -144,6 +144,20 @@ export default function HomePage() {
                 <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Works offline</span>
               </div>
             </ScrollReveal>
+
+            {/* Social proof - User activity indicator */}
+            <ScrollReveal delay={160} className="flex justify-center mt-8">
+              <div className="inline-flex items-center gap-3 px-5 py-3 bg-[var(--bg-primary)] border border-[var(--border-primary)] rounded-full">
+                <div className="flex -space-x-2">
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-tertiary)] border-2 border-[var(--bg-primary)]" />
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-secondary)] border-2 border-[var(--bg-primary)]" />
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-primary)] border-2 border-[var(--bg-primary)]" />
+                </div>
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">
+                  Join readers worldwide
+                </span>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -154,13 +168,13 @@ export default function HomePage() {
         <section className="bg-[var(--bg-primary)] border-b border-[var(--border-primary)] py-16 md:py-24">
           <ScrollReveal className="text-center mb-8 md:mb-12">
             <p className="font-ui fs-p-sm uppercase tracking-[0.15em] text-[var(--text-tertiary)] mb-3">
-              No books yet?
+              Free ebooks to read online
             </p>
             <h2 className="font-display fs-h-sm md:fs-h-lg uppercase tracking-tight">
-              Start with the Classics
+              Read Classic Books Free
             </h2>
             <p className="font-ui fs-p-lg text-[var(--text-secondary)] mt-3 max-w-md mx-auto">
-              Timeless literature, beautifully formatted. Free to download.
+              Explore timeless literature from Dostoevsky, Tolstoy, Kafka, and more. All free, beautifully formatted EPUB files.
             </p>
           </ScrollReveal>
 
@@ -193,15 +207,15 @@ export default function HomePage() {
 
               <ScrollReveal delay={40}>
                 <h2 className="font-display text-[32px] md:text-[44px] uppercase mb-5 leading-[0.9]">
-                  {user ? 'Welcome Back' : 'Start Reading Today'}
+                  {user ? 'Welcome Back' : 'Get the Best Free Ebook Reader'}
                 </h2>
               </ScrollReveal>
 
               <ScrollReveal delay={80}>
                 <p className="font-ui fs-p-lg text-[var(--text-secondary)] mb-10 max-w-md mx-auto leading-relaxed">
                   {user
-                    ? 'Your library is waiting. Pick up where you left off.'
-                    : 'Join thousands of readers. Free forever, no credit card needed.'}
+                    ? 'Your ebook library is waiting. Pick up where you left off.'
+                    : 'Join thousands of readers using MEMOROS. Read EPUB, PDF, and MOBI files for free. No credit card required.'}
                 </p>
               </ScrollReveal>
 

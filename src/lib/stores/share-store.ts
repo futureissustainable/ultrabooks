@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createClient } from '@/lib/supabase/client';
 import type { SharedBook, Book, Bookmark, Highlight } from '@/lib/supabase/types';
+import { funnels } from '@/lib/analytics';
 
 interface ShareOptions {
   includeBookmarks: boolean;
@@ -152,6 +153,15 @@ export const useShareStore = create<ShareState>((set) => ({
         set({ isCreating: false, error: error.message });
         return { shareCode: null, error: error.message };
       }
+
+      // Track share link created
+      funnels.viral.shareLinkCreated({
+        bookId: bookId,
+        shareType: 'book',
+        includeBookmarks: options.includeBookmarks,
+        includeHighlights: options.includeHighlights,
+        expiresHours: expiresInHours,
+      });
 
       set((state) => ({
         shares: [data, ...state.shares],
@@ -340,6 +350,14 @@ export const useShareStore = create<ShareState>((set) => ({
         set({ isCreating: false, error: booksError.message });
         return { shareCode: null, error: booksError.message };
       }
+
+      // Track collection share link created
+      funnels.viral.shareLinkCreated({
+        shareType: 'collection',
+        includeBookmarks: options.includeBookmarks,
+        includeHighlights: options.includeHighlights,
+        expiresHours: expiresInHours,
+      });
 
       set((state) => ({
         shareLinks: [shareLink as ShareLink, ...state.shareLinks],
