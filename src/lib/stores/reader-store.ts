@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createClient } from '@/lib/supabase/client';
 import type { Bookmark, Highlight, ReadingProgress, UserSettings } from '@/lib/supabase/types';
+import { useOnboardingStore } from '@/lib/stores/onboarding-store';
+import { useCelebrationStore } from '@/components/onboarding/SuccessCelebration';
 
 interface ReaderSettings {
   theme: 'light' | 'dark' | 'sepia';
@@ -356,6 +358,9 @@ export const useReaderStore = create<ReaderState>()(
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
+        // Check if this is the user's first highlight before insert
+        const isFirstHighlight = get().highlights.length === 0;
+
         const { data, error } = await supabase
           .from('highlights')
           .insert({
@@ -373,6 +378,12 @@ export const useReaderStore = create<ReaderState>()(
           set((state) => ({
             highlights: [...state.highlights, data],
           }));
+
+          // Complete the "create_highlight" milestone and celebrate
+          if (isFirstHighlight) {
+            useOnboardingStore.getState().completeMilestone('create_highlight');
+            useCelebrationStore.getState().celebrate('first_highlight');
+          }
         }
       },
 

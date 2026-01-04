@@ -144,6 +144,20 @@ export default function HomePage() {
                 <span className="font-ui fs-p-sm text-[var(--text-secondary)]">Works offline</span>
               </div>
             </ScrollReveal>
+
+            {/* Social proof - User activity indicator */}
+            <ScrollReveal delay={160} className="flex justify-center mt-8">
+              <div className="inline-flex items-center gap-3 px-5 py-3 bg-[var(--bg-primary)] border border-[var(--border-primary)] rounded-full">
+                <div className="flex -space-x-2">
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-tertiary)] border-2 border-[var(--bg-primary)]" />
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-secondary)] border-2 border-[var(--bg-primary)]" />
+                  <div className="w-6 h-6 rounded-full bg-[var(--text-primary)] border-2 border-[var(--bg-primary)]" />
+                </div>
+                <span className="font-ui fs-p-sm text-[var(--text-tertiary)]">
+                  Join readers worldwide
+                </span>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
 

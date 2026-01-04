@@ -4,6 +4,8 @@ import type { Book } from '@/lib/supabase/types';
 import { extractEpubCover, extractEpubMetadata } from '@/lib/epub-utils';
 import { generateFileId, extractPathFromLegacyUrl, isLegacyUrl } from '@/lib/supabase/storage';
 import { funnels, track } from '@/lib/analytics';
+import { useOnboardingStore } from '@/lib/stores/onboarding-store';
+import { useCelebrationStore } from '@/components/onboarding/SuccessCelebration';
 
 interface CopyBookParams {
   shareLinkId: string;
@@ -372,10 +374,24 @@ export const useBookStore = create<BookState>((set, get) => ({
       // Track successful upload
       funnels.activation.uploadCompleted(book.id, book.title, fileType, fileSizeMb);
 
+      // Check if this is the user's first book for celebration
+      const isFirstBook = get().books.length === 0;
+
       set((state) => ({
         books: [book, ...state.books],
         isUploading: false,
       }));
+
+      // Trigger celebration and milestone completion (after state update)
+      if (isFirstBook) {
+        // Complete the "first_book" milestone
+        useOnboardingStore.getState().completeMilestone('first_book');
+        // Trigger celebration
+        useCelebrationStore.getState().celebrate('first_book');
+      } else {
+        // Still show a subtle success for subsequent uploads
+        useCelebrationStore.getState().celebrate('upload_complete');
+      }
 
       return { book, error: null };
     } catch (err) {
