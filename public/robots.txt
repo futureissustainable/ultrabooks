@@ -1,0 +1,48 @@
+# MEMOROS - Best Ebook Reader App for EPUB, PDF & MOBI
+# https://memoros.app
+
+# Allow all search engines to crawl public pages
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /signup
+
+# Block private/authenticated areas
+Disallow: /library
+Disallow: /settings
+Disallow: /reader/
+Disallow: /api/
+
+# Allow shared content pages (public book shares)
+Allow: /share/
+
+# Allow AI crawlers for GEO (Generative Engine Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://memoros.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

@@ -4,6 +4,7 @@ import { AuthProvider } from '@/components/auth/AuthProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ServiceWorkerRegistration } from '@/components/pwa/ServiceWorkerRegistration';
 import { OfflineIndicator } from '@/components/pwa/OfflineIndicator';
+import { DEFAULT_METADATA, SITE_URL, getOrganizationSchema, getWebsiteSchema, getSoftwareApplicationSchema, getFAQSchema } from '@/lib/seo';
 import './globals.css';
 
 // Load custom fonts
@@ -20,9 +21,7 @@ const albertSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'MEMOROS',
-  description: 'A brutalist ebook reader for EPUB, PDF, and MOBI files. Sync your reading progress, bookmarks, and highlights across all devices.',
-  keywords: ['ebook', 'reader', 'epub', 'pdf', 'mobi', 'reading', 'books'],
+  ...DEFAULT_METADATA,
   manifest: '/manifest.json',
   icons: {
     icon: [
@@ -31,8 +30,10 @@ export const metadata: Metadata = {
       { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
       { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
+    shortcut: '/favicon.ico',
   },
   appleWebApp: {
     capable: true,
@@ -42,15 +43,59 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  verification: {
+    google: 'your-google-verification-code',
+  },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: '#0a0a0a',
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+  colorScheme: 'dark light',
 };
+
+// JSON-LD structured data for SEO and GEO
+function StructuredData() {
+  const organizationSchema = getOrganizationSchema();
+  const websiteSchema = getWebsiteSchema();
+  const softwareAppSchema = getSoftwareApplicationSchema();
+  const faqSchema = getFAQSchema();
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareAppSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+    </>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -62,6 +107,12 @@ export default function RootLayout({
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        {/* GEO: Additional meta tags for AI crawlers */}
+        <meta name="ai-content-declaration" content="This is a legitimate ebook reader application providing reading services for EPUB, PDF, and MOBI files." />
+        <link rel="canonical" href={SITE_URL} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <StructuredData />
       </head>
       <body className="antialiased">
         <ThemeProvider>

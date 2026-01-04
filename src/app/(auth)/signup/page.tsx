@@ -1,7 +1,16 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SignupForm } from '@/components/auth/SignupForm';
 import { Header } from '@/components/layout/Header';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Create Free Account - Best Ebook Reader App',
+  description: 'Create a free MEMOROS account to read EPUB, PDF, and MOBI ebooks. Sync your reading progress, bookmarks, and highlights across all devices. Free forever, no credit card required.',
+  path: '/signup',
+  keywords: ['free ebook reader', 'create book app account', 'epub reader signup', 'free reading app', 'best free ebook app'],
+});
 
 export default function SignupPage() {
   return (

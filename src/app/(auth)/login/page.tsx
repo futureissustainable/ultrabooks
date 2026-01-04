@@ -1,7 +1,16 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { Header } from '@/components/layout/Header';
 import { PixelIcon } from '@/components/icons/PixelIcon';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Sign In to Your Ebook Library',
+  description: 'Sign in to MEMOROS to access your ebook library. Read EPUB, PDF, and MOBI files with automatic sync across all devices.',
+  path: '/login',
+  keywords: ['ebook reader login', 'book app sign in', 'epub reader account', 'digital library login'],
+});
 
 export default function LoginPage() {
   return (
